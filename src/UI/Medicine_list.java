@@ -31,7 +31,7 @@ public class Medicine_list extends javax.swing.JFrame {
                     i+1,
                     datas.get(i)[0],
                     datas.get(i)[1],
-                    ""
+                    "",
                 };
                 model.addRow(data_list);          
             }

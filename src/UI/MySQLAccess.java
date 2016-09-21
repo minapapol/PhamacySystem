@@ -199,7 +199,7 @@ public class MySQLAccess {
   }
   
   public void insert_medicine_details(String barcode, String medicine_code, String company_name, String lot_no, 
-          int back_stock, int front_stock, int buying_price, int selling_price, int amount, int unit,
+          int back_stock, float buying_price, float selling_price, int amount, String unit,
           java.sql.Date buying_date, java.sql.Date initailize_date, java.sql.Date expired_date){
     try {
       // This will load the MySQL driver, each DB has its own driver
@@ -225,12 +225,12 @@ public class MySQLAccess {
       preparedStatement.setString(3, company_name);
       preparedStatement.setString(4, lot_no);
       preparedStatement.setInt(5, back_stock);
-      preparedStatement.setInt(6, front_stock);
+      preparedStatement.setInt(6, 0);
       preparedStatement.setDate(7, buying_date);
-      preparedStatement.setInt(8, buying_price);
-      preparedStatement.setInt(9, selling_price);
+      preparedStatement.setFloat(8, buying_price);
+      preparedStatement.setFloat(9, selling_price);
       preparedStatement.setInt(10, amount);
-      preparedStatement.setInt(11, unit);
+      preparedStatement.setString(11, unit);
       preparedStatement.setDate(12, initailize_date);
       preparedStatement.setDate(13, expired_date);
       preparedStatement.executeUpdate();
@@ -256,23 +256,58 @@ public class MySQLAccess {
         resultSet = statement
            .executeQuery("select * from phamacy.medicines");
         System.out.println("|   Medicines Details");
-        System.out.println("|   No.---Barcode---Medicines name");
+        System.out.println("|   No.---barcode---medicine_code---company_name---lot_no---back_stock---front_stock---buying_date---buying_price---selling_price---amount---unit---initialize_date---expired_date");
         int i = 1;
         while (resultSet.next()) {
-            String[] temp = new String[2];
+            String[] temp = new String[14];
             // It is possible to get the columns via name
             // also possible to get the columns via the column number
             // which starts at 1
             // e.g. resultSet.getSTring(2);
+            int id = resultSet.getInt("id");
             String barcode = resultSet.getString("barcode");
-            String name = resultSet.getString("medicine_name");
-            System.out.print("|   " + i);
-            temp[0] = barcode;
-            System.out.print("---" + temp[0]);
-            temp[1] = name;
+            String medicine_code = resultSet.getString("medicine_code");
+            String company_name = resultSet.getString("company_name");
+            String lot_no = resultSet.getString("lot_no");
+            int back_stock = resultSet.getInt("back_stock");
+            int front_stock = resultSet.getInt("front_stock");
+            Date buying_date = resultSet.getDate("buying_date");
+            float buying_price = resultSet.getFloat("buying_price");
+            float selling_price = resultSet.getFloat("selling_price");
+            int amount = resultSet.getInt("amount");
+            String unit = resultSet.getString("unit");
+            Date initialize_date = resultSet.getDate("initialize_date");
+            Date expired_date = resultSet.getDate("expired_date");
+            temp[0] = id+"";
+            System.out.print("|   " + temp[0]);
+            temp[1] = barcode;
             System.out.println("---" + temp[1]);
-            
-            medicines.add(temp);
+            temp[2] = medicine_code;
+            System.out.print("---" + temp[2]);
+            temp[3] = company_name;
+            System.out.println("---" + temp[3]);
+            temp[4] = lot_no;
+            System.out.print("---" + temp[4]);
+            temp[5] = back_stock+"";
+            System.out.println("---" + temp[5]);
+            temp[6] = front_stock+"";
+            System.out.print("---" + temp[6]);
+            temp[7] = buying_date+"";
+            System.out.println("---" + temp[7]);
+            temp[8] = buying_price+"";
+            System.out.print("---" + temp[8]);
+            temp[9] = selling_price+"";
+            System.out.println("---" + temp[9]);
+            temp[10] = amount+"";
+            System.out.print("---" + temp[10]);
+            temp[11] = unit;
+            System.out.println("---" + temp[11]);
+            temp[12] = initialize_date+"";
+            System.out.println("---" + temp[12]);
+            temp[13] = expired_date+"";
+            System.out.println("---" + temp[13]);
+   
+            medicine_details.add(temp);
             i++;
         }
           
@@ -340,7 +375,59 @@ public class MySQLAccess {
       close();
     }
   }
-  public String[][] list_sell_histories(){ String[][] a = new String[5][]; return a;}
+  public ArrayList<String[]> list_sell_histories(){ 
+    ArrayList<String[]> histories = new ArrayList<String[]>();
+    try {
+        Class.forName("com.mysql.jdbc.Driver");
+        // Setup the connection with the DB
+        connect = DriverManager
+                .getConnection("jdbc:mysql://localhost/phamacy?"
+                        + "user=root&password=root");
+
+        // Statements allow to issue SQL queries to the database
+        statement = connect.createStatement();
+        resultSet = statement
+           .executeQuery("select * from phamacy.sell_histories");
+        System.out.println("|   Buying Histories");
+        System.out.println("|   No.---detail_id---selling_date---amount---total");
+        int i = 1;
+        while (resultSet.next()) {
+            String[] temp = new String[5];
+            // It is possible to get the columns via name
+            // also possible to get the columns via the column number
+            // which starts at 1
+            // e.g. resultSet.getSTring(2);
+            int id = resultSet.getInt("id");
+            int detail_id = resultSet.getInt("detail_id");
+            Date buying_date = resultSet.getDate("selling_date");
+            int amount= resultSet.getInt("amount");
+            float total = resultSet.getFloat("total");
+                
+            temp[0] = id + "";
+            System.out.print("---" + temp[0]);
+            temp[1] = detail_id + "";
+            System.out.println("---" + temp[1]);
+            temp[2] = buying_date + "";
+            System.out.print("---" + temp[0]);
+            temp[3] = amount + "" ;
+            System.out.println("---" + temp[1]);
+            temp[4] = total + "";
+            System.out.print("---" + temp[0]);
+
+            histories.add(temp);
+            i++;
+        }
+
+    } catch (Exception e){
+        e.printStackTrace();
+    } finally {
+        close();
+    }
+      
+    return histories;
+    
+  }
+  
   public void delete_sell_histories(int id){
      try {
         Class.forName("com.mysql.jdbc.Driver");
@@ -397,7 +484,57 @@ public class MySQLAccess {
     }
   }
   
-  public String[][] list_buy_histories(){ String[][] a = new String[5][]; return a;}
+  public ArrayList<String[]> list_buy_histories(){
+    ArrayList<String[]> histories = new ArrayList<String[]>();
+    try {
+        Class.forName("com.mysql.jdbc.Driver");
+        // Setup the connection with the DB
+        connect = DriverManager
+                .getConnection("jdbc:mysql://localhost/phamacy?"
+                        + "user=root&password=root");
+
+        // Statements allow to issue SQL queries to the database
+        statement = connect.createStatement();
+        resultSet = statement
+           .executeQuery("select * from phamacy.buy_histories");
+        System.out.println("|   Buying Histories");
+        System.out.println("|   No.---detail_id---buying_date---amount---total");
+        int i = 1;
+        while (resultSet.next()) {
+            String[] temp = new String[5];
+            // It is possible to get the columns via name
+            // also possible to get the columns via the column number
+            // which starts at 1
+            // e.g. resultSet.getSTring(2);
+            int id = resultSet.getInt("id");
+            int detail_id = resultSet.getInt("detail_id");
+            Date buying_date = resultSet.getDate("buying_date");
+            int amount= resultSet.getInt("amount");
+            float total = resultSet.getFloat("total");
+                
+            temp[0] = id + "";
+            System.out.print("---" + temp[0]);
+            temp[1] = detail_id + "";
+            System.out.println("---" + temp[1]);
+            temp[2] = buying_date + "";
+            System.out.print("---" + temp[0]);
+            temp[3] = amount + "" ;
+            System.out.println("---" + temp[1]);
+            temp[4] = total + "";
+            System.out.print("---" + temp[0]);
+
+            histories.add(temp);
+            i++;
+        }
+
+    } catch (Exception e){
+        e.printStackTrace();
+    } finally {
+        close();
+    }
+      
+    return histories;
+  }
   
   public void delete_buy_histories(int id){
      try {
