@@ -18,8 +18,8 @@ public class Buy extends javax.swing.JFrame {
      */
     public Buy() {
         initComponents();
-        java.sql.Date temp = new java.sql.Date(1,1,1);
-        buying_date.setText(temp+"");
+        java.sql.Date temp = new java.sql.Date(new Date().getTime());
+        DP_buy.setDate(temp);
     }
 
     /**
@@ -55,10 +55,19 @@ public class Buy extends javax.swing.JFrame {
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
-        error_text = new javax.swing.JLabel();
-        jXDatePicker1 = new org.jdesktop.swingx.JXDatePicker();
-        jXDatePicker2 = new org.jdesktop.swingx.JXDatePicker();
-        jXDatePicker3 = new org.jdesktop.swingx.JXDatePicker();
+        DP_exp = new org.jdesktop.swingx.JXDatePicker();
+        DP_ini = new org.jdesktop.swingx.JXDatePicker();
+        DP_buy = new org.jdesktop.swingx.JXDatePicker();
+        barcode_err = new javax.swing.JLabel();
+        code_err = new javax.swing.JLabel();
+        company_err = new javax.swing.JLabel();
+        lot_err = new javax.swing.JLabel();
+        buy_err = new javax.swing.JLabel();
+        sell_err = new javax.swing.JLabel();
+        amount_err = new javax.swing.JLabel();
+        unit_err = new javax.swing.JLabel();
+        ini_err = new javax.swing.JLabel();
+        exp_err = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -173,7 +182,45 @@ public class Buy extends javax.swing.JFrame {
             }
         });
 
-        error_text.setForeground(new java.awt.Color(255, 0, 51));
+        barcode_err.setFont(new java.awt.Font("Cordia New", 0, 20)); // NOI18N
+        barcode_err.setForeground(new java.awt.Color(255, 0, 51));
+        barcode_err.setText("*");
+
+        code_err.setFont(new java.awt.Font("Cordia New", 0, 20)); // NOI18N
+        code_err.setForeground(new java.awt.Color(255, 0, 51));
+        code_err.setText("*");
+
+        company_err.setFont(new java.awt.Font("Cordia New", 0, 20)); // NOI18N
+        company_err.setForeground(new java.awt.Color(255, 0, 51));
+        company_err.setText("*");
+
+        lot_err.setFont(new java.awt.Font("Cordia New", 0, 20)); // NOI18N
+        lot_err.setForeground(new java.awt.Color(255, 0, 51));
+        lot_err.setText("*");
+
+        buy_err.setFont(new java.awt.Font("Cordia New", 0, 20)); // NOI18N
+        buy_err.setForeground(new java.awt.Color(255, 0, 51));
+        buy_err.setText("*");
+
+        sell_err.setFont(new java.awt.Font("Cordia New", 0, 20)); // NOI18N
+        sell_err.setForeground(new java.awt.Color(255, 0, 51));
+        sell_err.setText("*");
+
+        amount_err.setFont(new java.awt.Font("Cordia New", 0, 20)); // NOI18N
+        amount_err.setForeground(new java.awt.Color(255, 0, 51));
+        amount_err.setText("*");
+
+        unit_err.setFont(new java.awt.Font("Cordia New", 0, 20)); // NOI18N
+        unit_err.setForeground(new java.awt.Color(255, 0, 51));
+        unit_err.setText("*");
+
+        ini_err.setFont(new java.awt.Font("Cordia New", 0, 20)); // NOI18N
+        ini_err.setForeground(new java.awt.Color(255, 0, 51));
+        ini_err.setText("*");
+
+        exp_err.setFont(new java.awt.Font("Cordia New", 0, 20)); // NOI18N
+        exp_err.setForeground(new java.awt.Color(255, 0, 51));
+        exp_err.setText("*");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -182,73 +229,104 @@ public class Buy extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jButton2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(error_text, javax.swing.GroupLayout.PREFERRED_SIZE, 565, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel10)
+                                            .addComponent(jLabel11))
+                                        .addGap(29, 29, 29)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(amount, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(unit, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                .addComponent(jLabel8)
+                                                .addGap(15, 15, 15))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jLabel9)
+                                                .addGap(8, 8, 8)))
+                                        .addGap(10, 10, 10)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(buying_price, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(selling_price, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(11, 11, 11)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(sell_err, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(buy_err, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(amount_err, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(10, 10, 10)
+                                        .addComponent(unit_err, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(69, 69, 69)
+                                .addComponent(medicine_code, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(code_err, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addGroup(layout.createSequentialGroup()
-                                            .addComponent(jLabel2)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                            .addComponent(barcode, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                            .addComponent(jLabel3)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(medicine_name, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(jLabel5)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                            .addComponent(company_name, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(jLabel6)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                            .addComponent(lot_no)))
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(jLabel4)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(medicine_code, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(jLabel7)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(jXDatePicker3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(jLabel8)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                            .addComponent(buying_price, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(layout.createSequentialGroup()
                                             .addComponent(jLabel13)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                            .addComponent(jXDatePicker2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(jLabel9)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(selling_price, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGap(18, 18, 18)
-                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(jLabel10)
-                                                .addComponent(jLabel11))
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(unit)
-                                                .addComponent(amount)))
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(DP_ini, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGroup(layout.createSequentialGroup()
                                             .addComponent(jLabel14)
-                                            .addGap(10, 10, 10)
-                                            .addComponent(jXDatePicker1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGap(0, 0, Short.MAX_VALUE))))))
-                        .addGap(0, 15, Short.MAX_VALUE)))
-                .addContainerGap())
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(DP_exp, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(jLabel3)
+                                                .addComponent(jLabel2))
+                                            .addGap(25, 25, 25)
+                                            .addComponent(barcode, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel5)
+                                            .addComponent(jLabel6)
+                                            .addComponent(jLabel4))
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                .addGap(18, 18, 18)
+                                                .addComponent(lot_no, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGap(18, 18, 18)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(medicine_name, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(company_name, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(7, 7, 7)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(barcode_err, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
+                                            .addComponent(company_err, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(lot_err, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                .addComponent(exp_err, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(3, 3, 3))
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                .addComponent(ini_err, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(1, 1, 1)))))))
+                        .addGap(120, 120, 120))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(DP_buy, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1)
+                        .addContainerGap())))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
@@ -262,49 +340,72 @@ public class Buy extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(barcode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(barcode_err))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(medicine_name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4)
-                    .addComponent(medicine_code, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(medicine_name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lot_no, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel5)
+                        .addComponent(code_err)
+                        .addComponent(medicine_code, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(company_name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel6)
-                        .addComponent(jLabel7)
-                        .addComponent(jXDatePicker3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(company_err)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(buying_price, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel9)
+                    .addComponent(lot_no, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6)
+                    .addComponent(lot_err))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(buying_price, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(buy_err))
+                    .addComponent(jLabel8))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(selling_price, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel9)
+                    .addComponent(sell_err))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel10)
-                    .addComponent(amount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(amount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(amount_err)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel11)
-                    .addComponent(unit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(unit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(unit_err)
+                    .addComponent(jLabel11))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13)
-                    .addComponent(jLabel14)
-                    .addComponent(jXDatePicker1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jXDatePicker2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(error_text, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(DP_ini, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ini_err))
+                .addGap(3, 3, 3)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel14)
+                    .addComponent(DP_exp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(exp_err))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton2)
                     .addComponent(jButton1)
-                    .addComponent(jButton2))
-                .addContainerGap())
+                    .addComponent(jLabel7)
+                    .addComponent(DP_buy, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(339, Short.MAX_VALUE)))
+                    .addContainerGap(398, Short.MAX_VALUE)))
         );
 
         pack();
@@ -315,10 +416,6 @@ public class Buy extends javax.swing.JFrame {
         this.setVisible(false);
         new UI().setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void barcodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barcodeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_barcodeActionPerformed
 
     private void medicine_nameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_medicine_nameActionPerformed
         // TODO add your handling code here:
@@ -354,7 +451,19 @@ public class Buy extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        String error_text_ = "";
+        
+        boolean checked = true;
+        
+        barcode_err.setText(""); 
+        code_err.setText("");
+        company_err.setText("");
+        lot_err.setText("");
+        unit_err.setText("");
+        ini_err.setText("");
+        exp_err.setText("");
+        sell_err.setText("");
+        buy_err.setText("");
+        amount_err.setText("");
         
         float buying_price_;
         float selling_price_;
@@ -366,112 +475,61 @@ public class Buy extends javax.swing.JFrame {
         String company_name_ = company_name.getText();
         String lot_no_ = lot_no.getText();
         String unit_ = unit.getText();
-        Date current_date = new Date();
         
-        java.sql.Date buying_date_ = new java.sql.Date((current_date.getYear()+1900),current_date.getMonth(),current_date.getDate());
-        java.sql.Date initialize_date_;
-        java.sql.Date expired_date_ = new java.sql.Date((current_date.getYear()+1900),current_date.getMonth(),current_date.getDate());
-        
-        buying_date.setText(current_date.getDate()+"/"+current_date.getMonth()+"/"+(current_date.getYear()+1900));
-        
-        String[] date1 = initialize_date.getText().split("/");
-        String[] date2 = expired_date.getText().split("/");
-        
-        if(date1.length != 3 ){
-            error_text_ += "\n** วันผลิต ผิดแบบฟอร์ม";
-        } else {
-            boolean check = true;
-            int date = 0;
-            int month = 0;
-            int year = 0;
-            
-            try {
-                date = Integer.parseInt(date1[0]);
-            } catch (NumberFormatException e) {
-                error_text_ += "\n** วันที่ผลิต ผิดรูปแบบ  ";
-                check = false;
-            }
-            try {
-                month = Integer.parseInt(date1[1]);
-            } catch (NumberFormatException e) {
-                error_text_ += "\n** เดือนที่ผลิต ผิดรูปแบบ  ";
-                check = false;
-            }
-            try {
-                year = Integer.parseInt(date1[2]);
-            } catch (NumberFormatException e) {
-                error_text_ += "\n** ปีที่ผลิต ผิดรูปแบบ  ";
-                check = false;
-            }
-            
-            if(check){
-                initialize_date_ = new java.sql.Date(year, month, date);
-            }
-        }
-        
-        if(date2.length != 3){
-            error_text_ += "\n** วันหมดอายุ ผิดแบบฟอร์ม";
-        } else {
-            boolean check = true;
-            int date = 0;
-            int month = 0;
-            int year = 0;
-            
-            try {
-                date = Integer.parseInt(date1[0]);
-            } catch (NumberFormatException e) {
-                error_text_ += "\n** วันหมดอายุ ผิดรูปแบบ  ";
-                check = false;
-            }
-            try {
-                month = Integer.parseInt(date1[1]);
-            } catch (NumberFormatException e) {
-                error_text_ += "\n** เดือนหมดอายุ ผิดรูปแบบ  ";
-                check = false;
-            }
-            try {
-                year = Integer.parseInt(date1[2]);
-            } catch (NumberFormatException e) {
-                error_text_ += "\n** ปีที่หมดอายุ ผิดรูปแบบ  ";
-                check = false;
-            }
-            
-            if(check){
-                initialize_date_ = new java.sql.Date(year, month, date);
-            }
-        }
+        if(barcode_.length() == 0) { barcode_err.setText("*โปรดใส่รหัส"); checked = false; }
+        if(medicine_code_.length() == 0 ) { code_err.setText("*โปรดใส่รหัส"); checked = false; }
+        if(company_name_.length() == 0 ) { company_err.setText("*โปรดใส่ชื่อบริษัท"); checked = false; }
+        if(lot_no_.length() == 0 ) { lot_err.setText("*โปรดใส่เลขที่ LOT"); checked = false; }
+        if(unit_.length() == 0 ) { unit_err.setText("*โปรดใส่หน่วยของสินค้า"); checked = false; }
+        if(DP_ini.getDate() == null) { ini_err.setText("*โปรดใส่วันที่ผลิต"); checked = false; }
+        if(DP_exp.getDate() == null) { exp_err.setText("*โปรดใส่วันที่หมดอายุ"); checked = false; }
         
         try {
             buying_price_ = Float.parseFloat(buying_price.getText());
+            if(buying_price_ == 0.0) buy_err.setText("*โปรดใส่ราคาซื้อ"); 
         } catch (NumberFormatException e) {
-            error_text_ += "\n** ราคาซื้อ ผิดรูปแบบ  ";
+            buy_err.setText("*ราคาซื้อ ผิดรูปแบบ");
+            checked = false; 
         }
-        
+
         try {
             selling_price_ = Float.parseFloat(selling_price.getText());
+            if(selling_price_ == 0.0) sell_err.setText("*โปรดใส่ราคาขาย"); 
         } catch (NumberFormatException e) {
-            error_text_ += "\n** ราคาขาย ผิดรูปแบบ  ";
+            sell_err.setText("*ราคาขาย ผิดรูปแบบ");
+            checked = false; 
         }
                 
         try {
             back_stock = Integer.parseInt(amount.getText());
             amount_ = Integer.parseInt(amount.getText());
+            if(amount_ == 0) { 
+                amount_err.setText("*ใส่จำนวนสินค้า");
+                back_stock =  amount_;
+            }
         } catch (NumberFormatException e) {
-            error_text_ += "\n** จำนวน ผิดรูปแบบ  ";
+            amount_err.setText("*จำนวน ผิดรูปแบบ");
+            checked = false; 
+        }
+         
+        if (checked) {
+            
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void barcodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barcodeActionPerformed
+        // TODO add your handling code here:
+        System.out.print(evt.getActionCommand());
+        
+        try {
+            MySQLAccess db = new MySQLAccess();
+            medicine_name.setText(db.get_medicine_name(evt.getActionCommand()));
+            if( medicine_name.getText().equals("none") ) barcode_err.setText("*รายการนี้ไม่มีอยู่ในฐานข้อมูล");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         
-        error_text.setText(error_text_);
-        
-//        Date buying_date_param = new 
-        
-//        try {
-//            MySQLAccess db = new MySQLAccess();
-//            db.insert_medicine_details();
-//            db.list_medicine_details();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_barcodeActionPerformed
 
     /**
      * @param args the command line arguments
@@ -509,11 +567,20 @@ public class Buy extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private org.jdesktop.swingx.JXDatePicker DP_buy;
+    private org.jdesktop.swingx.JXDatePicker DP_exp;
+    private org.jdesktop.swingx.JXDatePicker DP_ini;
     private javax.swing.JTextField amount;
+    private javax.swing.JLabel amount_err;
     private javax.swing.JTextField barcode;
+    private javax.swing.JLabel barcode_err;
+    private javax.swing.JLabel buy_err;
     private javax.swing.JTextField buying_price;
+    private javax.swing.JLabel code_err;
+    private javax.swing.JLabel company_err;
     private javax.swing.JTextField company_name;
-    private javax.swing.JLabel error_text;
+    private javax.swing.JLabel exp_err;
+    private javax.swing.JLabel ini_err;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
@@ -529,13 +596,13 @@ public class Buy extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private org.jdesktop.swingx.JXDatePicker jXDatePicker1;
-    private org.jdesktop.swingx.JXDatePicker jXDatePicker2;
-    private org.jdesktop.swingx.JXDatePicker jXDatePicker3;
+    private javax.swing.JLabel lot_err;
     private javax.swing.JTextField lot_no;
     private javax.swing.JTextField medicine_code;
     private javax.swing.JTextField medicine_name;
+    private javax.swing.JLabel sell_err;
     private javax.swing.JTextField selling_price;
     private javax.swing.JTextField unit;
+    private javax.swing.JLabel unit_err;
     // End of variables declaration//GEN-END:variables
 }

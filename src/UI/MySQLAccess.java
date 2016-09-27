@@ -142,8 +142,9 @@ public class MySQLAccess {
                 .getConnection("jdbc:mysql://localhost/phamacy?"
                         + "user=root&password=root");
 
-          // Statements allow to issue SQL queries to the database
-          statement = connect.createStatement();
+        // Statements allow to issue SQL queries to the database
+        statement = connect.createStatement();
+        
         resultSet = statement
            .executeQuery("select * from phamacy.medicines");
         System.out.println("|   Medicines");
@@ -196,6 +197,33 @@ public class MySQLAccess {
     } finally {
         close();
     }
+  }
+  public String get_medicine_name(String barcode){
+    String medicine_name = "none";
+    try {
+        Class.forName("com.mysql.jdbc.Driver");
+          // Setup the connection with the DB
+        connect = DriverManager
+                .getConnection("jdbc:mysql://localhost/phamacy?"
+                        + "user=root&password=root");
+
+        // Statements allow to issue SQL queries to the database
+        statement = connect.createStatement();
+        
+        resultSet = statement
+           .executeQuery("select * from phamacy.medicines where barcode = '" + barcode + "'");
+
+        while (resultSet.next()) {
+            medicine_name = resultSet.getString("medicine_name");
+        }
+        
+    } catch (Exception e) {
+        e.printStackTrace();
+    } finally {
+        close();
+    }
+    
+    return medicine_name;
   }
   
   public void insert_medicine_details(String barcode, String medicine_code, String company_name, String lot_no, 
