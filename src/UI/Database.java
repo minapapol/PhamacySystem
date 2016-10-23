@@ -31,6 +31,7 @@ public class Database extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         adding = new javax.swing.JButton();
         adding1 = new javax.swing.JButton();
+        adding2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -64,6 +65,18 @@ public class Database extends javax.swing.JFrame {
             }
         });
 
+        adding2.setText("จัดการรายการยา");
+        adding2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                adding2MouseClicked(evt);
+            }
+        });
+        adding2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                adding2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -80,7 +93,9 @@ public class Database extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(adding, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(adding1, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(adding1, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(adding2, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -92,7 +107,8 @@ public class Database extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(adding, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(adding1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(adding1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(adding2, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 159, Short.MAX_VALUE)
                 .addComponent(jButton1)
                 .addContainerGap())
@@ -124,6 +140,17 @@ public class Database extends javax.swing.JFrame {
         Medicine_list newUi = new Medicine_list();
         newUi.setVisible(true);
     }//GEN-LAST:event_adding1ActionPerformed
+
+    private void adding2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_adding2MouseClicked
+        // TODO add your handling code here:
+        dispose();
+        Medicine_details_list newUi = new Medicine_details_list();
+        newUi.setVisible(true);
+    }//GEN-LAST:event_adding2MouseClicked
+
+    private void adding2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adding2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_adding2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -163,6 +190,7 @@ public class Database extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton adding;
     private javax.swing.JButton adding1;
+    private javax.swing.JButton adding2;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables

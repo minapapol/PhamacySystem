@@ -5,8 +5,21 @@
  */
 package UI;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.JButton;
+import javax.swing.table.TableModel;
+import jxl.*;
+import jxl.read.biff.BiffException;
+import jxl.write.*;
+
 
 /**
  *
@@ -20,19 +33,25 @@ public class Reminder extends javax.swing.JFrame {
     public Reminder() {
         initComponents();
         
-        Object[] temp = { "test", "test", "test2", "test", "test", 2 };
-        
         DefaultTableModel model = (DefaultTableModel) listTable.getModel();
         
-        model.addRow(temp);
-        
-        Object[] temp2 = { "test", "test", "test", "test2", "test",1 };
-        
-        model.addRow(temp2);
-        for(int i = 0; i < 100; i++){
-            Object[] temp3 = { "test", "test", "test", "test2", "test",i };
-        
-            model.addRow(temp3);          
+        try {
+            MySQLAccess medicine_details_table = new MySQLAccess();
+            ArrayList<String[]> datas = medicine_details_table.list_medicine_details("", "", "exp_date");
+            
+            for(int i = 0; i < datas.size(); i++){
+                Object[] data_list = {
+                    medicine_details_table.get_medicine_name(datas.get(i)[1]), // medicinde name
+                    datas.get(i)[13], // expired date
+                    datas.get(i)[4], // lot
+                    datas.get(i)[6], // front
+                    datas.get(i)[5], // back
+                    datas.get(i)[10], // amount
+                };
+                model.addRow(data_list);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -134,10 +153,52 @@ public class Reminder extends javax.swing.JFrame {
 
     private void stockSortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stockSortActionPerformed
         // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel) listTable.getModel();
+        model.setNumRows(0);
+        
+        try {
+            MySQLAccess medicine_details_table = new MySQLAccess();
+            ArrayList<String[]> datas = medicine_details_table.list_medicine_details("", "", "stock");
+            
+            for(int i = 0; i < datas.size(); i++){
+                Object[] data_list = {
+                    medicine_details_table.get_medicine_name(datas.get(i)[1]), // medicinde name
+                    datas.get(i)[13], // expired date
+                    datas.get(i)[4], // lot
+                    datas.get(i)[6], // front
+                    datas.get(i)[5], // back
+                    datas.get(i)[10], // amount
+                };
+                model.addRow(data_list);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_stockSortActionPerformed
 
     private void expiredSortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_expiredSortActionPerformed
         // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel) listTable.getModel();
+        model.setNumRows(0);
+        
+        try {
+            MySQLAccess medicine_details_table = new MySQLAccess();
+            ArrayList<String[]> datas = medicine_details_table.list_medicine_details("", "", "exp_date");
+            
+            for(int i = 0; i < datas.size(); i++){
+                Object[] data_list = {
+                    medicine_details_table.get_medicine_name(datas.get(i)[1]), // medicinde name
+                    datas.get(i)[13], // expired date
+                    datas.get(i)[4], // lot
+                    datas.get(i)[6], // front
+                    datas.get(i)[5], // back
+                    datas.get(i)[10], // amount
+                };
+                model.addRow(data_list);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_expiredSortActionPerformed
 
     /**

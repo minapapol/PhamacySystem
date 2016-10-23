@@ -37,6 +37,8 @@
                               <Component id="adding" min="-2" pref="180" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="adding1" min="-2" pref="180" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="adding2" min="-2" pref="180" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
@@ -55,6 +57,7 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="adding" alignment="3" min="-2" pref="140" max="-2" attributes="0"/>
                   <Component id="adding1" alignment="3" min="-2" pref="140" max="-2" attributes="0"/>
+                  <Component id="adding2" alignment="3" min="-2" pref="140" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="159" max="32767" attributes="0"/>
               <Component id="jButton1" min="-2" max="-2" attributes="0"/>
@@ -96,6 +99,15 @@
       <Events>
         <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="adding1MouseClicked"/>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="adding1ActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="adding2">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&#xe08;&#xe31;&#xe14;&#xe01;&#xe32;&#xe23;&#xe23;&#xe32;&#xe22;&#xe01;&#xe32;&#xe23;&#xe22;&#xe32;"/>
+      </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="adding2MouseClicked"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="adding2ActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

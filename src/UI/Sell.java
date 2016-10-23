@@ -5,7 +5,8 @@
  */
 package UI;
 
-import javax.swing.JTextField;
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -13,12 +14,15 @@ import javax.swing.JTextField;
  */
 public class Sell extends javax.swing.JFrame {
 
+    
+    private int front_amout = 0;
+    private int back_amout = 0;
+    
     /**
      * Creates new form Sell
      */
     public Sell() {
         initComponents();
-        
     }
 
     /**
@@ -32,24 +36,33 @@ public class Sell extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
-        jTextField5 = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField8 = new javax.swing.JTextField();
-        jTextField1 = new javax.swing.JTextField();
+        price = new javax.swing.JTextField();
+        medicine_code = new javax.swing.JTextField();
+        barcode = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField9 = new javax.swing.JTextField();
+        amount = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
-        jTextField10 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        unit = new javax.swing.JLabel();
+        total = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
-        jTextField13 = new javax.swing.JTextField();
+        company_name = new javax.swing.JTextField();
+        medicine_name = new javax.swing.JTextField();
+        report_1 = new javax.swing.JLabel();
+        barcode_err = new javax.swing.JLabel();
+        lotList = new javax.swing.JComboBox<>();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        listTable = new javax.swing.JTable();
+        addMore = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jLabel13 = new javax.swing.JLabel();
+        discount = new javax.swing.JTextField();
+        discount_type = new javax.swing.JComboBox<>();
+        report_2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -57,46 +70,34 @@ public class Sell extends javax.swing.JFrame {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("รายการสินค้า (ขาย)");
 
-        jButton1.setText("back");
+        jButton1.setText("กลับ");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
 
-        jTextField5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField5ActionPerformed(evt);
-            }
-        });
-
         jLabel6.setFont(new java.awt.Font("CordiaUPC", 0, 20)); // NOI18N
         jLabel6.setText("Lot ที่");
-
-        jTextField4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField4ActionPerformed(evt);
-            }
-        });
 
         jLabel5.setFont(new java.awt.Font("CordiaUPC", 0, 20)); // NOI18N
         jLabel5.setText("ชื่อบริษัท");
 
-        jTextField3.addActionListener(new java.awt.event.ActionListener() {
+        price.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField3ActionPerformed(evt);
+                priceActionPerformed(evt);
             }
         });
 
-        jTextField8.addActionListener(new java.awt.event.ActionListener() {
+        medicine_code.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField8ActionPerformed(evt);
+                medicine_codeActionPerformed(evt);
             }
         });
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        barcode.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                barcodeActionPerformed(evt);
             }
         });
 
@@ -106,27 +107,27 @@ public class Sell extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("CordiaUPC", 0, 20)); // NOI18N
         jLabel2.setText("บาร์โค๊ด");
 
-        jTextField9.addActionListener(new java.awt.event.ActionListener() {
+        amount.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField9ActionPerformed(evt);
+                amountActionPerformed(evt);
+            }
+        });
+        amount.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                amountKeyTyped(evt);
             }
         });
 
         jLabel10.setFont(new java.awt.Font("CordiaUPC", 0, 20)); // NOI18N
         jLabel10.setText("จำนวน");
 
-        jLabel11.setFont(new java.awt.Font("CordiaUPC", 0, 20)); // NOI18N
-        jLabel11.setText("หน่วย");
+        unit.setFont(new java.awt.Font("CordiaUPC", 0, 20)); // NOI18N
+        unit.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        unit.setText("หน่วย");
 
-        jTextField10.addActionListener(new java.awt.event.ActionListener() {
+        total.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField10ActionPerformed(evt);
-            }
-        });
-
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
+                totalActionPerformed(evt);
             }
         });
 
@@ -139,11 +140,70 @@ public class Sell extends javax.swing.JFrame {
         jLabel12.setFont(new java.awt.Font("CordiaUPC", 0, 20)); // NOI18N
         jLabel12.setText("ราคารวม");
 
-        jTextField13.addActionListener(new java.awt.event.ActionListener() {
+        company_name.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField13ActionPerformed(evt);
+                company_nameActionPerformed(evt);
             }
         });
+
+        medicine_name.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                medicine_nameActionPerformed(evt);
+            }
+        });
+
+        report_1.setFont(new java.awt.Font("CordiaUPC", 0, 24)); // NOI18N
+        report_1.setForeground(new java.awt.Color(255, 51, 51));
+        report_1.setText("สินค้าลอตนี้หน้าร้านเหลืออีก ... หน่วย || กรุณาหยิบสินค้าเพิ่ม");
+
+        barcode_err.setFont(new java.awt.Font("Cordia New", 0, 20)); // NOI18N
+        barcode_err.setForeground(new java.awt.Color(255, 0, 51));
+        barcode_err.setText("*");
+
+        lotList.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        lotList.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lotListActionPerformed(evt);
+            }
+        });
+
+        listTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+            },
+            new String [] {
+                "ชื่อยา", "จำนวน(หน่วย)", "ราคา", "รวม"
+            }
+        ));
+        jScrollPane1.setViewportView(listTable);
+
+        addMore.setText("ซื้อเพิ่ม");
+        addMore.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addMoreActionPerformed(evt);
+            }
+        });
+
+        jButton3.setText("เริ่มใหม่");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        jLabel13.setFont(new java.awt.Font("CordiaUPC", 0, 20)); // NOI18N
+        jLabel13.setText("ส่วนลด");
+
+        discount.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                discountActionPerformed(evt);
+            }
+        });
+
+        discount_type.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "บาท", "เปอเซ็น" }));
+
+        report_2.setFont(new java.awt.Font("CordiaUPC", 0, 24)); // NOI18N
+        report_2.setForeground(new java.awt.Color(255, 51, 51));
+        report_2.setText("สินค้าลอตนี้ยังเหลืออยู่ที่หลังร้าน อีก ... หน่วย และ ลอตอื่นๆ อีก ... หน่วย");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -152,42 +212,65 @@ public class Sell extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(report_1, javax.swing.GroupLayout.DEFAULT_SIZE, 590, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel9)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel12)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jTextField10, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel5)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(layout.createSequentialGroup()
                                     .addComponent(jLabel6)
-                                    .addComponent(jLabel10))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jTextField3, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
-                                    .addComponent(jTextField2)
-                                    .addComponent(jTextField9))))
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel11)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jTextField13, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(lotList, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                .addComponent(jLabel2)
+                                                .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING))
+                                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING))
+                                        .addGap(18, 18, 18)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(medicine_code, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)
+                                            .addComponent(barcode)
+                                            .addComponent(medicine_name, javax.swing.GroupLayout.Alignment.TRAILING)))
+                                    .addComponent(price, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                    .addComponent(jLabel5)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                                    .addComponent(company_name, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel4))
+                                .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jTextField8, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)
-                                    .addComponent(jTextField1)
-                                    .addComponent(jTextField4))))
-                        .addComponent(jButton1)))
-                .addContainerGap(179, Short.MAX_VALUE))
+                                .addComponent(discount, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(discount_type, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(barcode_err, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(329, 329, 329))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel9)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(10, 10, 10)
+                                    .addComponent(total, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(amount, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(11, 11, 11)
+                                    .addComponent(unit, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(addMore)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton1)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(report_2, javax.swing.GroupLayout.DEFAULT_SIZE, 590, Short.MAX_VALUE)))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
@@ -200,45 +283,59 @@ public class Sell extends javax.swing.JFrame {
                 .addGap(68, 68, 68)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(barcode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(barcode_err))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(medicine_name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(medicine_code, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(company_name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel5))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lotList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel9)
+                            .addComponent(price, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel10)
+                            .addComponent(amount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(unit))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel12)
+                            .addComponent(total, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel13)
+                    .addComponent(discount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(discount_type, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(14, 14, 14)
+                .addComponent(report_1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(report_2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(jTextField13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(10, 10, 10)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel10)
-                    .addComponent(jLabel11)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(10, 10, 10)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel12)
-                    .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                    .addComponent(addMore)
+                    .addComponent(jButton3)
+                    .addComponent(jButton1))
                 .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(339, Short.MAX_VALUE)))
+                    .addContainerGap(410, Short.MAX_VALUE)))
         );
 
         pack();
@@ -250,41 +347,188 @@ public class Sell extends javax.swing.JFrame {
         new UI().setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
+    private void priceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_priceActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField5ActionPerformed
+    }//GEN-LAST:event_priceActionPerformed
 
-    private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
+    private void medicine_codeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_medicine_codeActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField4ActionPerformed
+    }//GEN-LAST:event_medicine_codeActionPerformed
 
-    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
+    private void barcodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barcodeActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField3ActionPerformed
+        System.out.print(evt.getActionCommand());
+        barcode_err.setText("");
+        
+        try {
+            MySQLAccess db = new MySQLAccess();
+            medicine_name.setText(db.get_medicine_name(evt.getActionCommand()));
+            
+            if( medicine_name.getText().equals("none") ) barcode_err.setText("*รายการนี้ไม่มีอยู่ในฐานข้อมูล");
+            
+            if(db.list_lot(evt.getActionCommand()).length > 0 && !db.list_lot(evt.getActionCommand())[0].isEmpty()) { 
+                lotList.setModel(new javax.swing.DefaultComboBoxModel<>(db.list_lot(evt.getActionCommand())));
+                amount.requestFocus();
+            } else {
+                lotList.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "none" }));
+                barcode_err.setText("*ไม่มีสินค้าในสต๊อก");
+            }
+            
+            ArrayList<String[]> datas = db.list_medicine_details(evt.getActionCommand(), "" ,"");
+            
+            int front_1 = 0;
+            int back_1 = 0;
+            int front_2 = 0;
+            int back_2 = 0;
+            
+            for(int i = 0; i < datas.size(); i++){
+                if(datas.get(i)[4].equals(lotList.getSelectedItem().toString())){
+                    medicine_code.setText(datas.get(i)[2]);
+                    company_name.setText(datas.get(i)[3]);
+                    price.setText(datas.get(i)[9]);
+                    unit.setText(datas.get(i)[11]);
+                    front_1 = Integer.parseInt(datas.get(i)[6]);
+                    back_1 = Integer.parseInt(datas.get(i)[5]);
+                } else {
+                    front_2 += Integer.parseInt(datas.get(i)[6]);
+                    back_2 += Integer.parseInt(datas.get(i)[5]);
+                }
+            }
+            
+            front_amout = front_1;
+            back_amout = back_1;
+            
+            if (front_1 > 0) {
+                report_1.setText("สินค้าลอตนี้หน้าร้านเหลืออีก " + front_1 +"  " + unit.getText());
+            } else {
+                if ( back_1 > 0) {
+                    report_1.setText("เหลือสินค้านี้ที่หลังร้านอีก " + back_1 +"  " + unit.getText());
+                } else if ( (front_2 + back_2) > 0 ) {
+                    report_1.setText("สินค้าลอตนี้หมด กรุณาเลือกนี้จากลอตอื่นๆ");
+                } else {
+                    report_1.setText("สินค้าลอตนี้หมด");
+                }
+            }
+            report_2.setText("สินค้าลอตนี้ยังเหลืออยู่ที่หลังร้าน อีก " + back_1 +"  " + unit.getText() + " และ ลอตอื่นๆ อีก " + back_2 +"  " + unit.getText());
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_barcodeActionPerformed
 
-    private void jTextField8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField8ActionPerformed
+    private void totalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_totalActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField8ActionPerformed
+    }//GEN-LAST:event_totalActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void company_nameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_company_nameActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_company_nameActionPerformed
 
-    private void jTextField9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField9ActionPerformed
+    private void medicine_nameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_medicine_nameActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField9ActionPerformed
+    }//GEN-LAST:event_medicine_nameActionPerformed
 
-    private void jTextField10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField10ActionPerformed
+    private void lotListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lotListActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField10ActionPerformed
+        
+        System.out.print("Lot is changed");
+        try {
+            MySQLAccess db = new MySQLAccess();
+            
+            ArrayList<String[]> datas = db.list_medicine_details(barcode.getText(), "" ,"");
+            
+            int front_1 = 0;
+            int back_1 = 0;
+            int front_2 = 0;
+            int back_2 = 0;
+            
+            for(int i = 0; i < datas.size(); i++){
+                if(datas.get(i)[4].equals(lotList.getSelectedItem().toString())){
+                    medicine_code.setText(datas.get(i)[2]);
+                    company_name.setText(datas.get(i)[3]);
+                    price.setText(datas.get(i)[9]);
+                    unit.setText(datas.get(i)[11]);
+                    front_1 = Integer.parseInt(datas.get(i)[6]);
+                    back_1 = Integer.parseInt(datas.get(i)[5]);
+                } else {
+                    front_2 += Integer.parseInt(datas.get(i)[6]);
+                    back_2 += Integer.parseInt(datas.get(i)[5]);
+                }
+            }
+            
+            front_amout = front_1;
+            back_amout = back_1;
+            
+            if (front_1 > 0) {
+                report_1.setText("สินค้าลอตนี้หน้าร้านเหลืออีก " + front_1 +"  " + unit.getText());
+            } else {
+                if ( back_1 > 0) {
+                    report_1.setText("เหลือสิoค้านี้ที่หลังร้านอีก " + back_1 +"  " + unit.getText());
+                } else if ( (front_2 + back_2) > 0 ) {
+                    report_1.setText("สินค้าลอตนี้หมด กรุณาเลือกนี้จากลอตอื่นๆ");
+                } else {
+                    report_1.setText("สินค้าลอตนี้หมด");
+                }
+            }
+            report_2.setText("สินค้าลอตนี้ยังเหลืออยู่ที่หลังร้าน อีก " + back_1 +"  " + unit.getText() + " และ ลอตอื่นๆ อีก " + back_2 +"  " + unit.getText());
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_lotListActionPerformed
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+    private void amountKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_amountKeyTyped
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
+        if("0123456789".contains(evt.getKeyChar()+"")){
+            System.out.println("hi");
+        } 
+    }//GEN-LAST:event_amountKeyTyped
 
-    private void jTextField13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField13ActionPerformed
+    private void amountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_amountActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField13ActionPerformed
+        if ( front_amout > 0 ){
+            total.setText((Float.parseFloat(price.getText()) * Integer.parseInt(amount.getText()))+"");
+        } else {
+            report_1.setText("สินค้าไม่เพียงพอ กรุณาหยิบสินค้าเพิ่ม คงเหลืออยู่ที่หลังร้านอีก " + back_amout + " " + unit.getText());
+        }
+    }//GEN-LAST:event_amountActionPerformed
+
+    private void addMoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addMoreActionPerformed
+        // TODO add your handling code here:
+        if ( barcode_err.getText().isEmpty() && !amount.getText().isEmpty() && !total.getText().isEmpty()){
+            DefaultTableModel model = (DefaultTableModel) listTable.getModel();
+
+            Object[] data_list = {
+                medicine_name.getText(),
+                amount.getText() + "(" + unit.getText() + ")",
+                price.getText(),
+                total.getText()
+            };
+            model.addRow(data_list);  
+            
+            barcode.setText("");
+            medicine_name.setText("");
+            medicine_code.setText("");
+            company_name.setText("");
+            lotList.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "none" }));
+            report_1.setText("กรุณาเลือกสินค้า");
+            report_2.setText("");
+            price.setText("");
+            amount.setText("");
+            total.setText("");
+        }
+        
+    }//GEN-LAST:event_addMoreActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel) listTable.getModel();
+        model.setNumRows(0);
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void discountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_discountActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_discountActionPerformed
 
     /**
      * @param args the command line arguments
@@ -322,25 +566,34 @@ public class Sell extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addMore;
+    private javax.swing.JTextField amount;
+    private javax.swing.JTextField barcode;
+    private javax.swing.JLabel barcode_err;
+    private javax.swing.JTextField company_name;
+    private javax.swing.JTextField discount;
+    private javax.swing.JComboBox<String> discount_type;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField10;
-    private javax.swing.JTextField jTextField13;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField8;
-    private javax.swing.JTextField jTextField9;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable listTable;
+    private javax.swing.JComboBox<String> lotList;
+    private javax.swing.JTextField medicine_code;
+    private javax.swing.JTextField medicine_name;
+    private javax.swing.JTextField price;
+    private javax.swing.JLabel report_1;
+    private javax.swing.JLabel report_2;
+    private javax.swing.JTextField total;
+    private javax.swing.JLabel unit;
     // End of variables declaration//GEN-END:variables
 }
