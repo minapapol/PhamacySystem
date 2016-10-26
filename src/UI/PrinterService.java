@@ -59,7 +59,7 @@ public class PrinterService implements Printable {
       for(i = 0;i<al.size();i++){
       String[] data = al.get(i).split(",");
       int amt = 0;
-      amt = Integer.parseInt(data[1])* Integer.parseInt(data[2]);
+      amt = (int) (Float.parseFloat(data[1])* Float.parseFloat(data[2]));
       sum = sum+amt;
       bill = bill+list+data[0]+"\n"+"x "+data[1]+new String(new char[28-data[2].length()-data[1].length()+1]).replace("\0"," ")+data[2]+new String(new char[10-Integer.toString(amt).length()]).replace("\0"," ")+Integer.toString(amt)+"\n";
       }

@@ -63,6 +63,7 @@ public class Sell extends javax.swing.JFrame {
         discount = new javax.swing.JTextField();
         discount_type = new javax.swing.JComboBox<>();
         report_2 = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -205,6 +206,13 @@ public class Sell extends javax.swing.JFrame {
         report_2.setForeground(new java.awt.Color(255, 51, 51));
         report_2.setText("สินค้าลอตนี้ยังเหลืออยู่ที่หลังร้าน อีก ... หน่วย และ ลอตอื่นๆ อีก ... หน่วย");
 
+        jButton2.setText("jButton2");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -269,6 +277,8 @@ public class Sell extends javax.swing.JFrame {
                         .addComponent(jButton3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton2)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(report_2, javax.swing.GroupLayout.DEFAULT_SIZE, 590, Short.MAX_VALUE)))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -329,7 +339,8 @@ public class Sell extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(addMore)
                     .addComponent(jButton3)
-                    .addComponent(jButton1))
+                    .addComponent(jButton1)
+                    .addComponent(jButton2))
                 .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
@@ -480,13 +491,13 @@ public class Sell extends javax.swing.JFrame {
     private void amountKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_amountKeyTyped
         // TODO add your handling code here:
         if("0123456789".contains(evt.getKeyChar()+"")){
-            System.out.println("hi");
+            System.out.println("Corrected!!!!!");
         } 
     }//GEN-LAST:event_amountKeyTyped
 
     private void amountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_amountActionPerformed
         // TODO add your handling code here:
-        if ( front_amout > 0 ){
+        if ( front_amout > -1 ){
             total.setText((Float.parseFloat(price.getText()) * Integer.parseInt(amount.getText()))+"");
         } else {
             report_1.setText("สินค้าไม่เพียงพอ กรุณาหยิบสินค้าเพิ่ม คงเหลืออยู่ที่หลังร้านอีก " + back_amout + " " + unit.getText());
@@ -530,6 +541,14 @@ public class Sell extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_discountActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        PrinterService printerService = new PrinterService();
+        printerService.pustAl(getList());
+        printerService.setdetail();
+        printerService.printString("EPSON TM-T88IV Receipt");
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -556,13 +575,23 @@ public class Sell extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(Sell.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Sell().setVisible(true);
             }
         });
+    }
+    
+    public ArrayList<String> getList(){
+        ArrayList<String> temp = new ArrayList<>();
+        DefaultTableModel model = (DefaultTableModel) listTable.getModel();
+            // name,amount,price
+            for(int i = 0; i < model.getRowCount(); i++){
+                temp.add(model.getValueAt(i, 0).toString() + "," + model.getValueAt(i, 1).toString().substring(0, model.getValueAt(i, 1).toString().indexOf("(")) + "," + model.getValueAt(i, 2).toString());
+                System.out.println(temp.get(i));
+            }
+        return temp;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -574,6 +603,7 @@ public class Sell extends javax.swing.JFrame {
     private javax.swing.JTextField discount;
     private javax.swing.JComboBox<String> discount_type;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;

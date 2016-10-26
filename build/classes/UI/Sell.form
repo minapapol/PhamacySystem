@@ -99,6 +99,8 @@
                       <Component id="jButton3" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="jButton2" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
                   <Component id="report_2" alignment="0" pref="590" max="32767" attributes="0"/>
@@ -177,6 +179,7 @@
                   <Component id="addMore" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jButton3" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jButton1" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jButton2" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -422,6 +425,14 @@
         </Property>
         <Property name="text" type="java.lang.String" value="&#xe2a;&#xe34;&#xe19;&#xe04;&#xe49;&#xe32;&#xe25;&#xe2d;&#xe15;&#xe19;&#xe35;&#xe49;&#xe22;&#xe31;&#xe07;&#xe40;&#xe2b;&#xe25;&#xe37;&#xe2d;&#xe2d;&#xe22;&#xe39;&#xe48;&#xe17;&#xe35;&#xe48;&#xe2b;&#xe25;&#xe31;&#xe07;&#xe23;&#xe49;&#xe32;&#xe19; &#xe2d;&#xe35;&#xe01; ... &#xe2b;&#xe19;&#xe48;&#xe27;&#xe22; &#xe41;&#xe25;&#xe30; &#xe25;&#xe2d;&#xe15;&#xe2d;&#xe37;&#xe48;&#xe19;&#xe46; &#xe2d;&#xe35;&#xe01; ... &#xe2b;&#xe19;&#xe48;&#xe27;&#xe22;"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="jButton2">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="jButton2"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton2ActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

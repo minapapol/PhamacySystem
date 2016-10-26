@@ -201,9 +201,10 @@ public class UI extends javax.swing.JFrame {
 
     private void buyingMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buyingMouseClicked
         // TODO add your handling code here:
-        dispose();
         Buy newUi = new Buy();
+        newUi.setLocationRelativeTo(this);
         newUi.setVisible(true);
+        dispose();
     }//GEN-LAST:event_buyingMouseClicked
 
     private void databaseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_databaseMouseClicked
@@ -287,6 +288,8 @@ public class UI extends javax.swing.JFrame {
             }
         });
     }
+    
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buying;
