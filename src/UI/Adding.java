@@ -15,9 +15,21 @@ public class Adding extends javax.swing.JFrame {
     /**
      * Creates new form Adding
      */
+    String temp_barcode;
+    Medicine m;
+    
     public Adding() {
         initComponents();
         
+    }
+    
+    public Adding(Medicine m) {
+        initComponents();
+        this.m = m;
+        temp_barcode = m.getBarcode();
+        barcode_text.setText(temp_barcode);
+        medicine_name_text.setText(m.getName());
+        add_button.setText("Update");
     }
 
     /**
@@ -35,7 +47,7 @@ public class Adding extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         medicine_name_text = new javax.swing.JTextField();
         add_button = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        back_button = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -68,10 +80,10 @@ public class Adding extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("Back");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        back_button.setText("Back");
+        back_button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                back_buttonActionPerformed(evt);
             }
         });
 
@@ -87,7 +99,7 @@ public class Adding extends javax.swing.JFrame {
                     .addComponent(add_button))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton2)
+                    .addComponent(back_button)
                     .addComponent(medicine_name_text, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(barcode_text, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(379, Short.MAX_VALUE))
@@ -111,7 +123,7 @@ public class Adding extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 244, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(add_button)
-                    .addComponent(jButton2))
+                    .addComponent(back_button))
                 .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
@@ -131,18 +143,38 @@ public class Adding extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_medicine_name_textActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void back_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_back_buttonActionPerformed
         // TODO add your handling code here:
-        dispose();
-        new Database().setVisible(true);
-    }//GEN-LAST:event_jButton2ActionPerformed
+        if(add_button.getText().equals("Update")) {
+            Medicine_list newUi = new Medicine_list();
+            newUi.setLocationRelativeTo(this);
+            newUi.setVisible(true);
+            dispose();
+        } else {
+            Database newUi = new Database();
+            newUi.setLocationRelativeTo(this);
+            newUi.setVisible(true);
+            dispose();    
+        }
+    }//GEN-LAST:event_back_buttonActionPerformed
 
     private void add_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add_buttonActionPerformed
         // TODO add your handling code here: 
         try {
-            MySQLAccess dao = new MySQLAccess();
-            dao.insert_medicines(barcode_text.getText(), medicine_name_text.getText());
-            dao.list_medicines();
+            MySQLAccess db = new MySQLAccess();
+            if(add_button.getText().equals("Update")) {
+                m.setBarcode(barcode_text.getText());
+                m.setName(medicine_name_text.getText());
+                db.update_medicine(temp_barcode, m);
+            } else {
+                db.insert_medicines(barcode_text.getText(), medicine_name_text.getText());
+                db.list_medicines();
+            }
+            
+            Medicine_list newUi = new Medicine_list();
+            newUi.setLocationRelativeTo(this);
+            newUi.setVisible(true);
+            dispose(); 
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -186,8 +218,8 @@ public class Adding extends javax.swing.JFrame {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton add_button;
+    private javax.swing.JButton back_button;
     private javax.swing.JTextField barcode_text;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

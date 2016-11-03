@@ -6,6 +6,7 @@
 package UI;
 
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -14,6 +15,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Medicine_list extends javax.swing.JFrame {
 
+    DefaultTableModel model;
     /**
      * Creates new form Medicine_list
      */
@@ -50,12 +52,21 @@ public class Medicine_list extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        update_button = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         listTable = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
+        delete_button = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        update_button.setText("Edit");
+        update_button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                update_buttonActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Back");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -77,6 +88,13 @@ public class Medicine_list extends javax.swing.JFrame {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("รายการยา");
 
+        delete_button.setText("Delete");
+        delete_button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                delete_buttonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -85,6 +103,10 @@ public class Medicine_list extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(delete_button)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(update_button)
+                        .addGap(10, 10, 10)
                         .addComponent(jButton2))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
@@ -103,7 +125,10 @@ public class Medicine_list extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
-                .addComponent(jButton2)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton2)
+                    .addComponent(delete_button)
+                    .addComponent(update_button))
                 .addContainerGap())
         );
 
@@ -112,9 +137,49 @@ public class Medicine_list extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        Database newUi = new Database();
+        newUi.setLocationRelativeTo(this);
+        newUi.setVisible(true);
         dispose();
-        new Database().setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void delete_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delete_buttonActionPerformed
+        // TODO add your handling code here:
+        int selRow = listTable.getSelectedRow();
+        String name = listTable.getValueAt(selRow, 2).toString();
+        String barcode = listTable.getValueAt(selRow, 1).toString();
+        int dialogButton = JOptionPane.YES_NO_OPTION;
+        int dialogResult = JOptionPane.showConfirmDialog (null, "คุณแน่ใจที่จะลบ\n"+barcode+" "+name+"\nรายการนี้ทิ้ง","Warning",dialogButton);
+        if(dialogResult == JOptionPane.YES_OPTION){
+            // Saving code here
+            System.out.println(dialogResult);
+
+            //int selCol = listTable.getSelectedColumn();
+
+            try {
+                MySQLAccess db = new MySQLAccess();
+                db.delete_medicines(barcode);
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                System.out.println("Delete successfully");
+                model = (DefaultTableModel) listTable.getModel();
+                model.removeRow(selRow);
+            }
+        }
+    }//GEN-LAST:event_delete_buttonActionPerformed
+
+    private void update_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_update_buttonActionPerformed
+        // TODO add your handling code here:
+        int selRow = listTable.getSelectedRow();
+        String name = listTable.getValueAt(selRow, 2).toString();
+        String barcode = listTable.getValueAt(selRow, 1).toString();
+        Medicine m = new Medicine(barcode,name);
+        Adding m_page = new Adding(m);
+        m_page.setLocationRelativeTo(this);
+        m_page.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_update_buttonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -152,9 +217,11 @@ public class Medicine_list extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton delete_button;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable listTable;
+    private javax.swing.JButton update_button;
     // End of variables declaration//GEN-END:variables
 }

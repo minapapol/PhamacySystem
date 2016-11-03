@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
+import jxl.Cell;
+import jxl.Sheet;
 import jxl.Workbook;
 import jxl.read.biff.BiffException;
 import jxl.write.Label;
@@ -223,8 +225,10 @@ public class Report extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        UI newUi = new UI();
+        newUi.setLocationRelativeTo(this);
+        newUi.setVisible(true);
         dispose();
-        new UI().setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void type7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_type7ActionPerformed
@@ -372,10 +376,10 @@ public class Report extends javax.swing.JFrame {
         try {
             switch(report_type) {
                 case "type7":
-                    exportToExcel(listTable, "C:\\Users\\Napapol\\Desktop\\test.xls");
+                    exportToExcel(listTable,"C:\\Users\\Napapol\\Desktop\\ขย. 7  สำหรับระบบ.xls", "D:/Projects/Paii_Project/ขย. 7  สำหรับระบบ.xls");
                     break;
                 case "type9":
-                    exportToExcel(listTable, "C:\\Users\\Napapol\\Desktop\\test.xls");
+                    exportToExcel(listTable,"C:\\Users\\Napapol\\Desktop\\แบบ ข.ย. 9  ระบบ.xls", "D:/Projects/Paii_Project/แบบ ข.ย. 9  ระบบ.xls");
                     break;
                 case "type11":
                     String medicine_name = "none";
@@ -386,11 +390,11 @@ public class Report extends javax.swing.JFrame {
                         e.printStackTrace();
                     }
                     if(!medicine_name.equals("none")) {
-                        exportToExcel(listTable, "C:\\Users\\Napapol\\Desktop\\test.xls");
+                        exportToExcel(listTable,"C:\\Users\\Napapol\\Desktop\\แบบ ข.ย. 11 ในระบบตัวจริง.xls", "D:/Projects/Paii_Project/แบบ ข.ย. 11 ในระบบตัวจริง.xls");
                     } 
                     break;
                 case "selling":
-                    exportToExcel(listTable, "C:\\Users\\Napapol\\Desktop\\test.xls");
+                    exportToExcel(listTable,"C:\\Users\\Napapol\\Desktop\\ระบบ - ขย 10.xls", "D:/Projects/Paii_Project/ระบบ - ขย 10.xls");
                     break; 
             }
             
@@ -409,10 +413,10 @@ public class Report extends javax.swing.JFrame {
         try {  
             switch(report_type) {
                 case "type7":
-                    exportToExcel(listTable, "C:\\Users\\Napapol\\Desktop\\test.xls");
+                    exportToExcel(listTable, "C:\\Users\\Napapol\\Desktop\\ขย. 7  สำหรับระบบ.xls","D:/Projects/Paii_Project/ขย. 7  สำหรับระบบ.xls");
                     break;
                 case "type9":
-                    exportToExcel(listTable, "C:\\Users\\Napapol\\Desktop\\test.xls");
+                    exportToExcel(listTable, "C:\\Users\\Napapol\\Desktop\\แบบ ข.ย. 9  ระบบ.xls","D:/Projects/Paii_Project/แบบ ข.ย. 9  ระบบ.xls");
                     break;
                 case "type11":
                     String medicine_name = "none";
@@ -423,11 +427,11 @@ public class Report extends javax.swing.JFrame {
                         e.printStackTrace();
                     }
                     if(!medicine_name.equals("none")) {
-                        exportToExcel(listTable, "C:\\Users\\Napapol\\Desktop\\test.xls");
+                        exportToExcel(listTable, "C:\\Users\\Napapol\\Desktop\\แบบ ข.ย. 11 ในระบบตัวจริง.xls", "D:/Projects/Paii_Project/แบบ ข.ย. 11 ในระบบตัวจริง.xls");
                     } 
                     break;
                 case "selling":
-                    exportToExcel(listTable, "C:\\Users\\Napapol\\Desktop\\test.xls");
+                    exportToExcel(listTable, "C:\\Users\\Napapol\\Desktop\\ระบบ - ขย 10.xls", "D:/Projects/Paii_Project/ระบบ - ขย 10.xls");
                     break; 
             }
             
@@ -462,25 +466,48 @@ public class Report extends javax.swing.JFrame {
     }//GEN-LAST:event_barcodeActionPerformed
 
     
-    public void exportToExcel(javax.swing.JTable table, String file) throws IOException, BiffException, WriteException {
+    public void exportToExcel(javax.swing.JTable table, String file, String file2) throws IOException, BiffException, WriteException {
+        System.out.println("Write Start");
         
-        WritableWorkbook workbook = Workbook.createWorkbook(new File(file));
+       Workbook existingWorkbook = Workbook.getWorkbook(new File(file2));
+        System.out.println("Test1.2");
+        WritableWorkbook workbook = Workbook.createWorkbook(new File(file),existingWorkbook);
+        System.out.println("Test1.1");
+        WritableSheet sheet = workbook.getSheet("Sheet1");
         
-        WritableSheet sheet = workbook.createSheet("First Sheet", 0);
-        
-        Label label = new Label(0, 2, "สวัสดี"); 
-        sheet.addCell(label); 
+        //Label label = new Label(1, 1, "สวัสดี"); 
+        //sheet.addCell(label); 
 
-        jxl.write.Number number = new jxl.write.Number(3, 4, 3.1459); 
-        sheet.addCell(number);
+        //jxl.write.Number number = new jxl.write.Number(2, 2, 3.1459); 
+        //sheet.addCell(number);
         
-        table.getValueAt(0, 0);
-        
+        //table.getValueAt(0, 0);
+        System.out.println("Test1");
         workbook.write(); 
         workbook.close();
+        existingWorkbook.close();
+        System.out.println("Successfully write");
+       //System.out.println("Successfully write" + table.getValueAt(0, 0));
+      
+        /*
+       WritableWorkbook wworkbook;
+      wworkbook = Workbook.createWorkbook(new File("D:/Projects/Paii_Project/out.xls"));
+      WritableSheet wsheet = wworkbook.createSheet("First Sheet", 0);
+      Label label = new Label(0, 2, "A label record");
+      wsheet.addCell(label);
+      jxl.write.Number number = new jxl.write.Number(3, 4, 3.1459); 
+      wsheet.addCell(number);
+      wworkbook.write();
+      wworkbook.close();
 
-       System.out.println("Successfully write" + table.getValueAt(0, 0));
-        
+      Workbook workbook = Workbook.getWorkbook(new File("D:/Projects/Paii_Project/out.xls"));
+      Sheet sheet = workbook.getSheet(0);
+      Cell cell1 = sheet.getCell(0, 2);
+      System.out.println(cell1.getContents());
+      Cell cell2 = sheet.getCell(3, 4);
+      System.out.println(cell2.getContents());
+      workbook.close();
+        */
     }
     /**
      * @param args the command line arguments

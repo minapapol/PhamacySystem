@@ -22,6 +22,12 @@ public class Buy extends javax.swing.JFrame {
         DP_buy.setDate(temp);
     }
 
+    Buy(MedicineDetail md) {
+        initComponents();
+        
+        DP_buy.setDate(md.buying_date);
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -437,8 +443,11 @@ public class Buy extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        this.setVisible(false);
-        new UI().setVisible(true);
+        UI newUi = new UI();
+        newUi.setLocationRelativeTo(this);
+        newUi.setVisible(true);
+        dispose();
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void medicine_nameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_medicine_nameActionPerformed
@@ -607,7 +616,10 @@ public class Buy extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Buy().setVisible(true);
+                
+                Buy newUi = new Buy();
+                newUi.setVisible(true);
+
             }
         });
     }

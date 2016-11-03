@@ -134,8 +134,35 @@ public class MySQLAccess {
     }
   }
   
+  public void update_medicine(String barcode, Medicine m){
+      try {
+        Class.forName("com.mysql.jdbc.Driver");
+          // Setup the connection with the DB
+        connect = DriverManager
+                .getConnection("jdbc:mysql://localhost/phamacy?"
+                        + "user=root&password=root");
+
+        // Update
+        preparedStatement = connect
+          .prepareStatement("update phamacy.medicines set "
+                  + "barcode = ?, "
+                  + "medicine_name = ? "
+                  + "where barcode = ? ; ");
+
+        preparedStatement.setString(1, m.getBarcode());
+        preparedStatement.setString(2, m.getName());
+        preparedStatement.setString(3, barcode);
+        preparedStatement.executeUpdate();
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    } finally {
+        close();
+    }
+  }
+  
   public ArrayList<String[]> list_medicines(){
-    ArrayList<String[]> medicines = new ArrayList<String[]>();
+    ArrayList<String[]> medicines = new ArrayList<>();
     try {
         Class.forName("com.mysql.jdbc.Driver");
           // Setup the connection with the DB
@@ -192,6 +219,17 @@ public class MySQLAccess {
         // Remove again the insert comment
         preparedStatement = connect
           .prepareStatement("delete from phamacy.medicines where barcode = ? ; ");
+        preparedStatement.setString(1, barcode);
+        preparedStatement.executeUpdate();
+        
+        
+        // Delete other medicine details taht relate
+        // Statements allow to issue SQL queries to the database
+        statement = connect.createStatement();
+
+        // Remove again the insert comment
+        preparedStatement = connect
+          .prepareStatement("delete from phamacy.medicine_details where barcode = ? ; ");
         preparedStatement.setString(1, barcode);
         preparedStatement.executeUpdate();
     } catch (Exception e) {
@@ -421,6 +459,64 @@ public class MySQLAccess {
     return medicine_details;
   }
 
+  public MedicineDetail get_medicine_detail(int id){
+      MedicineDetail md = null;
+      try {
+        Class.forName("com.mysql.jdbc.Driver");
+          // Setup the connection with the DB
+        connect = DriverManager
+                .getConnection("jdbc:mysql://localhost/phamacy?"
+                        + "user=root&password=root");
+
+        // Statements allow to issue SQL queries to the database
+        statement = connect.createStatement();
+        resultSet = statement
+            .executeQuery("select * from phamacy.medicine_details where id = '" + id + "'");
+
+        while (resultSet.next()) {
+            String barcode = resultSet.getString("barcode");
+            String medicine_code = resultSet.getString("medicine_code");
+            String company_name = resultSet.getString("company_name");
+            String lot_no = resultSet.getString("lot_no");
+            String size = resultSet.getString("size");
+            int back_stock = resultSet.getInt("back_stock");
+            int front_stock = resultSet.getInt("front_stock");
+            Date buying_date = resultSet.getDate("buying_date");
+            float buying_price = resultSet.getFloat("buying_price");
+            float selling_price = resultSet.getFloat("selling_price");
+            int amount = resultSet.getInt("amount");
+            String unit = resultSet.getString("unit");
+            Date initialize_date = resultSet.getDate("initialize_date");
+            Date expired_date = resultSet.getDate("expired_date");
+            String type = "";
+            switch(resultSet.getInt("medicine_type")){
+                case 0:
+                    type = "ยาอันตราย";
+                    break;
+                case 1:
+                    type = "ยาควบคุมพิเศษ";
+                    break;
+                case 2:
+                    type = "ยาทั่วไป";
+                    break;
+            }
+            
+            md = new MedicineDetail(id, back_stock, front_stock, amount,
+                    buying_price, selling_price,
+                    type, barcode, medicine_code, company_name, 
+                    lot_no, size, unit, 
+                    buying_date, initialize_date, expired_date);
+            
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    } finally {
+        close();
+    }
+      
+    return md;
+  }
+  
   public void delete_medicine_details(int id){
     try {
         Class.forName("com.mysql.jdbc.Driver");

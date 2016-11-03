@@ -180,23 +180,26 @@ public class UI extends javax.swing.JFrame {
 
     private void reminderMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reminderMouseClicked
         // TODO add your handling code here:
-        dispose();
         Reminder newUi = new Reminder();
+        newUi.setLocationRelativeTo(this);
         newUi.setVisible(true);
+        dispose();
     }//GEN-LAST:event_reminderMouseClicked
 
     private void reportMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportMouseClicked
         // TODO add your handling code here:
-        dispose();
         Report newUi = new Report();
+        newUi.setLocationRelativeTo(this);
         newUi.setVisible(true);
+        dispose();
     }//GEN-LAST:event_reportMouseClicked
 
     private void sellingMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_sellingMouseClicked
         // TODO add your handling code here:
-        dispose();
         Sell newUi = new Sell();
+        newUi.setLocationRelativeTo(this);
         newUi.setVisible(true);
+        dispose();
     }//GEN-LAST:event_sellingMouseClicked
 
     private void buyingMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buyingMouseClicked
@@ -209,9 +212,10 @@ public class UI extends javax.swing.JFrame {
 
     private void databaseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_databaseMouseClicked
         // TODO add your handling code here:
-        dispose();
         Database newUi = new Database();
+        newUi.setLocationRelativeTo(this);
         newUi.setVisible(true);
+        dispose();
     }//GEN-LAST:event_databaseMouseClicked
 
     private void reminderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reminderActionPerformed
@@ -235,13 +239,15 @@ public class UI extends javax.swing.JFrame {
      PrinterService printerService = new PrinterService();
      System.out.println(printerService.getPrinters());
      ArrayList<String> aa = new ArrayList();
-     aa.add("aaaaa,1000,1");
-     aa.add("aaaaabb,10,11");
-     aa.add("aaa,10,111");
-     aa.add("aaaa,10,1111");
-     aa.add("aaaaddva,1,11111");
-     aa.add("aa,1,1111");
-     aa.add("aaaadsvsca,100,11");
+     // 0 -> %
+     // 1 -> บาท
+     aa.add("aaaaa,1000,10,5,0");
+     aa.add("aaaaabb,10,11,0,1");
+     aa.add("aaa,10,111,10,0");
+     aa.add("aaaa,10,1111,3,0");
+     aa.add("aaaaddva,1,11111,0,1");
+     aa.add("aa,1,1111,5,1");
+     aa.add("aaaadsvsca,100,11,15,0");
      printerService.pustAl(aa);
      printerService.setdetail();
      

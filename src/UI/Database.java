@@ -119,15 +119,18 @@ public class Database extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        UI newUi = new UI();
+        newUi.setLocationRelativeTo(this);
+        newUi.setVisible(true);
         dispose();
-        new UI().setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void addingMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addingMouseClicked
         // TODO add your handling code here:
-        dispose();
         Adding newUi = new Adding();
+        newUi.setLocationRelativeTo(this);
         newUi.setVisible(true);
+        dispose();
     }//GEN-LAST:event_addingMouseClicked
 
     private void adding1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_adding1MouseClicked
@@ -136,16 +139,18 @@ public class Database extends javax.swing.JFrame {
 
     private void adding1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adding1ActionPerformed
         // TODO add your handling code here:
-        dispose();
         Medicine_list newUi = new Medicine_list();
+        newUi.setLocationRelativeTo(this);
         newUi.setVisible(true);
+        dispose();
     }//GEN-LAST:event_adding1ActionPerformed
 
     private void adding2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_adding2MouseClicked
         // TODO add your handling code here:
-        dispose();
         Medicine_details_list newUi = new Medicine_details_list();
+        newUi.setLocationRelativeTo(this);
         newUi.setVisible(true);
+        dispose();
     }//GEN-LAST:event_adding2MouseClicked
 
     private void adding2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adding2ActionPerformed

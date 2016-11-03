@@ -354,8 +354,10 @@ public class Sell extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        UI newUi = new UI();
+        newUi.setLocationRelativeTo(this);
+        newUi.setVisible(true);
         dispose();
-        new UI().setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void priceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_priceActionPerformed

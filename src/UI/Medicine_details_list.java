@@ -6,6 +6,7 @@
 package UI;
 
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -30,6 +31,7 @@ public class Medicine_details_list extends javax.swing.JFrame {
             
             for(int i = 0; i < datas.size(); i++){
                 Object[] data_list = {
+                    datas.get(i)[0], // id
                     datas.get(i)[1], // barcode
                     medicine_details_table.get_medicine_name(datas.get(i)[1]), // medicinde name
                     datas.get(i)[3], // company
@@ -61,9 +63,8 @@ public class Medicine_details_list extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         barcode = new javax.swing.JTextField();
-        update_button = new javax.swing.JButton();
+        edit_button = new javax.swing.JButton();
         delete_button = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -75,7 +76,7 @@ public class Medicine_details_list extends javax.swing.JFrame {
             new Object [][] {
             },
             new String [] {
-                "บาร์โค๊ด", "ชื่อยา", "ชื่อบริษัท", "ลอตที่", "หลังร้าน", "หน้าร้าน", "",
+                "id","บาร์โค๊ด", "ชื่อยา", "ชื่อบริษัท", "ลอตที่", "หลังร้าน", "หน้าร้าน", "",
             }
         ));
         jScrollPane1.setViewportView(listTable);
@@ -94,10 +95,10 @@ public class Medicine_details_list extends javax.swing.JFrame {
             }
         });
 
-        update_button.setText("Edit");
-        update_button.addActionListener(new java.awt.event.ActionListener() {
+        edit_button.setText("Edit");
+        edit_button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                update_buttonActionPerformed(evt);
+                edit_buttonActionPerformed(evt);
             }
         });
 
@@ -105,13 +106,6 @@ public class Medicine_details_list extends javax.swing.JFrame {
         delete_button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 delete_buttonActionPerformed(evt);
-            }
-        });
-
-        jButton1.setText("jButton1");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
             }
         });
 
@@ -129,11 +123,9 @@ public class Medicine_details_list extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jButton1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(delete_button)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(update_button)
+                                .addComponent(edit_button)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jButton2))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -159,9 +151,8 @@ public class Medicine_details_list extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 276, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2)
-                    .addComponent(update_button)
-                    .addComponent(delete_button)
-                    .addComponent(jButton1))
+                    .addComponent(edit_button)
+                    .addComponent(delete_button))
                 .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
@@ -175,8 +166,10 @@ public class Medicine_details_list extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        Database newUi = new Database();
+        newUi.setLocationRelativeTo(this);
+        newUi.setVisible(true);
         dispose();
-        new Database().setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -192,6 +185,7 @@ public class Medicine_details_list extends javax.swing.JFrame {
             
             for(int i = 0; i < datas.size(); i++){
                 Object[] data_list = {
+                    datas.get(i)[0], // id
                     datas.get(i)[1], // barcode
                     medicine_details_table.get_medicine_name(datas.get(i)[1]), // medicinde name
                     datas.get(i)[3], // company
@@ -210,18 +204,52 @@ public class Medicine_details_list extends javax.swing.JFrame {
 
     private void delete_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delete_buttonActionPerformed
         // TODO add your handling code here:
+        int selRow = listTable.getSelectedRow();
+        String name = listTable.getValueAt(selRow, 2).toString();
+        String lot = listTable.getValueAt(selRow, 4).toString();
+        int dialogButton = JOptionPane.YES_NO_OPTION;
+        int dialogResult = JOptionPane.showConfirmDialog (null, "คุณแน่ใจที่จะลบ\n"+name+" ลอตที่ "+ lot + "\nรายการนี้ทิ้ง","Warning",dialogButton);
+        if(dialogResult == JOptionPane.YES_OPTION){
+            // Saving code here
+            System.out.println(dialogResult);
+            
+            //int selCol = listTable.getSelectedColumn();
+            int id = Integer.parseInt(listTable.getValueAt(selRow, 0).toString());
+            
+            try {
+                MySQLAccess db = new MySQLAccess();
+                db.delete_medicine_details(id);
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                System.out.println("Delete successfully");
+                model = (DefaultTableModel) listTable.getModel();
+                model.removeRow(selRow);
+            }
+        }
     }//GEN-LAST:event_delete_buttonActionPerformed
 
-    private void update_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_update_buttonActionPerformed
-        // TODO add your handling code here:
-        
-    }//GEN-LAST:event_update_buttonActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void edit_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edit_buttonActionPerformed
         // TODO add your handling code here:
         int selRow = listTable.getSelectedRow();
-        System.out.println(selRow);
-    }//GEN-LAST:event_jButton1ActionPerformed
+        //int selCol = listTable.getSelectedColumn();
+        int id = Integer.parseInt(listTable.getValueAt(selRow, 0).toString()); // id
+        MedicineDetail md = null;
+        try {
+            MySQLAccess db = new MySQLAccess();
+            md = db.get_medicine_detail(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if(md != null){
+                Buy md_page = new Buy(md);
+                md_page.setLocationRelativeTo(this);
+                md_page.setVisible(true);
+                dispose();
+            }
+        }
+
+    }//GEN-LAST:event_edit_buttonActionPerformed
 
     
     /**
@@ -262,12 +290,11 @@ public class Medicine_details_list extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField barcode;
     private javax.swing.JButton delete_button;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton edit_button;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable listTable;
-    private javax.swing.JButton update_button;
     // End of variables declaration//GEN-END:variables
 }
