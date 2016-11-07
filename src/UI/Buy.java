@@ -16,16 +16,53 @@ public class Buy extends javax.swing.JFrame {
     /**
      * Creates new form Buy
      */
+    public int id;
+    
     public Buy() {
         initComponents();
         java.sql.Date temp = new java.sql.Date(new Date().getTime());
         DP_buy.setDate(temp);
     }
 
-    Buy(MedicineDetail md) {
+    public Buy(MedicineDetail md) {
         initComponents();
+        id = md.id;
+        
+        barcode.setText(md.barcode);
+        medicine_code.setText(md.medicine_code);
+        size.setText(md.size);
+        try {
+            MySQLAccess db = new MySQLAccess();
+            medicine_name.setText(db.get_medicine_name(md.barcode));
+            if( medicine_name.getText().equals("none") ) barcode_err.setText("*รายการนี้ไม่มีอยู่ในฐานข้อมูล");
+ 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        company_name.setText(md.company_name);
+        lot_no.setText(md.lot_no);
+        selling_price.setText(md.selling_price+"");
+        buying_price.setText(md.buying_price+"");
+        amount.setText(md.amount+"");
+        unit.setText(md.unit);
         
         DP_buy.setDate(md.buying_date);
+        DP_exp.setDate(md.expired_date);
+        DP_ini.setDate(md.initialize_date);
+        
+        switch(md.type){
+            case "ยาอันตราย":
+                medicine_type.setSelectedIndex(0);
+                break;
+            case "ยาควบคุมพิเศษ":
+                medicine_type.setSelectedIndex(1);
+                break;
+            case "ยาทั่วไป":
+                medicine_type.setSelectedIndex(2);
+                break;        
+        }
+        
+        addButton.setText("Update");
     }
 
     /**
@@ -60,7 +97,7 @@ public class Buy extends javax.swing.JFrame {
         unit = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
+        addButton = new javax.swing.JButton();
         DP_exp = new org.jdesktop.swingx.JXDatePicker();
         DP_ini = new org.jdesktop.swingx.JXDatePicker();
         DP_buy = new org.jdesktop.swingx.JXDatePicker();
@@ -185,10 +222,10 @@ public class Buy extends javax.swing.JFrame {
         jLabel14.setFont(new java.awt.Font("CordiaUPC", 0, 20)); // NOI18N
         jLabel14.setText("วันหมดอายุ");
 
-        jButton2.setText("Add");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        addButton.setText("Add");
+        addButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                addButtonActionPerformed(evt);
             }
         });
 
@@ -314,7 +351,7 @@ public class Buy extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButton2)
+                                .addComponent(addButton)
                                 .addGap(18, 18, 18)
                                 .addComponent(jLabel7)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -426,7 +463,7 @@ public class Buy extends javax.swing.JFrame {
                             .addComponent(DP_exp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
+                    .addComponent(addButton)
                     .addComponent(jLabel7)
                     .addComponent(DP_buy, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1))
@@ -482,9 +519,8 @@ public class Buy extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_unitActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
         // TODO add your handling code here:
-        
         boolean checked = true;
         
         barcode_err.setText(""); 
@@ -556,15 +592,20 @@ public class Buy extends javax.swing.JFrame {
         if (checked) {
             try {
                 MySQLAccess db = new MySQLAccess();
-                db.insert_medicine_details(barcode_, medicine_code_, company_name_, lot_no_, medicine_type.getSelectedIndex(), back_stock, buying_price_, selling_price_, back_stock, unit_, buying_date, initailize_date, expired_date, size_);
-                db.insert_buy_histories(barcode_, lot_no_, buying_date, back_stock, (back_stock*buying_price_));
+                
+                if (addButton.getText().equals("Add")) {
+                    db.insert_medicine_details(barcode_, medicine_code_, company_name_, lot_no_, medicine_type.getSelectedIndex(), back_stock, buying_price_, selling_price_, back_stock, unit_, buying_date, initailize_date, expired_date, size_);
+                    db.insert_buy_histories(barcode_, lot_no_, buying_date, back_stock, (back_stock*buying_price_));
+                } else {
+                    db.update_medicine_details(id,barcode_, medicine_code_, company_name_, lot_no_, medicine_type.getSelectedIndex(), back_stock, buying_price_, selling_price_, back_stock, unit_, buying_date, initailize_date, expired_date, size_);
+                }
                 this.setVisible(false);
                 new UI().setVisible(true);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_addButtonActionPerformed
 
     private void barcodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barcodeActionPerformed
         // TODO add your handling code here:
@@ -628,6 +669,7 @@ public class Buy extends javax.swing.JFrame {
     private org.jdesktop.swingx.JXDatePicker DP_buy;
     private org.jdesktop.swingx.JXDatePicker DP_exp;
     private org.jdesktop.swingx.JXDatePicker DP_ini;
+    private javax.swing.JButton addButton;
     private javax.swing.JTextField amount;
     private javax.swing.JLabel amount_err;
     private javax.swing.JTextField barcode;
@@ -640,7 +682,6 @@ public class Buy extends javax.swing.JFrame {
     private javax.swing.JLabel exp_err;
     private javax.swing.JLabel ini_err;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

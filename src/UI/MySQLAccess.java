@@ -517,6 +517,64 @@ public class MySQLAccess {
     return md;
   }
   
+  public void update_medicine_details(int id, String barcode, String medicine_code, String company_name, String lot_no,
+          int medicine_type, int back_stock, float buying_price, float selling_price, int amount, String unit,
+          java.sql.Date buying_date, java.sql.Date initialize_date, java.sql.Date expired_date,
+          String size) {
+      
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+              // Setup the connection with the DB
+            connect = DriverManager
+                    .getConnection("jdbc:mysql://localhost/phamacy?"
+                            + "user=root&password=root");
+
+            // Update
+            preparedStatement = connect
+              .prepareStatement("update phamacy.medicine_details set "
+                        + "barcode = ?, "
+                        + "medicine_code = ?, "
+                        + "company_name = ?, "
+                        + "medicine_type = ?, "
+                        + "lot_no = ?, "
+                        + "back_stock = ?, "
+                        + "front_stock = ?, "
+                        + "buying_date = ?, "
+                        + "buying_price = ?, "
+                        + "selling_price = ?, "
+                        + "amount = ?, "
+                        + "unit = ?, "
+                        + "initialize_date = ?, "
+                        + "expired_date = ?, "
+                        + "size = ? "
+                        + "where id = ? ; ");
+
+            preparedStatement.setString(1, barcode);
+            preparedStatement.setString(2, medicine_code);
+            preparedStatement.setString(3, company_name);
+            preparedStatement.setInt(4, medicine_type);
+            preparedStatement.setString(5, lot_no);
+            preparedStatement.setInt(6, back_stock);
+            preparedStatement.setInt(7, 0);
+            preparedStatement.setDate(8, buying_date);
+            preparedStatement.setFloat(9, buying_price);
+            preparedStatement.setFloat(10, selling_price);
+            preparedStatement.setInt(11, amount);
+            preparedStatement.setString(12, unit);
+            preparedStatement.setDate(13, initialize_date);
+            preparedStatement.setDate(14, expired_date);
+            preparedStatement.setString(15, size);
+            preparedStatement.setInt(16, id);
+            preparedStatement.executeUpdate();
+
+      } catch (Exception e) {
+          e.printStackTrace();
+      } finally {
+          close();
+      }
+        
+  }
+  
   public void delete_medicine_details(int id){
     try {
         Class.forName("com.mysql.jdbc.Driver");
