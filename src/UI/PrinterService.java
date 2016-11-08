@@ -59,23 +59,23 @@ public class PrinterService implements Printable {
            int rdsum = 0;
       for(i = 0;i<al.size();i++){
       String[] data = al.get(i).split(",");
-      int amt = 0;
-      int amt2 = 0;
+      int amt;
+      int amt2;
       if(Float.parseFloat(data[3])>0){
-        if(Float.parseFloat(data[4])==1){     // 0 -> %, 1 -> บาท
-        amt = (int) ((Float.parseFloat(data[1])* (Float.parseFloat(data[2])-Float.parseFloat(data[3]))));
-        amt2 = (int) ((Float.parseFloat(data[1])* Float.parseFloat(data[3])));
-        rdsum = (int) (rdsum+amt2);
-         }else{
-        amt = (int) ((Float.parseFloat(data[1])* Float.parseFloat(data[2]))*((100-Float.parseFloat(data[3]))/100));
-        amt2 = (int) ((Float.parseFloat(data[1])* Float.parseFloat(data[2]))*((Float.parseFloat(data[3]))/100));
-        rdsum = (int) (rdsum+amt2);    
+        if(data[4].equals("บาท")){    
+            amt = (int) (((Float.parseFloat(data[1])*Float.parseFloat(data[2]))-Float.parseFloat(data[3])));
+            amt2 = (int) (Float.parseFloat(data[3]));
+            rdsum = (int) (rdsum+amt2);
+        }else{
+            amt = (int) ((Float.parseFloat(data[1])* Float.parseFloat(data[2]))*((100-Float.parseFloat(data[3]))/100));
+            amt2 = (int) ((Float.parseFloat(data[1])* Float.parseFloat(data[2]))*((Float.parseFloat(data[3]))/100));
+            rdsum = (int) (rdsum+amt2);    
         }
       }else{
       amt = (int) (Float.parseFloat(data[1])* Float.parseFloat(data[2]));
       }
       sum = sum+amt;
-      if(Float.parseFloat(data[4])==0){ 
+      if(data[4].equals("%")){ 
         bill = bill+list+data[0]+"\n"+"x "+data[1]+new String(new char[15-4-data[1].length()]).replace("\0"," ")+"ลด "+data[3]+"% "+new String(new char[12-data[2].length()-data[3].length()+1]).replace("\0"," ")+data[2]+new String(new char[10-Integer.toString(amt).length()]).replace("\0"," ")+Integer.toString(amt)+"\n";
       }else{
          bill = bill+list+data[0]+"\n"+"x "+data[1]+new String(new char[15-4-data[1].length()]).replace("\0"," ")+"ลด "+data[3]+" บาท "+new String(new char[9-data[2].length()-data[3].length()+1]).replace("\0"," ")+data[2]+new String(new char[10-Integer.toString(amt).length()]).replace("\0"," ")+Integer.toString(amt)+"\n";

@@ -598,7 +598,7 @@ public class MySQLAccess {
     }
   }
 
-  public void insert_sell_histories(String barcode, String lot, java.sql.Date selling_date, int amount, float total){
+  public void insert_sell_histories(String barcode, String lot, java.sql.Date selling_date, int amount, float total, String discount){
     try {
       // This will load the MySQL driver, each DB has its own driver
       Class.forName("com.mysql.jdbc.Driver");
@@ -613,9 +613,9 @@ public class MySQLAccess {
       // PreparedStatements can use variables and are more efficient
       preparedStatement = connect
           .prepareStatement("insert into phamacy.sell_histories "
-                  + "(barcode, lot_no, selling_date, amount, total) "
+                  + "(barcode, lot_no, selling_date, amount, total, discount) "
                   + "values "
-                  + "( ?, ?, ?, ?, ? )");
+                  + "( ?, ?, ?, ?, ?, ? )");
       // "myuser, webpage, datum, summary, COMMENTS from feedback.comments");
       // Parameters start with 1
       preparedStatement.setString(1, barcode);
@@ -623,6 +623,7 @@ public class MySQLAccess {
       preparedStatement.setDate(3, selling_date);
       preparedStatement.setInt(4, amount);
       preparedStatement.setFloat(5, total);
+      preparedStatement.setString(6, discount);
       preparedStatement.executeUpdate();
 
     } catch (Exception e) {

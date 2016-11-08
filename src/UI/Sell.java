@@ -17,7 +17,7 @@ public class Sell extends javax.swing.JFrame {
     
     private int front_amout = 0;
     private int back_amout = 0;
-    
+    PrinterService printerService = new PrinterService();
     /**
      * Creates new form Sell
      */
@@ -63,7 +63,7 @@ public class Sell extends javax.swing.JFrame {
         discount = new javax.swing.JTextField();
         discount_type = new javax.swing.JComboBox<>();
         report_2 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
+        finishedButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -172,7 +172,7 @@ public class Sell extends javax.swing.JFrame {
             new Object [][] {
             },
             new String [] {
-                "ชื่อยา", "จำนวน(หน่วย)", "ราคา", "รวม"
+                "ชื่อยา", "จำนวน(หน่วย)", "ราคา", "ส่วนลด", "รวม"
             }
         ));
         jScrollPane1.setViewportView(listTable);
@@ -194,22 +194,32 @@ public class Sell extends javax.swing.JFrame {
         jLabel13.setFont(new java.awt.Font("CordiaUPC", 0, 20)); // NOI18N
         jLabel13.setText("ส่วนลด");
 
+        discount.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                discountCaretUpdate(evt);
+            }
+        });
         discount.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 discountActionPerformed(evt);
             }
         });
 
-        discount_type.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "บาท", "เปอเซ็น" }));
+        discount_type.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "%", "บาท" }));
+        discount_type.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                discount_typeActionPerformed(evt);
+            }
+        });
 
         report_2.setFont(new java.awt.Font("CordiaUPC", 0, 24)); // NOI18N
         report_2.setForeground(new java.awt.Color(255, 51, 51));
         report_2.setText("สินค้าลอตนี้ยังเหลืออยู่ที่หลังร้าน อีก ... หน่วย และ ลอตอื่นๆ อีก ... หน่วย");
 
-        jButton2.setText("jButton2");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        finishedButton.setText("เสร็จสิ้น");
+        finishedButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                finishedButtonActionPerformed(evt);
             }
         });
 
@@ -278,7 +288,7 @@ public class Sell extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton2)
+                        .addComponent(finishedButton)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(report_2, javax.swing.GroupLayout.DEFAULT_SIZE, 590, Short.MAX_VALUE)))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -340,7 +350,7 @@ public class Sell extends javax.swing.JFrame {
                     .addComponent(addMore)
                     .addComponent(jButton3)
                     .addComponent(jButton1)
-                    .addComponent(jButton2))
+                    .addComponent(finishedButton))
                 .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
@@ -515,6 +525,7 @@ public class Sell extends javax.swing.JFrame {
                 medicine_name.getText(),
                 amount.getText() + "(" + unit.getText() + ")",
                 price.getText(),
+                discount.getText()+"-"+discount_type.getSelectedItem(),
                 total.getText()
             };
             model.addRow(data_list);  
@@ -543,13 +554,34 @@ public class Sell extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_discountActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void finishedButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_finishedButtonActionPerformed
         // TODO add your handling code here:
-        PrinterService printerService = new PrinterService();
         printerService.pustAl(getList());
         printerService.setdetail();
         printerService.printString("EPSON TM-T88IV Receipt");
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_finishedButtonActionPerformed
+
+    private void discount_typeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_discount_typeActionPerformed
+        // TODO add your handling code here:
+        float tempDiscount = Float.parseFloat(discount.getText());
+        float tempTotal = Float.parseFloat(price.getText()) * Integer.parseInt(amount.getText());
+        
+        if (discount_type.getSelectedItem().toString().equals("%")) { 
+            tempDiscount = tempTotal * (tempDiscount / 100);
+        }
+        total.setText((tempTotal - tempDiscount) + "");
+    }//GEN-LAST:event_discount_typeActionPerformed
+
+    private void discountCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_discountCaretUpdate
+        // TODO add your handling code here:
+        float tempDiscount = Float.parseFloat(discount.getText());
+        float tempTotal = Float.parseFloat(price.getText()) * Integer.parseInt(amount.getText());
+        
+        if (discount_type.getSelectedItem().toString().equals("%")) { 
+            tempDiscount = tempTotal * (tempDiscount / 100);
+        }
+        total.setText((tempTotal - tempDiscount) + "");
+    }//GEN-LAST:event_discountCaretUpdate
 
     /**
      * @param args the command line arguments
@@ -590,7 +622,7 @@ public class Sell extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) listTable.getModel();
             // name,amount,price
             for(int i = 0; i < model.getRowCount(); i++){
-                temp.add(model.getValueAt(i, 0).toString() + "," + model.getValueAt(i, 1).toString().substring(0, model.getValueAt(i, 1).toString().indexOf("(")) + "," + model.getValueAt(i, 2).toString());
+                temp.add(model.getValueAt(i, 0).toString() + "," + model.getValueAt(i, 1).toString().substring(0, model.getValueAt(i, 1).toString().indexOf("(")) + "," + model.getValueAt(i, 2).toString() + "," +model.getValueAt(i, 3).toString().split("-")[0]+ "," + model.getValueAt(i, 3).toString().split("-")[1]);
                 System.out.println(temp.get(i));
             }
         return temp;
@@ -604,8 +636,8 @@ public class Sell extends javax.swing.JFrame {
     private javax.swing.JTextField company_name;
     private javax.swing.JTextField discount;
     private javax.swing.JComboBox<String> discount_type;
+    private javax.swing.JButton finishedButton;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
