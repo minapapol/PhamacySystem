@@ -6,6 +6,7 @@
 package UI;
 
 import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -172,7 +173,8 @@ public class Sell extends javax.swing.JFrame {
             new Object [][] {
             },
             new String [] {
-                "ชื่อยา", "จำนวน(หน่วย)", "ราคา", "ส่วนลด", "รวม"
+                "บาร์โค๊ด", "ลอตที่", "ชื่อยา", "จำนวน(หน่วย)", "ราคา", "ส่วนลด", "รวม"
+
             }
         ));
         jScrollPane1.setViewportView(listTable);
@@ -230,7 +232,7 @@ public class Sell extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(report_1, javax.swing.GroupLayout.DEFAULT_SIZE, 590, Short.MAX_VALUE)
+                    .addComponent(report_1, javax.swing.GroupLayout.DEFAULT_SIZE, 729, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -279,8 +281,8 @@ public class Sell extends javax.swing.JFrame {
                                     .addGap(11, 11, 11)
                                     .addComponent(unit, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addComponent(jScrollPane1)
+                        .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(addMore)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -290,12 +292,12 @@ public class Sell extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(finishedButton)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(report_2, javax.swing.GroupLayout.DEFAULT_SIZE, 590, Short.MAX_VALUE)))
+                    .addComponent(report_2, javax.swing.GroupLayout.DEFAULT_SIZE, 729, Short.MAX_VALUE)))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 580, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addContainerGap(149, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -392,6 +394,7 @@ public class Sell extends javax.swing.JFrame {
             if(db.list_lot(evt.getActionCommand()).length > 0 && !db.list_lot(evt.getActionCommand())[0].isEmpty()) { 
                 lotList.setModel(new javax.swing.DefaultComboBoxModel<>(db.list_lot(evt.getActionCommand())));
                 amount.requestFocus();
+                amount.setText("1");
             } else {
                 lotList.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "none" }));
                 barcode_err.setText("*ไม่มีสินค้าในสต๊อก");
@@ -409,6 +412,7 @@ public class Sell extends javax.swing.JFrame {
                     medicine_code.setText(datas.get(i)[2]);
                     company_name.setText(datas.get(i)[3]);
                     price.setText(datas.get(i)[9]);
+                    total.setText(datas.get(i)[9]);
                     unit.setText(datas.get(i)[11]);
                     front_1 = Integer.parseInt(datas.get(i)[6]);
                     back_1 = Integer.parseInt(datas.get(i)[5]);
@@ -514,6 +518,7 @@ public class Sell extends javax.swing.JFrame {
         } else {
             report_1.setText("สินค้าไม่เพียงพอ กรุณาหยิบสินค้าเพิ่ม คงเหลืออยู่ที่หลังร้านอีก " + back_amout + " " + unit.getText());
         }
+        discount.requestFocus();
     }//GEN-LAST:event_amountActionPerformed
 
     private void addMoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addMoreActionPerformed
@@ -522,6 +527,8 @@ public class Sell extends javax.swing.JFrame {
             DefaultTableModel model = (DefaultTableModel) listTable.getModel();
 
             Object[] data_list = {
+                barcode.getText(),
+                lotList.getSelectedItem().toString(),
                 medicine_name.getText(),
                 amount.getText() + "(" + unit.getText() + ")",
                 price.getText(),
@@ -556,6 +563,19 @@ public class Sell extends javax.swing.JFrame {
 
     private void finishedButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_finishedButtonActionPerformed
         // TODO add your handling code here:
+        try {
+            MySQLAccess db = new MySQLAccess();
+            DefaultTableModel model = (DefaultTableModel) listTable.getModel();
+            // barcode, lot, current_date, amout, total, discount
+            for ( int i = 0; i < model.getRowCount(); i++){
+                db.insert_sell_histories(model.getValueAt(i, 0).toString(), model.getValueAt(i, 1).toString(), 
+                        new java.sql.Date(new Date().getTime()), Integer.parseInt(model.getValueAt(i, 3).toString().substring(0, model.getValueAt(i, 3).toString().indexOf("("))), 
+                        Float.parseFloat(model.getValueAt(i, 6).toString()), model.getValueAt(i, 5).toString());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
         printerService.pustAl(getList());
         printerService.setdetail();
         printerService.printString("EPSON TM-T88IV Receipt");
@@ -622,7 +642,7 @@ public class Sell extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) listTable.getModel();
             // name,amount,price
             for(int i = 0; i < model.getRowCount(); i++){
-                temp.add(model.getValueAt(i, 0).toString() + "," + model.getValueAt(i, 1).toString().substring(0, model.getValueAt(i, 1).toString().indexOf("(")) + "," + model.getValueAt(i, 2).toString() + "," +model.getValueAt(i, 3).toString().split("-")[0]+ "," + model.getValueAt(i, 3).toString().split("-")[1]);
+                temp.add(model.getValueAt(i, 2).toString() + "," + model.getValueAt(i, 3).toString().substring(0, model.getValueAt(i, 3).toString().indexOf("(")) + "," + model.getValueAt(i, 4).toString() + "," +model.getValueAt(i, 5).toString().split("-")[0]+ "," + model.getValueAt(i, 5).toString().split("-")[1]);
                 System.out.println(temp.get(i));
             }
         return temp;
