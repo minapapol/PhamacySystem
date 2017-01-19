@@ -18,6 +18,9 @@ public class Sell extends javax.swing.JFrame {
     
     private int front_amout = 0;
     private int back_amout = 0;
+    private ArrayList<int[]> medicines_data = new ArrayList<int[]>();
+    private int[] medicine_data = new int[3];
+    private boolean can_add = true;
     PrinterService printerService = new PrinterService();
     /**
      * Creates new form Sell
@@ -296,8 +299,8 @@ public class Sell extends javax.swing.JFrame {
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 580, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(149, Short.MAX_VALUE)))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 719, Short.MAX_VALUE)
+                    .addContainerGap()))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -409,6 +412,9 @@ public class Sell extends javax.swing.JFrame {
             
             for(int i = 0; i < datas.size(); i++){
                 if(datas.get(i)[4].equals(lotList.getSelectedItem().toString())){
+                    medicine_data[0] = Integer.parseInt(datas.get(i)[0]);
+                    medicine_data[1] = Integer.parseInt(datas.get(i)[6]);
+                    medicine_data[2] = Integer.parseInt(datas.get(i)[10]);
                     medicine_code.setText(datas.get(i)[2]);
                     company_name.setText(datas.get(i)[3]);
                     price.setText(datas.get(i)[9]);
@@ -427,16 +433,18 @@ public class Sell extends javax.swing.JFrame {
             
             if (front_1 > 0) {
                 report_1.setText("สินค้าลอตนี้หน้าร้านเหลืออีก " + front_1 +"  " + unit.getText());
+                can_add =  true;
             } else {
+                can_add =  false;
                 if ( back_1 > 0) {
-                    report_1.setText("เหลือสินค้านี้ที่หลังร้านอีก " + back_1 +"  " + unit.getText());
+                    report_1.setText("ไม่มีสินค้านี้ที่หน้าร้าน");
                 } else if ( (front_2 + back_2) > 0 ) {
                     report_1.setText("สินค้าลอตนี้หมด กรุณาเลือกนี้จากลอตอื่นๆ");
                 } else {
                     report_1.setText("สินค้าลอตนี้หมด");
                 }
             }
-            report_2.setText("สินค้าลอตนี้ยังเหลืออยู่ที่หลังร้าน อีก " + back_1 +"  " + unit.getText() + " และ ลอตอื่นๆ อีก " + back_2 +"  " + unit.getText());
+            report_2.setText("สินค้าลอตนี้ยังเหลืออยู่ที่หลังร้าน อีก " + back_1 +"  " + unit.getText() + " และ ลอตอื่นๆ อีก " + (front_2 + back_2) +"  " + unit.getText());
             
         } catch (Exception e) {
             e.printStackTrace();
@@ -488,16 +496,18 @@ public class Sell extends javax.swing.JFrame {
             
             if (front_1 > 0) {
                 report_1.setText("สินค้าลอตนี้หน้าร้านเหลืออีก " + front_1 +"  " + unit.getText());
+                can_add =  true;
             } else {
+                can_add =  false;
                 if ( back_1 > 0) {
-                    report_1.setText("เหลือสิoค้านี้ที่หลังร้านอีก " + back_1 +"  " + unit.getText());
+                    report_1.setText("ไม่มีสินค้านี้ที่หน้าร้าน");
                 } else if ( (front_2 + back_2) > 0 ) {
                     report_1.setText("สินค้าลอตนี้หมด กรุณาเลือกนี้จากลอตอื่นๆ");
                 } else {
                     report_1.setText("สินค้าลอตนี้หมด");
                 }
             }
-            report_2.setText("สินค้าลอตนี้ยังเหลืออยู่ที่หลังร้าน อีก " + back_1 +"  " + unit.getText() + " และ ลอตอื่นๆ อีก " + back_2 +"  " + unit.getText());
+            report_2.setText("สินค้าลอตนี้ยังเหลืออยู่ที่หลังร้าน อีก " + back_1 +"  " + unit.getText() + " และ ลอตอื่นๆ อีก " + (front_2 + back_2) +"  " + unit.getText());
             
         } catch (Exception e) {
             e.printStackTrace();
@@ -523,7 +533,7 @@ public class Sell extends javax.swing.JFrame {
 
     private void addMoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addMoreActionPerformed
         // TODO add your handling code here:
-        if ( barcode_err.getText().isEmpty() && !amount.getText().isEmpty() && !total.getText().isEmpty()){
+        if ( barcode_err.getText().isEmpty() && !amount.getText().isEmpty() && !total.getText().isEmpty() && can_add){
             DefaultTableModel model = (DefaultTableModel) listTable.getModel();
 
             Object[] data_list = {
@@ -535,6 +545,10 @@ public class Sell extends javax.swing.JFrame {
                 discount.getText()+"-"+discount_type.getSelectedItem(),
                 total.getText()
             };
+            medicine_data[1] -= Integer.parseInt(amount.getText());
+            medicine_data[2] -= Integer.parseInt(amount.getText());
+            medicines_data.add(medicine_data);
+            
             model.addRow(data_list);  
             
             barcode.setText("");
@@ -547,6 +561,7 @@ public class Sell extends javax.swing.JFrame {
             price.setText("");
             amount.setText("");
             total.setText("");
+            
         }
         
     }//GEN-LAST:event_addMoreActionPerformed
@@ -555,6 +570,7 @@ public class Sell extends javax.swing.JFrame {
         // TODO add your handling code here:
         DefaultTableModel model = (DefaultTableModel) listTable.getModel();
         model.setNumRows(0);
+        medicines_data.clear();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void discountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_discountActionPerformed
@@ -563,22 +579,27 @@ public class Sell extends javax.swing.JFrame {
 
     private void finishedButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_finishedButtonActionPerformed
         // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel) listTable.getModel();
         try {
             MySQLAccess db = new MySQLAccess();
-            DefaultTableModel model = (DefaultTableModel) listTable.getModel();
             // barcode, lot, current_date, amout, total, discount
             for ( int i = 0; i < model.getRowCount(); i++){
                 db.insert_sell_histories(model.getValueAt(i, 0).toString(), model.getValueAt(i, 1).toString(), 
                         new java.sql.Date(new Date().getTime()), Integer.parseInt(model.getValueAt(i, 3).toString().substring(0, model.getValueAt(i, 3).toString().indexOf("("))), 
                         Float.parseFloat(model.getValueAt(i, 6).toString()), model.getValueAt(i, 5).toString());
             }
+            for (int i = 0; i < medicines_data.size(); i++) {
+                int[] medicine_temp = medicines_data.get(i);
+                db.sell_medicine(medicine_temp[0], medicine_temp[1], medicine_temp[2]);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
         
-        printerService.pustAl(getList());
-        printerService.setdetail();
-        printerService.printString("EPSON TM-T88IV Receipt");
+//        printerService.pustAl(getList());
+//        printerService.setdetail();
+//        printerService.printString("EPSON TM-T88IV Receipt");
+        model.setNumRows(0);
     }//GEN-LAST:event_finishedButtonActionPerformed
 
     private void discount_typeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_discount_typeActionPerformed

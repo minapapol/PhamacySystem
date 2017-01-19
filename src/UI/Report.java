@@ -38,7 +38,7 @@ public class Report extends javax.swing.JFrame {
     public Report() {
         initComponents();
         
-        report_type = "type7";
+        report_type = "selling";
         
         DefaultTableModel model = (DefaultTableModel) listTable.getModel();
         model.setNumRows(0);
@@ -87,7 +87,7 @@ public class Report extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
+        topic = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         listTable = new javax.swing.JTable();
@@ -101,9 +101,9 @@ public class Report extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setFont(new java.awt.Font("CordiaUPC", 1, 24)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("รายงาน");
+        topic.setFont(new java.awt.Font("CordiaUPC", 1, 24)); // NOI18N
+        topic.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        topic.setText("รายงานการขาย");
 
         jButton1.setText("back");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -192,7 +192,7 @@ public class Report extends javax.swing.JFrame {
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 580, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(topic, javax.swing.GroupLayout.PREFERRED_SIZE, 580, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
@@ -216,7 +216,7 @@ public class Report extends javax.swing.JFrame {
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(topic, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(339, Short.MAX_VALUE)))
         );
 
@@ -373,13 +373,15 @@ public class Report extends javax.swing.JFrame {
 
     private void exportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportActionPerformed
         // TODO add your handling code here:
+        System.out.println("Excel exporting . . .");
+        System.out.println("report type: " + report_type);
         try {
             switch(report_type) {
                 case "type7":
-                    exportToExcel(listTable,"C:\\Users\\Napapol\\Desktop\\ขย. 7  สำหรับระบบ.xls", "D:/Projects/Paii_Project/ขย. 7  สำหรับระบบ.xls");
+                    exportToExcel(listTable,"D:\\reports\\templates\\7_template.xls", "D:\\reports\\7\\1.xls");
                     break;
                 case "type9":
-                    exportToExcel(listTable,"C:\\Users\\Napapol\\Desktop\\แบบ ข.ย. 9  ระบบ.xls", "D:/Projects/Paii_Project/แบบ ข.ย. 9  ระบบ.xls");
+                    exportToExcel(listTable,"D:\\reports\\templates\\9_template.xls", "D:\\reports\\9\\1.xls");
                     break;
                 case "type11":
                     String medicine_name = "none";
@@ -390,11 +392,11 @@ public class Report extends javax.swing.JFrame {
                         e.printStackTrace();
                     }
                     if(!medicine_name.equals("none")) {
-                        exportToExcel(listTable,"C:\\Users\\Napapol\\Desktop\\แบบ ข.ย. 11 ในระบบตัวจริง.xls", "D:/Projects/Paii_Project/แบบ ข.ย. 11 ในระบบตัวจริง.xls");
+                        exportToExcel(listTable,"D:\\reports\\templates\\11_template.xls", "D:\\reports\\11\\1.xls");
                     } 
                     break;
-                case "selling":
-                    exportToExcel(listTable,"C:\\Users\\Napapol\\Desktop\\ระบบ - ขย 10.xls", "D:/Projects/Paii_Project/ระบบ - ขย 10.xls");
+                case "selling":                    
+                    exportToExcel(listTable,"D:\\reports\\templates\\10_template.xls", "D:\\reports\\10\\1.xls");
                     break; 
             }
             
@@ -409,38 +411,6 @@ public class Report extends javax.swing.JFrame {
         // TODO add your handling code here:
         DefaultTableModel model = (DefaultTableModel) listTable.getModel();
         model.setNumRows(0);
-        
-        try {  
-            switch(report_type) {
-                case "type7":
-                    exportToExcel(listTable, "C:\\Users\\Napapol\\Desktop\\ขย. 7  สำหรับระบบ.xls","D:/Projects/Paii_Project/ขย. 7  สำหรับระบบ.xls");
-                    break;
-                case "type9":
-                    exportToExcel(listTable, "C:\\Users\\Napapol\\Desktop\\แบบ ข.ย. 9  ระบบ.xls","D:/Projects/Paii_Project/แบบ ข.ย. 9  ระบบ.xls");
-                    break;
-                case "type11":
-                    String medicine_name = "none";
-                    try {
-                        MySQLAccess medicine_db = new MySQLAccess();
-                        medicine_name = medicine_db.get_medicine_name(barcode.getText());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    if(!medicine_name.equals("none")) {
-                        exportToExcel(listTable, "C:\\Users\\Napapol\\Desktop\\แบบ ข.ย. 11 ในระบบตัวจริง.xls", "D:/Projects/Paii_Project/แบบ ข.ย. 11 ในระบบตัวจริง.xls");
-                    } 
-                    break;
-                case "selling":
-                    exportToExcel(listTable, "C:\\Users\\Napapol\\Desktop\\ระบบ - ขย 10.xls", "D:/Projects/Paii_Project/ระบบ - ขย 10.xls");
-                    break; 
-            }
-            
-        } catch (IOException e) {
-            e.getMessage();
-        } catch (BiffException | WriteException ex) {
-            Logger.getLogger(Reminder.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        System.out.println("Hello");
         
         try {
             MySQLAccess data_table = new MySQLAccess();
@@ -465,13 +435,12 @@ public class Report extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_barcodeActionPerformed
 
-    
-    public void exportToExcel(javax.swing.JTable table, String file, String file2) throws IOException, BiffException, WriteException {
+    public void exportToExcel(javax.swing.JTable table, String import_file, String export_file) throws IOException, BiffException, WriteException {
         System.out.println("Write Start");
         
-       Workbook existingWorkbook = Workbook.getWorkbook(new File(file2));
+        Workbook existingWorkbook = Workbook.getWorkbook(new File(import_file));
         System.out.println("Test1.2");
-        WritableWorkbook workbook = Workbook.createWorkbook(new File(file),existingWorkbook);
+        WritableWorkbook workbook = Workbook.createWorkbook(new File(export_file),existingWorkbook);
         System.out.println("Test1.1");
         WritableSheet sheet = workbook.getSheet("Sheet1");
         
@@ -549,10 +518,10 @@ public class Report extends javax.swing.JFrame {
     private javax.swing.JButton export;
     private javax.swing.JButton jButton1;
     private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable listTable;
     private javax.swing.JButton selling;
+    private javax.swing.JLabel topic;
     private javax.swing.JButton type11;
     private javax.swing.JButton type7;
     private javax.swing.JButton type9;

@@ -270,7 +270,7 @@ public class MySQLAccess {
   public void insert_medicine_details(String barcode, String medicine_code, String company_name, String lot_no,
           int medicine_type, int back_stock, float buying_price, float selling_price, int amount, String unit,
           java.sql.Date buying_date, java.sql.Date initialize_date, java.sql.Date expired_date,
-          String size){
+          String size, int stock_type){
 
     try {
       // This will load the MySQL driver, each DB has its own driver
@@ -286,9 +286,9 @@ public class MySQLAccess {
       // PreparedStatements can use variables and are more efficient
       preparedStatement = connect
           .prepareStatement("insert into phamacy.medicine_details "
-                  + "(barcode, medicine_code, company_name, medicine_type, lot_no, back_stock, front_stock, buying_date, buying_price, selling_price, amount, unit, initialize_date, expired_date, size) "
+                  + "(barcode, medicine_code, company_name, medicine_type, lot_no, back_stock, front_stock, buying_date, buying_price, selling_price, amount, unit, initialize_date, expired_date, size, stock_type) "
                   + "values "
-                  + "( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )");
+                  + "( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )");
       // "myuser, webpage, datum, summary, COMMENTS from feedback.comments");
       // Parameters start with 1
       preparedStatement.setString(1, barcode);
@@ -306,6 +306,7 @@ public class MySQLAccess {
       preparedStatement.setDate(13, initialize_date);
       preparedStatement.setDate(14, expired_date);
       preparedStatement.setString(15, size);
+      preparedStatement.setInt(16, stock_type);
       preparedStatement.executeUpdate();
 
     } catch (Exception e) {
@@ -383,7 +384,7 @@ public class MySQLAccess {
         System.out.println("|   No.---barcode---medicine_code---company_name---lot_no---back_stock---front_stock---buying_date---buying_price---selling_price---amount---unit---initialize_date---expired_date---size---type");
         int i = 1;
         while (resultSet.next()) {
-            String[] temp = new String[16];
+            String[] temp = new String[17];
             // It is possible to get the columns via name
             // also possible to get the columns via the column number
             // which starts at 1
@@ -445,6 +446,17 @@ public class MySQLAccess {
                     break;
             }
             System.out.println("---" + temp[15]);
+            
+            switch(resultSet.getInt("stock_type")){
+                case 0:
+                    temp[16] = "ข้างบน";
+                    break;
+                case 1:
+                    temp[16] = "ข้างล่าง";
+                    break;
+            }
+            System.out.println("---" + temp[16]);
+            
 
             medicine_details.add(temp);
             i++;
@@ -517,10 +529,39 @@ public class MySQLAccess {
     return md;
   }
   
+  public void sell_medicine(int id, int front_stock_remaining, int amount_remaining) {
+      try {
+            Class.forName("com.mysql.jdbc.Driver");
+              // Setup the connection with the DB
+            connect = DriverManager
+                    .getConnection("jdbc:mysql://localhost/phamacy?"
+                            + "user=root&password=root");
+
+            // Update
+            preparedStatement = connect
+              .prepareStatement("update phamacy.medicine_details set "
+                        + "front_stock = ?, "
+                        + "amount = ? "
+                        + "where id = ? ; ");
+
+            preparedStatement.setInt(1, front_stock_remaining);
+            preparedStatement.setInt(2, amount_remaining);
+            preparedStatement.setInt(3, id);
+            
+            preparedStatement.executeUpdate();
+            
+            System.out.println(id + ": F: " + front_stock_remaining + " All: " + amount_remaining);
+      } catch (Exception e) {
+          e.printStackTrace();
+      } finally {
+          close();
+      }
+  }
+  
   public void update_medicine_details(int id, String barcode, String medicine_code, String company_name, String lot_no,
           int medicine_type, int back_stock, float buying_price, float selling_price, int amount, String unit,
           java.sql.Date buying_date, java.sql.Date initialize_date, java.sql.Date expired_date,
-          String size) {
+          String size, int stock_type) {
       
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -537,16 +578,14 @@ public class MySQLAccess {
                         + "company_name = ?, "
                         + "medicine_type = ?, "
                         + "lot_no = ?, "
-                        + "back_stock = ?, "
-                        + "front_stock = ?, "
                         + "buying_date = ?, "
                         + "buying_price = ?, "
                         + "selling_price = ?, "
-                        + "amount = ?, "
                         + "unit = ?, "
                         + "initialize_date = ?, "
                         + "expired_date = ?, "
-                        + "size = ? "
+                        + "size = ?, "
+                        + "stock_type = ? "
                         + "where id = ? ; ");
 
             preparedStatement.setString(1, barcode);
@@ -554,17 +593,15 @@ public class MySQLAccess {
             preparedStatement.setString(3, company_name);
             preparedStatement.setInt(4, medicine_type);
             preparedStatement.setString(5, lot_no);
-            preparedStatement.setInt(6, back_stock);
-            preparedStatement.setInt(7, 0);
-            preparedStatement.setDate(8, buying_date);
-            preparedStatement.setFloat(9, buying_price);
-            preparedStatement.setFloat(10, selling_price);
-            preparedStatement.setInt(11, amount);
-            preparedStatement.setString(12, unit);
-            preparedStatement.setDate(13, initialize_date);
-            preparedStatement.setDate(14, expired_date);
-            preparedStatement.setString(15, size);
-            preparedStatement.setInt(16, id);
+            preparedStatement.setDate(6, buying_date);
+            preparedStatement.setFloat(7, buying_price);
+            preparedStatement.setFloat(8, selling_price);
+            preparedStatement.setString(9, unit);
+            preparedStatement.setDate(10, initialize_date);
+            preparedStatement.setDate(11, expired_date);
+            preparedStatement.setString(12, size);
+            preparedStatement.setInt(13, stock_type);
+            preparedStatement.setInt(14, id);
             preparedStatement.executeUpdate();
 
       } catch (Exception e) {
@@ -573,6 +610,37 @@ public class MySQLAccess {
           close();
       }
         
+  }
+  
+  public void update_stock(int id, int new_front_stock, int new_back_stock){
+      try {
+            Class.forName("com.mysql.jdbc.Driver");
+              // Setup the connection with the DB
+            connect = DriverManager
+                    .getConnection("jdbc:mysql://localhost/phamacy?"
+                            + "user=root&password=root");
+
+            // Update
+            preparedStatement = connect
+              .prepareStatement("update phamacy.medicine_details set "
+                        + "front_stock = ?, "
+                        + "back_stock = ? "
+                        + "where id = ? ; ");
+
+            preparedStatement.setInt(1, new_front_stock);
+            preparedStatement.setInt(2, new_back_stock);
+            preparedStatement.setInt(3, id);
+            
+            preparedStatement.executeUpdate();
+            
+            System.out.println(id + ": F: " + new_front_stock + " B: " + new_back_stock);
+
+      } catch (Exception e) {
+          e.printStackTrace();
+      } finally {
+          close();
+      }
+      
   }
   
   public void delete_medicine_details(int id){

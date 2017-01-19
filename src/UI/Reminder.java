@@ -45,7 +45,7 @@ public class Reminder extends javax.swing.JFrame {
                     datas.get(i)[13], // expired date
                     datas.get(i)[4], // lot
                     datas.get(i)[6], // front
-                    datas.get(i)[5], // back
+                    datas.get(i)[5] + "(" + datas.get(i)[16] + ")", // back
                     datas.get(i)[10], // amount
                 };
                 model.addRow(data_list);
@@ -115,7 +115,7 @@ public class Reminder extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 580, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 725, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -131,12 +131,12 @@ public class Reminder extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(stockSort)
-                    .addComponent(expiredSort))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(expiredSort)
+                    .addComponent(stockSort))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 409, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1)
                 .addContainerGap())
@@ -168,7 +168,7 @@ public class Reminder extends javax.swing.JFrame {
                     datas.get(i)[13], // expired date
                     datas.get(i)[4], // lot
                     datas.get(i)[6], // front
-                    datas.get(i)[5], // back
+                    datas.get(i)[5] + "(" + datas.get(i)[16] + ")", // back
                     datas.get(i)[10], // amount
                 };
                 model.addRow(data_list);
@@ -193,7 +193,7 @@ public class Reminder extends javax.swing.JFrame {
                     datas.get(i)[13], // expired date
                     datas.get(i)[4], // lot
                     datas.get(i)[6], // front
-                    datas.get(i)[5], // back
+                    datas.get(i)[5] + "(" + datas.get(i)[16] + ")", // back
                     datas.get(i)[10], // amount
                 };
                 model.addRow(data_list);

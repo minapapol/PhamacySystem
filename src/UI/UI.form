@@ -32,6 +32,8 @@
                           <Component id="report" min="-2" pref="180" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="database" min="-2" pref="180" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="stockManagement" min="-2" pref="180" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" attributes="0">
                           <Component id="reminder" min="-2" pref="180" max="-2" attributes="0"/>
@@ -63,6 +65,7 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="database" alignment="3" min="-2" pref="140" max="-2" attributes="0"/>
                   <Component id="report" alignment="3" min="-2" pref="140" max="-2" attributes="0"/>
+                  <Component id="stockManagement" alignment="3" min="-2" pref="140" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -122,6 +125,15 @@
       <Events>
         <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="databaseMouseClicked"/>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="databaseActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="stockManagement">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&#xe08;&#xe31;&#xe14;&#xe01;&#xe32;&#xe23;&#xe2a;&#xe15;&#xe47;&#xe2d;&#xe04;"/>
+      </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="stockManagementMouseClicked"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="stockManagementActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

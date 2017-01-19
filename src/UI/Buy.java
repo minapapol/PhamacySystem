@@ -44,6 +44,7 @@ public class Buy extends javax.swing.JFrame {
         selling_price.setText(md.selling_price+"");
         buying_price.setText(md.buying_price+"");
         amount.setText(md.amount+"");
+        amount_err.setText("หน้าร้าน("+md.front_stock+") หลังร้าน ("+md.get_back_stock()+")");
         unit.setText(md.unit);
         
         DP_buy.setDate(md.buying_date);
@@ -115,6 +116,8 @@ public class Buy extends javax.swing.JFrame {
         jLabel12 = new javax.swing.JLabel();
         size = new javax.swing.JTextField();
         size_err = new javax.swing.JLabel();
+        stock_type = new javax.swing.JComboBox<>();
+        jLabel15 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -284,6 +287,16 @@ public class Buy extends javax.swing.JFrame {
         size_err.setForeground(new java.awt.Color(255, 0, 51));
         size_err.setText("*");
 
+        stock_type.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ข้างบน", "ข้างล่าง" }));
+        stock_type.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stock_typeActionPerformed(evt);
+            }
+        });
+
+        jLabel15.setFont(new java.awt.Font("CordiaUPC", 0, 20)); // NOI18N
+        jLabel15.setText("ที่อยู่สต๊อก");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -326,12 +339,16 @@ public class Buy extends javax.swing.JFrame {
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addGroup(layout.createSequentialGroup()
                                     .addComponent(jLabel13)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
                                     .addComponent(DP_ini, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel14)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel14)
+                                        .addComponent(jLabel15))
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(DP_exp, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(stock_type, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(DP_exp, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -461,7 +478,11 @@ public class Buy extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel14)
                             .addComponent(DP_exp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(stock_type, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel15))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(addButton)
                     .addComponent(jLabel7)
@@ -594,13 +615,23 @@ public class Buy extends javax.swing.JFrame {
                 MySQLAccess db = new MySQLAccess();
                 
                 if (addButton.getText().equals("Add")) {
-                    db.insert_medicine_details(barcode_, medicine_code_, company_name_, lot_no_, medicine_type.getSelectedIndex(), back_stock, buying_price_, selling_price_, back_stock, unit_, buying_date, initailize_date, expired_date, size_);
+                    db.insert_medicine_details(barcode_, medicine_code_, company_name_, lot_no_, medicine_type.getSelectedIndex(), back_stock, buying_price_, selling_price_, back_stock, unit_, buying_date, initailize_date, expired_date, size_, stock_type.getSelectedIndex());
                     db.insert_buy_histories(barcode_, lot_no_, buying_date, back_stock, (back_stock*buying_price_));
+                    this.setVisible(false);
+                    UI newUi = new UI();
+                    newUi.setLocationRelativeTo(this);
+                    newUi.setVisible(true);
+                    dispose();
                 } else {
-                    db.update_medicine_details(id,barcode_, medicine_code_, company_name_, lot_no_, medicine_type.getSelectedIndex(), back_stock, buying_price_, selling_price_, back_stock, unit_, buying_date, initailize_date, expired_date, size_);
+                    db.update_medicine_details(id,barcode_, medicine_code_, company_name_, lot_no_, medicine_type.getSelectedIndex(), back_stock, buying_price_, selling_price_, back_stock, unit_, buying_date, initailize_date, expired_date, size_, stock_type.getSelectedIndex());
+                    System.out.println("Medicine is updated");
+                    this.setVisible(false);
+                    Medicine_details_list newUi = new Medicine_details_list();
+                    newUi.setLocationRelativeTo(this);
+                    newUi.setVisible(true);
+                    dispose();
                 }
-                this.setVisible(false);
-                new UI().setVisible(true);
+                
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -616,6 +647,7 @@ public class Buy extends javax.swing.JFrame {
             MySQLAccess db = new MySQLAccess();
             medicine_name.setText(db.get_medicine_name(evt.getActionCommand()));
             if( medicine_name.getText().equals("none") ) barcode_err.setText("*รายการนี้ไม่มีอยู่ในฐานข้อมูล");
+            else medicine_code.requestFocus();
  
         } catch (Exception e) {
             e.printStackTrace();
@@ -626,6 +658,10 @@ public class Buy extends javax.swing.JFrame {
     private void sizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sizeActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_sizeActionPerformed
+
+    private void stock_typeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stock_typeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_stock_typeActionPerformed
 
     /**
      * @param args the command line arguments
@@ -688,6 +724,7 @@ public class Buy extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -705,6 +742,7 @@ public class Buy extends javax.swing.JFrame {
     private javax.swing.JTextField selling_price;
     private javax.swing.JTextField size;
     private javax.swing.JLabel size_err;
+    private javax.swing.JComboBox<String> stock_type;
     private javax.swing.JTextField unit;
     private javax.swing.JLabel unit_err;
     // End of variables declaration//GEN-END:variables

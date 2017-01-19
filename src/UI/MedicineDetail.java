@@ -53,4 +53,12 @@ public class MedicineDetail {
         this.expired_date = expired_date;
     }
     
+    public int get_front_stock(){
+        return front_stock;
+    }
+    
+    public int get_back_stock(){
+        return back_stock;
+    }
+    
 }

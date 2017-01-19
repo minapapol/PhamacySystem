@@ -45,6 +45,7 @@ public class UI extends javax.swing.JFrame {
         selling = new javax.swing.JButton();
         buying = new javax.swing.JButton();
         database = new javax.swing.JButton();
+        stockManagement = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -112,6 +113,18 @@ public class UI extends javax.swing.JFrame {
             }
         });
 
+        stockManagement.setText("จัดการสต็อค");
+        stockManagement.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                stockManagementMouseClicked(evt);
+            }
+        });
+        stockManagement.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stockManagementActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -124,7 +137,9 @@ public class UI extends javax.swing.JFrame {
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                             .addComponent(report, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(18, 18, 18)
-                            .addComponent(database, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(database, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(stockManagement, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(layout.createSequentialGroup()
                             .addComponent(reminder, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(18, 18, 18)
@@ -147,7 +162,8 @@ public class UI extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(database, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(report, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(report, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(stockManagement, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -214,6 +230,18 @@ public class UI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_sellingActionPerformed
 
+    private void stockManagementMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_stockManagementMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_stockManagementMouseClicked
+
+    private void stockManagementActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stockManagementActionPerformed
+        // TODO add your handling code here:
+        StockManagement newUi = new StockManagement();
+        newUi.setLocationRelativeTo(this);
+        newUi.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_stockManagementActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -258,5 +286,6 @@ public class UI extends javax.swing.JFrame {
     private javax.swing.JButton reminder;
     private javax.swing.JButton report;
     private javax.swing.JButton selling;
+    private javax.swing.JButton stockManagement;
     // End of variables declaration//GEN-END:variables
 }
