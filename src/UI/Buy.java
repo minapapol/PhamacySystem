@@ -272,7 +272,12 @@ public class Buy extends javax.swing.JFrame {
         exp_err.setForeground(new java.awt.Color(255, 0, 51));
         exp_err.setText("*");
 
-        medicine_type.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ยาอันตราย", "ยาควบคุมพิเศษ", "ยาทั่วไป" }));
+        medicine_type.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ยาอันตราย", "ยาควบคุมพิเศษ", "ยาทั่วไป", "อื่นๆ" }));
+        medicine_type.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                medicine_typeActionPerformed(evt);
+            }
+        });
 
         jLabel12.setFont(new java.awt.Font("CordiaUPC", 0, 20)); // NOI18N
         jLabel12.setText("ขนาด");
@@ -662,6 +667,10 @@ public class Buy extends javax.swing.JFrame {
     private void stock_typeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stock_typeActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_stock_typeActionPerformed
+
+    private void medicine_typeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_medicine_typeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_medicine_typeActionPerformed
 
     /**
      * @param args the command line arguments

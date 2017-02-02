@@ -444,6 +444,9 @@ public class MySQLAccess {
                 case 2:
                     temp[15] = "ยาทั่วไป";
                     break;
+                case 3:
+                    temp[15] = "อื่นๆ";
+                    break;
             }
             System.out.println("---" + temp[15]);
             
@@ -510,6 +513,9 @@ public class MySQLAccess {
                     break;
                 case 2:
                     type = "ยาทั่วไป";
+                    break;
+                case 3:
+                    type = "อื่นๆ";
                     break;
             }
             
