@@ -309,6 +309,7 @@ public class StockManagement extends javax.swing.JFrame {
                     front_stock.setText(datas.get(i)[6]);
                     back_stock.setText(datas.get(i)[5]);
                     id = Integer.parseInt(datas.get(i)[0]);
+                    amout.setText(datas.get(i)[10]);
                     break;
                 } 
             }

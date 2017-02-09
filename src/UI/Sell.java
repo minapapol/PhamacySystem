@@ -199,11 +199,6 @@ public class Sell extends javax.swing.JFrame {
         jLabel13.setFont(new java.awt.Font("CordiaUPC", 0, 20)); // NOI18N
         jLabel13.setText("ส่วนลด");
 
-        discount.addCaretListener(new javax.swing.event.CaretListener() {
-            public void caretUpdate(javax.swing.event.CaretEvent evt) {
-                discountCaretUpdate(evt);
-            }
-        });
         discount.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 discountActionPerformed(evt);
@@ -479,6 +474,9 @@ public class Sell extends javax.swing.JFrame {
             
             for(int i = 0; i < datas.size(); i++){
                 if(datas.get(i)[4].equals(lotList.getSelectedItem().toString())){
+                    medicine_data[0] = Integer.parseInt(datas.get(i)[0]);
+                    medicine_data[1] = Integer.parseInt(datas.get(i)[6]);
+                    medicine_data[2] = Integer.parseInt(datas.get(i)[10]);
                     medicine_code.setText(datas.get(i)[2]);
                     company_name.setText(datas.get(i)[3]);
                     price.setText(datas.get(i)[9]);
@@ -523,12 +521,13 @@ public class Sell extends javax.swing.JFrame {
 
     private void amountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_amountActionPerformed
         // TODO add your handling code here:
-        if ( front_amout > -1 ){
+        System.out.println(front_amout);
+        if ( Integer.parseInt(evt.getActionCommand()) <= front_amout ){
             total.setText((Float.parseFloat(price.getText()) * Integer.parseInt(amount.getText()))+"");
+            discount.requestFocus();
         } else {
-            report_1.setText("สินค้าไม่เพียงพอ กรุณาหยิบสินค้าเพิ่ม คงเหลืออยู่ที่หลังร้านอีก " + back_amout + " " + unit.getText());
+            report_1.setText("สินค้าหน้าร้านมีเพียง" + front_amout + " กรุณาหยิบสินค้าเพิ่ม คงเหลืออยู่ที่หลังร้านอีก " + back_amout + " " + unit.getText());
         }
-        discount.requestFocus();
     }//GEN-LAST:event_amountActionPerformed
 
     private void addMoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addMoreActionPerformed
@@ -547,7 +546,12 @@ public class Sell extends javax.swing.JFrame {
             };
             medicine_data[1] -= Integer.parseInt(amount.getText());
             medicine_data[2] -= Integer.parseInt(amount.getText());
-            medicines_data.add(medicine_data);
+//            System.out.println(medicine_data[0] + " " + medicine_data[1] + " " + medicine_data[2]);
+            int[] temp = new int[3];
+            temp[0] = medicine_data[0];
+            temp[1] = medicine_data[1];
+            temp[2] = medicine_data[2];
+            medicines_data.add(temp);
             
             model.addRow(data_list);  
             
@@ -561,7 +565,11 @@ public class Sell extends javax.swing.JFrame {
             price.setText("");
             amount.setText("");
             total.setText("");
-            
+            discount.setText("");
+        }
+        
+        for(int i = 0; i < medicines_data.size(); i++) {
+            System.out.println(medicines_data.get(i)[0] + " " + medicines_data.get(i)[1] + " " + medicines_data.get(i)[2]);
         }
         
     }//GEN-LAST:event_addMoreActionPerformed
@@ -575,6 +583,13 @@ public class Sell extends javax.swing.JFrame {
 
     private void discountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_discountActionPerformed
         // TODO add your handling code here:
+        float tempDiscount = Float.parseFloat(discount.getText());
+        float tempTotal = Float.parseFloat(price.getText()) * Integer.parseInt(amount.getText());
+        
+        if (discount_type.getSelectedItem().toString().equals("%")) { 
+            tempDiscount = tempTotal * (tempDiscount / 100);
+        }
+        total.setText((tempTotal - tempDiscount) + "");
     }//GEN-LAST:event_discountActionPerformed
 
     private void finishedButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_finishedButtonActionPerformed
@@ -588,10 +603,13 @@ public class Sell extends javax.swing.JFrame {
                         new java.sql.Date(new Date().getTime()), Integer.parseInt(model.getValueAt(i, 3).toString().substring(0, model.getValueAt(i, 3).toString().indexOf("("))), 
                         Float.parseFloat(model.getValueAt(i, 6).toString()), model.getValueAt(i, 5).toString());
             }
+            
             for (int i = 0; i < medicines_data.size(); i++) {
                 int[] medicine_temp = medicines_data.get(i);
+//                System.out.println(medicine_temp[0] + " " + medicine_temp[1] + " " + medicine_temp[2]);
                 db.sell_medicine(medicine_temp[0], medicine_temp[1], medicine_temp[2]);
             }
+            medicines_data.clear();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -612,17 +630,6 @@ public class Sell extends javax.swing.JFrame {
         }
         total.setText((tempTotal - tempDiscount) + "");
     }//GEN-LAST:event_discount_typeActionPerformed
-
-    private void discountCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_discountCaretUpdate
-        // TODO add your handling code here:
-        float tempDiscount = Float.parseFloat(discount.getText());
-        float tempTotal = Float.parseFloat(price.getText()) * Integer.parseInt(amount.getText());
-        
-        if (discount_type.getSelectedItem().toString().equals("%")) { 
-            tempDiscount = tempTotal * (tempDiscount / 100);
-        }
-        total.setText((tempTotal - tempDiscount) + "");
-    }//GEN-LAST:event_discountCaretUpdate
 
     /**
      * @param args the command line arguments
