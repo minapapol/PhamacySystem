@@ -280,6 +280,10 @@ public class StockManagement extends javax.swing.JFrame {
         try {
             MySQLAccess db = new MySQLAccess();
             db.update_stock(id, Integer.parseInt(front_stock.getText()), Integer.parseInt(back_stock.getText()));
+            UI newUi = new UI();
+            newUi.setLocationRelativeTo(this);
+            newUi.setVisible(true);
+            dispose();
             
         } catch (Exception e) {
             e.printStackTrace();

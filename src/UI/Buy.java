@@ -111,13 +111,19 @@ public class Buy extends javax.swing.JFrame {
         amount_err = new javax.swing.JLabel();
         unit_err = new javax.swing.JLabel();
         ini_err = new javax.swing.JLabel();
-        exp_err = new javax.swing.JLabel();
+        pack_price_err = new javax.swing.JLabel();
         medicine_type = new javax.swing.JComboBox<>();
         jLabel12 = new javax.swing.JLabel();
         size = new javax.swing.JTextField();
         size_err = new javax.swing.JLabel();
         stock_type = new javax.swing.JComboBox<>();
         jLabel15 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
+        pack_amount = new javax.swing.JTextField();
+        pack_price = new javax.swing.JTextField();
+        exp_err1 = new javax.swing.JLabel();
+        pack_amount_err = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -268,9 +274,9 @@ public class Buy extends javax.swing.JFrame {
         ini_err.setForeground(new java.awt.Color(255, 0, 51));
         ini_err.setText("*");
 
-        exp_err.setFont(new java.awt.Font("Cordia New", 0, 20)); // NOI18N
-        exp_err.setForeground(new java.awt.Color(255, 0, 51));
-        exp_err.setText("*");
+        pack_price_err.setFont(new java.awt.Font("Cordia New", 0, 20)); // NOI18N
+        pack_price_err.setForeground(new java.awt.Color(255, 0, 51));
+        pack_price_err.setText("*");
 
         medicine_type.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ยาอันตราย", "ยาควบคุมพิเศษ", "ยาทั่วไป", "อื่นๆ" }));
         medicine_type.addActionListener(new java.awt.event.ActionListener() {
@@ -301,6 +307,32 @@ public class Buy extends javax.swing.JFrame {
 
         jLabel15.setFont(new java.awt.Font("CordiaUPC", 0, 20)); // NOI18N
         jLabel15.setText("ที่อยู่สต๊อก");
+
+        jLabel16.setFont(new java.awt.Font("CordiaUPC", 0, 20)); // NOI18N
+        jLabel16.setText("ราคาต่อ X");
+
+        jLabel17.setFont(new java.awt.Font("CordiaUPC", 0, 20)); // NOI18N
+        jLabel17.setText("X =");
+
+        pack_amount.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pack_amountActionPerformed(evt);
+            }
+        });
+
+        pack_price.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pack_priceActionPerformed(evt);
+            }
+        });
+
+        exp_err1.setFont(new java.awt.Font("Cordia New", 0, 20)); // NOI18N
+        exp_err1.setForeground(new java.awt.Color(255, 0, 51));
+        exp_err1.setText("*");
+
+        pack_amount_err.setFont(new java.awt.Font("Cordia New", 0, 20)); // NOI18N
+        pack_amount_err.setForeground(new java.awt.Color(255, 0, 51));
+        pack_amount_err.setText("*");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -357,9 +389,7 @@ public class Buy extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(exp_err, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(ini_err, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(ini_err, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap(269, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -368,7 +398,8 @@ public class Buy extends javax.swing.JFrame {
                                     .addComponent(sell_err, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(amount_err, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(unit_err, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(buy_err, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(buy_err, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(exp_err1, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -405,7 +436,20 @@ public class Buy extends javax.swing.JFrame {
                                     .addComponent(code_err, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(size_err, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(0, 0, Short.MAX_VALUE)))
-                        .addContainerGap())))
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel17)
+                            .addComponent(jLabel16))
+                        .addGap(10, 10, 10)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(pack_price, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
+                            .addComponent(pack_amount))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(pack_price_err, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(pack_amount_err, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
@@ -440,8 +484,7 @@ public class Buy extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(ini_err)
-                        .addGap(4, 4, 4)
-                        .addComponent(exp_err))
+                        .addGap(28, 28, 28))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel5)
@@ -482,12 +525,24 @@ public class Buy extends javax.swing.JFrame {
                         .addGap(3, 3, 3)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel14)
-                            .addComponent(DP_exp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(DP_exp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(exp_err1))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(stock_type, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel15))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(pack_amount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(pack_amount_err))
+                    .addComponent(jLabel17))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(pack_price, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel16)
+                    .addComponent(pack_price_err))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(addButton)
                     .addComponent(jLabel7)
@@ -498,7 +553,7 @@ public class Buy extends javax.swing.JFrame {
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(464, Short.MAX_VALUE)))
+                    .addContainerGap(546, Short.MAX_VALUE)))
         );
 
         pack();
@@ -555,16 +610,21 @@ public class Buy extends javax.swing.JFrame {
         lot_err.setText("");
         unit_err.setText("");
         ini_err.setText("");
-        exp_err.setText("");
+        pack_price_err.setText("");
         sell_err.setText("");
         buy_err.setText("");
         amount_err.setText("");
         size_err.setText("");
+        pack_amount_err.setText("");
+        pack_price_err.setText("");
         
         float buying_price_ = 0;
         float selling_price_ = 0;
         int back_stock = 0;
         int amount_;
+        int pack_amount_ = 0;
+        float pack_price_ = 0.0f;
+        
         String size_ = size.getText();
 
         String barcode_ = barcode.getText();
@@ -583,7 +643,7 @@ public class Buy extends javax.swing.JFrame {
         if(lot_no_.length() == 0 ) { lot_err.setText("*โปรดใส่เลขที่ LOT"); checked = false; }
         if(unit_.length() == 0 ) { unit_err.setText("*โปรดใส่หน่วยของสินค้า"); checked = false; }
         if(DP_ini.getDate() == null) { ini_err.setText("*โปรดใส่วันที่ผลิต"); checked = false; } else { initailize_date = new java.sql.Date(DP_ini.getDate().getTime()); }
-        if(DP_exp.getDate() == null) { exp_err.setText("*โปรดใส่วันที่หมดอายุ"); checked = false; } else { expired_date = new java.sql.Date(DP_exp.getDate().getTime()); }
+        if(DP_exp.getDate() == null) { pack_price_err.setText("*โปรดใส่วันที่หมดอายุ"); checked = false; } else { expired_date = new java.sql.Date(DP_exp.getDate().getTime()); }
         
         try {
             buying_price_ = Float.parseFloat(buying_price.getText());
@@ -613,6 +673,15 @@ public class Buy extends javax.swing.JFrame {
             checked = false; 
         }
         
+        try {
+            pack_amount_ = Integer.parseInt(pack_amount.getText());
+            pack_price_ = Float.parseFloat(pack_price.getText());
+
+        } catch (NumberFormatException e) {
+            amount_err.setText("*จำนวน ผิดรูปแบบ");
+            checked = false; 
+        }
+        
         System.out.print(medicine_type.getSelectedIndex());
         
         if (checked) {
@@ -620,7 +689,7 @@ public class Buy extends javax.swing.JFrame {
                 MySQLAccess db = new MySQLAccess();
                 
                 if (addButton.getText().equals("Add")) {
-                    db.insert_medicine_details(barcode_, medicine_code_, company_name_, lot_no_, medicine_type.getSelectedIndex(), back_stock, buying_price_, selling_price_, back_stock, unit_, buying_date, initailize_date, expired_date, size_, stock_type.getSelectedIndex());
+                    db.insert_medicine_details(barcode_, medicine_code_, company_name_, lot_no_, medicine_type.getSelectedIndex(), back_stock, buying_price_, selling_price_, back_stock, unit_, buying_date, initailize_date, expired_date, size_, stock_type.getSelectedIndex(), pack_amount_, pack_price_ );
                     db.insert_buy_histories(barcode_, lot_no_, buying_date, back_stock, (back_stock*buying_price_));
                     this.setVisible(false);
                     UI newUi = new UI();
@@ -628,7 +697,7 @@ public class Buy extends javax.swing.JFrame {
                     newUi.setVisible(true);
                     dispose();
                 } else {
-                    db.update_medicine_details(id,barcode_, medicine_code_, company_name_, lot_no_, medicine_type.getSelectedIndex(), back_stock, buying_price_, selling_price_, back_stock, unit_, buying_date, initailize_date, expired_date, size_, stock_type.getSelectedIndex());
+                    db.update_medicine_details(id,barcode_, medicine_code_, company_name_, lot_no_, medicine_type.getSelectedIndex(), back_stock, buying_price_, selling_price_, back_stock, unit_, buying_date, initailize_date, expired_date, size_, stock_type.getSelectedIndex(), pack_amount_, pack_price_ );
                     System.out.println("Medicine is updated");
                     this.setVisible(false);
                     Medicine_details_list newUi = new Medicine_details_list();
@@ -671,6 +740,14 @@ public class Buy extends javax.swing.JFrame {
     private void medicine_typeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_medicine_typeActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_medicine_typeActionPerformed
+
+    private void pack_amountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pack_amountActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_pack_amountActionPerformed
+
+    private void pack_priceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pack_priceActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_pack_priceActionPerformed
 
     /**
      * @param args the command line arguments
@@ -724,7 +801,7 @@ public class Buy extends javax.swing.JFrame {
     private javax.swing.JLabel code_err;
     private javax.swing.JLabel company_err;
     private javax.swing.JTextField company_name;
-    private javax.swing.JLabel exp_err;
+    private javax.swing.JLabel exp_err1;
     private javax.swing.JLabel ini_err;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
@@ -734,6 +811,8 @@ public class Buy extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -747,6 +826,10 @@ public class Buy extends javax.swing.JFrame {
     private javax.swing.JTextField medicine_code;
     private javax.swing.JTextField medicine_name;
     private javax.swing.JComboBox<String> medicine_type;
+    private javax.swing.JTextField pack_amount;
+    private javax.swing.JLabel pack_amount_err;
+    private javax.swing.JTextField pack_price;
+    private javax.swing.JLabel pack_price_err;
     private javax.swing.JLabel sell_err;
     private javax.swing.JTextField selling_price;
     private javax.swing.JTextField size;

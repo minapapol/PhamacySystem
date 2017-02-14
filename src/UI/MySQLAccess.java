@@ -270,7 +270,7 @@ public class MySQLAccess {
   public void insert_medicine_details(String barcode, String medicine_code, String company_name, String lot_no,
           int medicine_type, int back_stock, float buying_price, float selling_price, int amount, String unit,
           java.sql.Date buying_date, java.sql.Date initialize_date, java.sql.Date expired_date,
-          String size, int stock_type){
+          String size, int stock_type, int pack_amount, float pack_price){
 
     try {
       // This will load the MySQL driver, each DB has its own driver
@@ -286,9 +286,9 @@ public class MySQLAccess {
       // PreparedStatements can use variables and are more efficient
       preparedStatement = connect
           .prepareStatement("insert into phamacy.medicine_details "
-                  + "(barcode, medicine_code, company_name, medicine_type, lot_no, back_stock, front_stock, buying_date, buying_price, selling_price, amount, unit, initialize_date, expired_date, size, stock_type) "
+                  + "(barcode, medicine_code, company_name, medicine_type, lot_no, back_stock, front_stock, buying_date, buying_price, selling_price, amount, unit, initialize_date, expired_date, size, stock_type, pack_amount, pack_price) "
                   + "values "
-                  + "( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )");
+                  + "( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )");
       // "myuser, webpage, datum, summary, COMMENTS from feedback.comments");
       // Parameters start with 1
       preparedStatement.setString(1, barcode);
@@ -307,6 +307,8 @@ public class MySQLAccess {
       preparedStatement.setDate(14, expired_date);
       preparedStatement.setString(15, size);
       preparedStatement.setInt(16, stock_type);
+      preparedStatement.setInt(17, pack_amount);
+      preparedStatement.setFloat(18, pack_price);
       preparedStatement.executeUpdate();
 
     } catch (Exception e) {
@@ -329,7 +331,7 @@ public class MySQLAccess {
             // Statements allow to issue SQL queries to the database
             statement = connect.createStatement();
             resultSet = statement
-               .executeQuery("select * from phamacy.medicine_details where barcode = '" + barcode_ + "'");
+               .executeQuery("select * from phamacy.medicine_details where barcode = '" + barcode_ + "' AND amount > 0 ORDER BY expired_date");
             System.out.println("|   Buying Histories");
             while (resultSet.next()) {
                 lot_string += resultSet.getString("lot_no")+",";
@@ -384,7 +386,7 @@ public class MySQLAccess {
         System.out.println("|   No.---barcode---medicine_code---company_name---lot_no---back_stock---front_stock---buying_date---buying_price---selling_price---amount---unit---initialize_date---expired_date---size---type");
         int i = 1;
         while (resultSet.next()) {
-            String[] temp = new String[17];
+            String[] temp = new String[19];
             // It is possible to get the columns via name
             // also possible to get the columns via the column number
             // which starts at 1
@@ -459,6 +461,9 @@ public class MySQLAccess {
                     break;
             }
             System.out.println("---" + temp[16]);
+            
+            temp[17] = resultSet.getInt("pack_amount") + "";
+            temp[18] = resultSet.getFloat("pack_price") + "";
             
 
             medicine_details.add(temp);
@@ -567,7 +572,7 @@ public class MySQLAccess {
   public void update_medicine_details(int id, String barcode, String medicine_code, String company_name, String lot_no,
           int medicine_type, int back_stock, float buying_price, float selling_price, int amount, String unit,
           java.sql.Date buying_date, java.sql.Date initialize_date, java.sql.Date expired_date,
-          String size, int stock_type) {
+          String size, int stock_type, int pack_amount, float pack_price) {
       
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -591,7 +596,9 @@ public class MySQLAccess {
                         + "initialize_date = ?, "
                         + "expired_date = ?, "
                         + "size = ?, "
-                        + "stock_type = ? "
+                        + "stock_type = ?, "
+                        + "pack_amount = ?, "
+                        + "pack_price = ? "
                         + "where id = ? ; ");
 
             preparedStatement.setString(1, barcode);
@@ -607,7 +614,9 @@ public class MySQLAccess {
             preparedStatement.setDate(11, expired_date);
             preparedStatement.setString(12, size);
             preparedStatement.setInt(13, stock_type);
-            preparedStatement.setInt(14, id);
+            preparedStatement.setInt(14, pack_amount);
+            preparedStatement.setFloat(15, pack_price);
+            preparedStatement.setInt(16, id);
             preparedStatement.executeUpdate();
 
       } catch (Exception e) {
