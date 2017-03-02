@@ -111,6 +111,7 @@ public class Report extends javax.swing.JFrame {
         jComboBox1 = new javax.swing.JComboBox<>();
         type10 = new javax.swing.JButton();
         buying = new javax.swing.JButton();
+        itemSelectedButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -176,6 +177,11 @@ public class Report extends javax.swing.JFrame {
         });
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {  }));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
 
         type10.setText("ข.ย. 10");
         type10.addActionListener(new java.awt.event.ActionListener() {
@@ -191,6 +197,13 @@ public class Report extends javax.swing.JFrame {
             }
         });
 
+        itemSelectedButton.setText("Select");
+        itemSelectedButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemSelectedButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -201,6 +214,8 @@ public class Report extends javax.swing.JFrame {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 590, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(export)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(itemSelectedButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton1))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -248,7 +263,8 @@ public class Report extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
-                    .addComponent(export))
+                    .addComponent(export)
+                    .addComponent(itemSelectedButton))
                 .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
@@ -319,7 +335,7 @@ public class Report extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_type7ActionPerformed
-
+    
     private void sellingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sellingActionPerformed
         // TODO add your handling code here:
         report_type = "selling";
@@ -432,6 +448,43 @@ public class Report extends javax.swing.JFrame {
             new Object [][] {
             },
             new String [] {
+               "ลำดับ", "บาร์โค๊ด", "ชื่อสินค้า", "ครั้งที่ผลิต"
+            }
+        ));
+
+        DefaultTableModel model = (DefaultTableModel) listTable.getModel();
+        model.setNumRows(0);
+        
+        try {
+            MySQLAccess data_table = new MySQLAccess();
+            ArrayList<String[]> medicines = data_table.list_medicine_details("", "", "");
+            
+            for(int i = 0; i < medicines.size(); i++){
+                Object[] data_list = {
+                    i + 1, //order
+                    medicines.get(i)[1], // บาร์โค๊ด
+                    data_table.get_medicine_name(medicines.get(i)[1]),
+                    medicines.get(i)[4], // ครั้งที่ผลิต
+                };
+                
+                model.addRow(data_list);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_type11ActionPerformed
+
+    
+    private void listSellHistory (String barcode_, String lot_no_) {
+        // TODO add your handling code here:
+        report_type = "type11";
+        
+        topic.setText("แบบ ข.ย. 11");
+        
+        listTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+            },
+            new String [] {
                "ลำดับ","วัน เดือน ปี ที่ขาย" , "จำนวน/ ปริมาณ", "ผู้ซื้อ", "เลขที่ของครั้งที่ผลิต" 
             }
         ));
@@ -441,7 +494,7 @@ public class Report extends javax.swing.JFrame {
         
         try {
             MySQLAccess data_table = new MySQLAccess();
-            ArrayList<String[]> histories = data_table.list_sell_histories(barcode.getText());
+            ArrayList<String[]> histories = data_table.list_sell_histories(barcode_, lot_no_);
             
             for(int i = 0; i < histories.size(); i++){
                 Object[] data_list = {
@@ -457,8 +510,8 @@ public class Report extends javax.swing.JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }//GEN-LAST:event_type11ActionPerformed
-
+    }
+            
     private void exportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportActionPerformed
         // TODO add your handling code here:
         System.out.println("Excel exporting . . .");
@@ -505,22 +558,12 @@ public class Report extends javax.swing.JFrame {
         
         try {
             MySQLAccess data_table = new MySQLAccess();
-            ArrayList<String[]> histories = data_table.list_sell_histories(barcode.getText());
             
-            for(int i = 0; i < histories.size(); i++){
-                Object[] data_list = {
-                    i + 1, //order
-                    histories.get(i)[3], // selling date
-                    histories.get(i)[4], // amount/size
-                    "",
-                    histories.get(i)[2],
-                };
-    
-                model.addRow(data_list);
-            }
-
-            jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(data_table.list_lot(barcode.getText())));
-           
+            jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(data_table.list_lot_report(barcode.getText())));
+            
+            String lot_no_ = jComboBox1.getSelectedItem().toString();
+            
+            listSellHistory(barcode.getText(), lot_no_);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -639,6 +682,42 @@ public class Report extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_buyingActionPerformed
 
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel) listTable.getModel();
+        model.setNumRows(0);
+
+        String lot_no_ = jComboBox1.getSelectedItem().toString();
+            
+        listSellHistory(barcode.getText(), lot_no_);
+
+        
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void itemSelectedButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemSelectedButtonActionPerformed
+        // TODO add your handling code here:
+        if (report_type.equals("type11")) {
+            String barcode_ = listTable.getValueAt(listTable.getSelectedRow(), 1).toString();
+            
+            barcode.setText (barcode_);
+            try {
+                MySQLAccess data_table = new MySQLAccess();
+
+                jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(data_table.list_lot_report(barcode_)));
+                
+                jComboBox1.setSelectedItem(listTable.getValueAt(listTable.getSelectedRow(), 3).toString());
+                
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            
+            String lot_no_ = listTable.getValueAt(listTable.getSelectedRow(), 3).toString();
+            
+            listSellHistory(barcode_, lot_no_);
+            
+        }
+    }//GEN-LAST:event_itemSelectedButtonActionPerformed
+
     public void exportToExcel(javax.swing.JTable table, String import_file, String export_file) throws IOException, BiffException, WriteException {
         System.out.println("Write Start");
         
@@ -751,6 +830,7 @@ public class Report extends javax.swing.JFrame {
     private javax.swing.JTextField barcode;
     private javax.swing.JButton buying;
     private javax.swing.JButton export;
+    private javax.swing.JButton itemSelectedButton;
     private javax.swing.JButton jButton1;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JScrollPane jScrollPane1;
