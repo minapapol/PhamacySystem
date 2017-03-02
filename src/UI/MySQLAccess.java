@@ -508,6 +508,8 @@ public class MySQLAccess {
             String unit = resultSet.getString("unit");
             Date initialize_date = resultSet.getDate("initialize_date");
             Date expired_date = resultSet.getDate("expired_date");
+            int pack_amount = resultSet.getInt("pack_amount");
+            float pack_price = resultSet.getFloat("pack_price");
             String type = "";
             switch(resultSet.getInt("medicine_type")){
                 case 0:
@@ -528,7 +530,71 @@ public class MySQLAccess {
                     buying_price, selling_price,
                     type, barcode, medicine_code, company_name, 
                     lot_no, size, unit, 
-                    buying_date, initialize_date, expired_date);
+                    buying_date, initialize_date, expired_date,
+                    pack_amount, pack_price);
+            
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    } finally {
+        close();
+    }
+      
+    return md;
+  }
+  
+    public MedicineDetail get_medicine_detail(String barcode, String lot){
+      MedicineDetail md = null;
+      try {
+        Class.forName("com.mysql.jdbc.Driver");
+          // Setup the connection with the DB
+        connect = DriverManager
+                .getConnection("jdbc:mysql://localhost/phamacy?"
+                        + "user=root&password=root");
+
+        // Statements allow to issue SQL queries to the database
+        statement = connect.createStatement();
+        resultSet = statement
+            .executeQuery("select * from phamacy.medicine_details where barcode = '" + barcode + "' AND lot_no = '" + lot + "'");
+
+        while (resultSet.next()) {
+            int id = resultSet.getInt("id");
+            String medicine_code = resultSet.getString("medicine_code");
+            String company_name = resultSet.getString("company_name");
+            String size = resultSet.getString("size");
+            int back_stock = resultSet.getInt("back_stock");
+            int front_stock = resultSet.getInt("front_stock");
+            Date buying_date = resultSet.getDate("buying_date");
+            float buying_price = resultSet.getFloat("buying_price");
+            float selling_price = resultSet.getFloat("selling_price");
+            int amount = resultSet.getInt("amount");
+            String unit = resultSet.getString("unit");
+            Date initialize_date = resultSet.getDate("initialize_date");
+            Date expired_date = resultSet.getDate("expired_date");
+            int pack_amount = resultSet.getInt("pack_amount");
+            float pack_price = resultSet.getFloat("pack_price");
+            String type = "";
+            switch(resultSet.getInt("medicine_type")){
+                case 0:
+                    type = "ยาอันตราย";
+                    break;
+                case 1:
+                    type = "ยาควบคุมพิเศษ";
+                    break;
+                case 2:
+                    type = "ยาทั่วไป";
+                    break;
+                case 3:
+                    type = "อื่นๆ";
+                    break;
+            }
+            
+            md = new MedicineDetail(id, back_stock, front_stock, amount,
+                    buying_price, selling_price,
+                    type, barcode, medicine_code, company_name, 
+                    lot, size, unit, 
+                    buying_date, initialize_date, expired_date,
+                    pack_amount, pack_price);
             
         }
     } catch (Exception e) {
@@ -728,12 +794,12 @@ public class MySQLAccess {
         // Statements allow to issue SQL queries to the database
         statement = connect.createStatement();
         resultSet = statement
-           .executeQuery("select * from phamacy.sell_histories");
+           .executeQuery("select * from phamacy.sell_histories ORDER BY id DESC");
         System.out.println("|   Buying Histories");
         System.out.println("|   No.---barcode---lot_no---selling_date---amount---total");
-        int i = 1;
+
         while (resultSet.next()) {
-            String[] temp = new String[6];
+            String[] temp = new String[7];
             // It is possible to get the columns via name
             // also possible to get the columns via the column number
             // which starts at 1
@@ -744,6 +810,7 @@ public class MySQLAccess {
             Date selling_date = resultSet.getDate("selling_date");
             int amount= resultSet.getInt("amount");
             float total = resultSet.getFloat("total");
+            String discount = resultSet.getString("discount");
 
             temp[0] = id + "";
             System.out.print("---" + temp[0]);
@@ -757,9 +824,11 @@ public class MySQLAccess {
             System.out.println("---" + temp[4]);
             temp[5] = total + "";
             System.out.print("---" + temp[5]);
+            temp[6] = discount + "";
+            System.out.print("---" + temp[6]);
 
             histories.add(temp);
-            i++;
+
         }
 
     } catch (Exception e){
@@ -784,12 +853,11 @@ public class MySQLAccess {
         // Statements allow to issue SQL queries to the database
         statement = connect.createStatement();
         resultSet = statement
-           .executeQuery("select * from phamacy.sell_histories where barcode = " + barcode_);
+           .executeQuery("select * from phamacy.sell_histories where barcode = " + barcode_ +  "ORDER BY id DESC");
         System.out.println("|   Selling Histories");
         System.out.println("|   No.---barcode---lot_no---selling_date---amount---total");
-        int i = 1;
         while (resultSet.next()) {
-            String[] temp = new String[6];
+            String[] temp = new String[7];
             // It is possible to get the columns via name
             // also possible to get the columns via the column number
             // which starts at 1
@@ -800,22 +868,25 @@ public class MySQLAccess {
             Date selling_date = resultSet.getDate("selling_date");
             int amount= resultSet.getInt("amount");
             float total = resultSet.getFloat("total");
+            String discount = resultSet.getString("discount");
 
             temp[0] = id + "";
             System.out.print("---" + temp[0]);
             temp[1] = barcode;
-            System.out.print("---" + temp[1]);
+            System.out.println("---" + temp[1]);
             temp[2] = lot_no;
-            System.out.print("---" + temp[2]);
+            System.out.println("---" + temp[2]);
             temp[3] = selling_date + "";
             System.out.print("---" + temp[3]);
             temp[4] = amount + "" ;
-            System.out.print("---" + temp[4]);
+            System.out.println("---" + temp[4]);
             temp[5] = total + "";
-            System.out.println("---" + temp[5]);
+            System.out.print("---" + temp[5]);
+            temp[6] = discount + "";
+            System.out.print("---" + temp[6]);
 
             histories.add(temp);
-            i++;
+
         }
 
     } catch (Exception e){
@@ -828,6 +899,69 @@ public class MySQLAccess {
 
   }
 
+  public ArrayList<String[]> list_sell_type10_histories(){
+    ArrayList<String[]> histories = new ArrayList<String[]>();
+    try {
+        Class.forName("com.mysql.jdbc.Driver");
+        // Setup the connection with the DB
+        connect = DriverManager
+                .getConnection("jdbc:mysql://localhost/phamacy?"
+                        + "user=root&password=root");
+
+        // Statements allow to issue SQL queries to the database
+        statement = connect.createStatement();
+        ResultSet resultSet2 = statement
+           .executeQuery("select * from phamacy.sell_histories");
+        System.out.println("|   Selling Histories");
+        System.out.println("|   No.---barcode---lot_no---selling_date---amount---total");
+        
+        while (resultSet2.next()) {
+            String[] temp = new String[7];
+            // It is possible to get the columns via name
+            // also possible to get the columns via the column number
+            // which starts at 1
+            // e.g. resultSet.getSTring(2);
+            int id = resultSet2.getInt("id");
+            String barcode = resultSet2.getString("barcode");
+            String lot_no = resultSet2.getString("lot_no");
+            Date selling_date = resultSet2.getDate("selling_date");
+            int amount= resultSet2.getInt("amount");
+            float total = resultSet2.getFloat("total");
+            String discount = resultSet2.getString("discount");
+            
+            MedicineDetail md = get_medicine_detail(barcode, lot_no);
+            
+            if(!md.getType().equals("อื่นๆ")) {
+                temp[0] = id + "";
+                System.out.print("---" + temp[0]);
+                temp[1] = barcode;
+                System.out.println("---" + temp[1]);
+                temp[2] = lot_no;
+                System.out.println("---" + temp[2]);
+                temp[3] = selling_date + "";
+                System.out.print("---" + temp[3]);
+                temp[4] = amount + "" ;
+                System.out.println("---" + temp[4]);
+                temp[5] = total + "";
+                System.out.print("---" + temp[5]);
+                temp[6] = discount + "";
+                System.out.print("---" + temp[6]);
+
+                histories.add(temp);
+            }
+
+        }
+
+    } catch (Exception e){
+        e.printStackTrace();
+    } finally {
+        close();
+    }
+
+    return histories;
+
+  }
+  
   public void delete_sell_histories(int id){
      try {
         Class.forName("com.mysql.jdbc.Driver");

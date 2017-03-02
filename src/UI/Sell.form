@@ -109,10 +109,11 @@
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="jButton3" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jButton1" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="removeSellList" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
                               <Component id="finishedButton" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="jButton1" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
@@ -194,6 +195,7 @@
                   <Component id="jButton3" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jButton1" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="finishedButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="removeSellList" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -460,6 +462,14 @@
     <Component class="javax.swing.JTextField" name="staff_code">
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="staff_codeActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="removeSellList">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&#xe40;&#xe2d;&#xe32;&#xe2d;&#xe2d;&#xe01;"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="removeSellListActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

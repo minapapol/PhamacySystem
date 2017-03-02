@@ -72,6 +72,7 @@ public class Sell extends javax.swing.JFrame {
         report_2 = new javax.swing.JLabel();
         finishedButton = new javax.swing.JButton();
         staff_code = new javax.swing.JTextField();
+        removeSellList = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -235,6 +236,13 @@ public class Sell extends javax.swing.JFrame {
             }
         });
 
+        removeSellList.setText("เอาออก");
+        removeSellList.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeSellListActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -306,10 +314,11 @@ public class Sell extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jButton3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(removeSellList)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(finishedButton)
-                                .addGap(0, 0, Short.MAX_VALUE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton1)))
                         .addContainerGap())))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
@@ -371,7 +380,8 @@ public class Sell extends javax.swing.JFrame {
                     .addComponent(addMore)
                     .addComponent(jButton3)
                     .addComponent(jButton1)
-                    .addComponent(finishedButton))
+                    .addComponent(finishedButton)
+                    .addComponent(removeSellList))
                 .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
@@ -676,6 +686,17 @@ public class Sell extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_staff_codeActionPerformed
 
+    private void removeSellListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeSellListActionPerformed
+        // TODO add your handling code here:
+        // TODO add your handling code here:
+        int selRow = listTable.getSelectedRow();
+        System.out.println(selRow + "");
+        DefaultTableModel model = (DefaultTableModel) listTable.getModel();
+        
+        model.removeRow(selRow);
+        
+    }//GEN-LAST:event_removeSellListActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -748,6 +769,7 @@ public class Sell extends javax.swing.JFrame {
     private javax.swing.JTextField medicine_code;
     private javax.swing.JTextField medicine_name;
     private javax.swing.JTextField price;
+    private javax.swing.JButton removeSellList;
     private javax.swing.JLabel report_1;
     private javax.swing.JLabel report_2;
     private javax.swing.JTextField staff_code;
