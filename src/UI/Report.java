@@ -796,6 +796,8 @@ public class Report extends javax.swing.JFrame {
         WritableSheet sheet = workbook.getSheet("First Sheet");
         
         Label label;
+        float total = 0f, discount = 0f;
+        int i;
         switch(report_type) {
             case "type7":
                 exportToExcel(listTable,"D:\\reports\\templates\\7_template.xls", "D:\\reports\\7\\1.xls");
@@ -824,23 +826,34 @@ public class Report extends javax.swing.JFrame {
                 label = new Label(0, 1, dateTime.getDate()+"/"+(dateTime.getMonth()+1)+"/"+(dateTime.getYear() + 1900)); 
                 sheet.addCell(label);
                 
-                for (int i = 0; i < table.getRowCount(); i++ ) {
+                for (i = 0; i < table.getRowCount(); i++ ) {
                     // order
                     addCell(sheet, Border.ALL, BorderLineStyle.THIN, 0, (i + 3), (i + 1) + "");
                     // name
                     addCell(sheet, Border.ALL, BorderLineStyle.THIN, 1, i + 3, (String) table.getValueAt(i, 1));
                     // amount
-                    addCell(sheet, Border.ALL, BorderLineStyle.THIN, 1, i + 3, (String) table.getValueAt(i, 2));
+                    addCell(sheet, Border.ALL, BorderLineStyle.THIN, 2, i + 3, (String) table.getValueAt(i, 2));
                     // total before discount
-                    addCell(sheet, Border.ALL, BorderLineStyle.THIN, 1, i + 3, (String) table.getValueAt(i, 4));
-                    // discount
-                    addCell(sheet, Border.ALL, BorderLineStyle.THIN, 1, i + 3, (String) table.getValueAt(i, 5));
+                    addCell(sheet, Border.ALL, BorderLineStyle.THIN, 3, i + 3, (String) table.getValueAt(i, 3));
+                    total = Float.parseFloat ((String) table.getValueAt(i, 3) );
                     // real total
-                    addCell(sheet, Border.ALL, BorderLineStyle.THIN, 1, i + 3, (String) table.getValueAt(i, 6));
-                    // ps.
-                    addCell(sheet, Border.ALL, BorderLineStyle.THIN, 1, i + 3, (String) table.getValueAt(i, 7));
+                    addCell(sheet, Border.ALL, BorderLineStyle.THIN, 5, i + 3, (String) table.getValueAt(i, 5));
+                    if ( !((String) table.getValueAt(i, 4)).split ("-")[0].equals("0.0") ) { 
+                        // discount
+                        addCell(sheet, Border.ALL, BorderLineStyle.THIN, 4, i + 3, (String) table.getValueAt(i, 4));
+                        discount = Float.parseFloat ((String) table.getValueAt(i, 4) );
+                        // ps. 
+                        addCell(sheet, Border.ALL, BorderLineStyle.THIN, 6, i + 3, (String) table.getValueAt(i, 6));
+                    } else {
+                        addCell(sheet, Border.ALL, BorderLineStyle.THIN, 4, i + 3, "");
+                        addCell(sheet, Border.ALL, BorderLineStyle.THIN, 6, i + 3, "");
+                    }
                 }
-        
+                
+                //summary 3, 4, 5
+                addCell(sheet, Border.ALL, BorderLineStyle.THIN, 3, i + 3, total + "");
+                addCell(sheet, Border.ALL, BorderLineStyle.THIN, 4, i + 3, discount + "");
+                addCell(sheet, Border.ALL, BorderLineStyle.THIN, 5, i + 3, (total - discount) + "");
                 break; 
         }
                 
