@@ -85,5 +85,13 @@ public class MedicineDetail {
     public String getExpiredDateString() {
         return expired_date.toString();
     }
+
+    String getMedicineSize() {
+        return size;
+    }
+
+    String getUnit() {
+        return unit;
+    }
     
 }

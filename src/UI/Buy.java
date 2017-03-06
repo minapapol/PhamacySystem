@@ -39,6 +39,7 @@ public class Buy extends javax.swing.JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        
         company_name.setText(md.company_name);
         lot_no.setText(md.lot_no);
         selling_price.setText(md.selling_price+"");
@@ -235,6 +236,12 @@ public class Buy extends javax.swing.JFrame {
         addButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addButtonActionPerformed(evt);
+            }
+        });
+
+        DP_buy.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DP_buyActionPerformed(evt);
             }
         });
 
@@ -527,7 +534,6 @@ public class Buy extends javax.swing.JFrame {
                             .addComponent(jLabel14)
                             .addComponent(DP_exp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(exp_err1))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(stock_type, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel15))
@@ -561,10 +567,17 @@ public class Buy extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        UI newUi = new UI();
-        newUi.setLocationRelativeTo(this);
-        newUi.setVisible(true);
-        dispose();
+        if (addButton.getText().equals("Add")) {
+            UI newUi = new UI();
+            newUi.setLocationRelativeTo(this);
+            newUi.setVisible(true);
+            dispose();
+        } else {
+            Medicine_details_list newUi = new Medicine_details_list();
+            newUi.setLocationRelativeTo(this);
+            newUi.setVisible(true);
+            dispose();
+        }
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -748,6 +761,10 @@ public class Buy extends javax.swing.JFrame {
     private void pack_priceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pack_priceActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_pack_priceActionPerformed
+
+    private void DP_buyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DP_buyActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_DP_buyActionPerformed
 
     /**
      * @param args the command line arguments

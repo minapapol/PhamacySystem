@@ -810,7 +810,7 @@ public class MySQLAccess {
     }
   }
 
-  public ArrayList<String[]> list_sell_histories(){
+  public ArrayList<String[]> list_sell_histories(java.sql.Date selectedDate){
     ArrayList<String[]> histories = new ArrayList<String[]>();
     try {
         Class.forName("com.mysql.jdbc.Driver");
@@ -822,7 +822,7 @@ public class MySQLAccess {
         // Statements allow to issue SQL queries to the database
         statement = connect.createStatement();
         resultSet = statement
-           .executeQuery("select * from phamacy.sell_histories ORDER BY id DESC");
+           .executeQuery("select * from phamacy.sell_histories WHERE selling_date = '" + selectedDate + "' ORDER BY id ASC");
         System.out.println("|   Buying Histories");
         System.out.println("|   No.---barcode---lot_no---selling_date---amount---total");
 
@@ -868,66 +868,8 @@ public class MySQLAccess {
     return histories;
 
   }
-
-  public ArrayList<String[]> list_sell_histories(String barcode_){
-    ArrayList<String[]> histories = new ArrayList<String[]>();
-    try {
-        Class.forName("com.mysql.jdbc.Driver");
-        // Setup the connection with the DB
-        connect = DriverManager
-                .getConnection("jdbc:mysql://localhost/phamacy?"
-                        + "user=root&password=root");
-
-        // Statements allow to issue SQL queries to the database
-        statement = connect.createStatement();
-        resultSet = statement
-           .executeQuery("select * from phamacy.sell_histories where barcode = " + barcode_ +  "ORDER BY id DESC");
-        System.out.println("|   Selling Histories");
-        System.out.println("|   No.---barcode---lot_no---selling_date---amount---total");
-        while (resultSet.next()) {
-            String[] temp = new String[7];
-            // It is possible to get the columns via name
-            // also possible to get the columns via the column number
-            // which starts at 1
-            // e.g. resultSet.getSTring(2);
-            int id = resultSet.getInt("id");
-            String barcode = resultSet.getString("barcode");
-            String lot_no = resultSet.getString("lot_no");
-            Date selling_date = resultSet.getDate("selling_date");
-            int amount= resultSet.getInt("amount");
-            float total = resultSet.getFloat("total");
-            String discount = resultSet.getString("discount");
-
-            temp[0] = id + "";
-            System.out.print("---" + temp[0]);
-            temp[1] = barcode;
-            System.out.println("---" + temp[1]);
-            temp[2] = lot_no;
-            System.out.println("---" + temp[2]);
-            temp[3] = selling_date + "";
-            System.out.print("---" + temp[3]);
-            temp[4] = amount + "" ;
-            System.out.println("---" + temp[4]);
-            temp[5] = total + "";
-            System.out.print("---" + temp[5]);
-            temp[6] = discount + "";
-            System.out.print("---" + temp[6]);
-
-            histories.add(temp);
-
-        }
-
-    } catch (Exception e){
-        e.printStackTrace();
-    } finally {
-        close();
-    }
-
-    return histories;
-
-  }
   
-  public ArrayList<String[]> list_sell_histories(String barcode_, String lot_no_){
+  public ArrayList<String[]> list_sell_histories_per_item(String barcode_, String lot_no_){
     ArrayList<String[]> histories = new ArrayList<String[]>();
     try {
         Class.forName("com.mysql.jdbc.Driver");
@@ -939,7 +881,7 @@ public class MySQLAccess {
         // Statements allow to issue SQL queries to the database
         statement = connect.createStatement();
         resultSet = statement
-           .executeQuery("select * from phamacy.sell_histories where barcode = " + barcode_ +  " AND lot_no = " + lot_no_ + " ORDER BY id DESC");
+           .executeQuery("select * from phamacy.sell_histories where barcode = " + barcode_ +  " AND lot_no = " + lot_no_ + " ORDER BY id ASC");
         System.out.println("|   Selling Histories");
         System.out.println("|   No.---barcode---lot_no---selling_date---amount---total");
         while (resultSet.next()) {
@@ -985,7 +927,7 @@ public class MySQLAccess {
 
   }
 
-  public ArrayList<String[]> list_sell_type10_histories(){
+  public ArrayList<String[]> list_sell_type10_histories(java.sql.Date selectedDate){
     ArrayList<String[]> histories = new ArrayList<String[]>();
     try {
         Class.forName("com.mysql.jdbc.Driver");
@@ -997,7 +939,7 @@ public class MySQLAccess {
         // Statements allow to issue SQL queries to the database
         statement = connect.createStatement();
         ResultSet resultSet2 = statement
-           .executeQuery("select * from phamacy.sell_histories");
+           .executeQuery("select * from phamacy.sell_histories WHERE selling_date = '" + selectedDate + "' ORDER BY id ASC");
         System.out.println("|   Selling Histories");
         System.out.println("|   No.---barcode---lot_no---selling_date---amount---total");
         
@@ -1018,6 +960,71 @@ public class MySQLAccess {
             MedicineDetail md = get_medicine_detail(barcode, lot_no);
             
             if(!md.getType().equals("อื่นๆ")) {
+                temp[0] = id + "";
+                System.out.print("---" + temp[0]);
+                temp[1] = barcode;
+                System.out.println("---" + temp[1]);
+                temp[2] = lot_no;
+                System.out.println("---" + temp[2]);
+                temp[3] = selling_date + "";
+                System.out.print("---" + temp[3]);
+                temp[4] = amount + "" ;
+                System.out.println("---" + temp[4]);
+                temp[5] = total + "";
+                System.out.print("---" + temp[5]);
+                temp[6] = discount + "";
+                System.out.print("---" + temp[6]);
+
+                histories.add(temp);
+            }
+
+        }
+
+    } catch (Exception e){
+        e.printStackTrace();
+    } finally {
+        close();
+    }
+
+    return histories;
+
+  }
+  
+    public ArrayList<String[]> list_sell_type7_histories(java.sql.Date selectedDate){
+    ArrayList<String[]> histories = new ArrayList<String[]>();
+    try {
+        Class.forName("com.mysql.jdbc.Driver");
+        // Setup the connection with the DB
+        connect = DriverManager
+                .getConnection("jdbc:mysql://localhost/phamacy?"
+                        + "user=root&password=root");
+
+        // Statements allow to issue SQL queries to the database
+        statement = connect.createStatement();
+        ResultSet resultSet2 = statement
+           .executeQuery("select * from phamacy.sell_histories WHERE selling_date = '" + selectedDate + "' ORDER BY id ASC");
+        System.out.println("|   Selling Histories");
+        System.out.println("|   No.---barcode---lot_no---selling_date---amount---total");
+        
+        while (resultSet2.next()) {
+            String[] temp = new String[7];
+            // It is possible to get the columns via name
+            // also possible to get the columns via the column number
+            // which starts at 1
+            // e.g. resultSet.getSTring(2);
+            int id = resultSet2.getInt("id");
+            String barcode = resultSet2.getString("barcode");
+            String lot_no = resultSet2.getString("lot_no");
+            Date selling_date = resultSet2.getDate("selling_date");
+            int amount= resultSet2.getInt("amount");
+            float total = resultSet2.getFloat("total");
+            String discount = resultSet2.getString("discount");
+            
+            MedicineDetail md = get_medicine_detail(barcode, lot_no);
+            
+            System.out.println (md.getType());
+            
+            if(md.getType().equals("ยาอันตราย") || md.getType().equals("ยาควบคุมพิเศษ")) {
                 temp[0] = id + "";
                 System.out.print("---" + temp[0]);
                 temp[1] = barcode;
@@ -1105,7 +1112,7 @@ public class MySQLAccess {
     }
   }
 
-  public ArrayList<String[]> list_buy_histories(){
+  public ArrayList<String[]> list_buy_histories(java.sql.Date selectedDate){
     ArrayList<String[]> histories = new ArrayList<String[]>();
     try {
         Class.forName("com.mysql.jdbc.Driver");
@@ -1117,7 +1124,7 @@ public class MySQLAccess {
         // Statements allow to issue SQL queries to the database
         statement = connect.createStatement();
         resultSet = statement
-           .executeQuery("select * from phamacy.buy_histories");
+           .executeQuery("select * from phamacy.buy_histories WHERE buying_date = '" + selectedDate + "' ORDER BY id ASC");
         System.out.println("|   Buying Histories");
         System.out.println("|   No.---detail_id---buying_date---amount---total");
         int i = 1;

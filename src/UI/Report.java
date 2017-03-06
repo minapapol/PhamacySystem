@@ -42,6 +42,9 @@ public class Report extends javax.swing.JFrame {
     public Report() {
         initComponents();
         
+        java.sql.Date report_date_ = new java.sql.Date(new Date().getTime());
+        report_date.setDate(report_date_);
+        
         report_type = "selling";
         
         DefaultTableModel model = (DefaultTableModel) listTable.getModel();
@@ -49,39 +52,40 @@ public class Report extends javax.swing.JFrame {
         
         try {
             MySQLAccess data_table = new MySQLAccess();
-            ArrayList<String[]> histories = data_table.list_sell_histories();
+            ArrayList<String[]> histories = data_table.list_sell_histories(report_date_);
             //"ลำดับ","ชื่อสินค้า" , "จำนวน", "จำนวนเงิน", "ส่วนลด" ,"รับสุทธิ", "หมายเหตุ"
-        
-            String barcodeTemp = histories.get(0)[1];
-            String name = data_table.get_medicine_name(histories.get(0)[1]);
-            for(int i = 0; i < histories.size(); i++){
-                String[] data_list = new String[7];
-                if (i != 0 && !barcodeTemp.equals(histories.get(i)[1])) {
-                    barcodeTemp = histories.get(i)[1];
-                    name = data_table.get_medicine_name(histories.get(i)[1]);
+            if (histories.size() > 0) {
+                String barcodeTemp = histories.get(0)[1];
+                String name = data_table.get_medicine_name(histories.get(0)[1]);
+                for(int i = 0; i < histories.size(); i++){
+                    String[] data_list = new String[7];
+                    if (i != 0 && !barcodeTemp.equals(histories.get(i)[1])) {
+                        barcodeTemp = histories.get(i)[1];
+                        name = data_table.get_medicine_name(histories.get(i)[1]);
+                    }
+
+                    int amount = Integer.parseInt(histories.get(i)[4]);
+                    float total = Float.parseFloat(histories.get(i)[5]);
+                    String discount = histories.get(i)[6];
+
+                    data_list[0] = histories.get(i)[0] + "";
+                    data_list[1] = name + "";
+                    data_list[2] = amount + "";
+                    String[] temp = discount.split("-");
+                    if (temp [1].equals("บาท") && !temp[0].equals("")) {
+                        data_list[3] = "" + (total + Float.parseFloat(temp[0]));
+                    } else if (temp[1].equals("%") && !temp[0].equals("")) {
+                        data_list[3] = "" + ((total/Float.parseFloat(temp[0])) * 100); 
+                    } else {
+                        data_list[3] = "" + total;
+                    }
+
+                    data_list[4] = discount;
+                    data_list[5] = "" + total;
+                    data_list[6] = "ส่วนลด " + discount;
+
+                    model.addRow(data_list);
                 }
-                
-                int amount = Integer.parseInt(histories.get(i)[4]);
-                float total = Float.parseFloat(histories.get(i)[5]);
-                String discount = histories.get(i)[6];
-                
-                data_list[0] = histories.get(i)[0] + "";
-                data_list[1] = name + "";
-                data_list[2] = amount + "";
-                String[] temp = discount.split("-");
-                if (temp [1].equals("บาท") && !temp[0].equals("")) {
-                    data_list[3] = "" + (total + Float.parseFloat(temp[0]));
-                } else if (temp[1].equals("%") && !temp[0].equals("")) {
-                    data_list[3] = "" + ((total/Float.parseFloat(temp[0])) * 100); 
-                } else {
-                    data_list[3] = "" + total;
-                }
-                
-                data_list[4] = discount;
-                data_list[5] = "" + total;
-                data_list[6] = "ส่วนลด " + discount;
-                
-                model.addRow(data_list);
             } 
         } catch (Exception e) {
             e.printStackTrace();
@@ -112,6 +116,8 @@ public class Report extends javax.swing.JFrame {
         type10 = new javax.swing.JButton();
         buying = new javax.swing.JButton();
         itemSelectedButton = new javax.swing.JButton();
+        report_date = new org.jdesktop.swingx.JXDatePicker();
+        reportByDate = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -204,6 +210,19 @@ public class Report extends javax.swing.JFrame {
             }
         });
 
+        report_date.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                report_dateActionPerformed(evt);
+            }
+        });
+
+        reportByDate.setText("รายงานตามวันที่");
+        reportByDate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reportByDateActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -219,11 +238,6 @@ public class Report extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton1))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(barcode, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(298, 298, 298))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(type7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(type9)
@@ -235,7 +249,15 @@ public class Report extends javax.swing.JFrame {
                         .addComponent(selling)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(buying)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(barcode, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(77, 77, 77)
+                        .addComponent(reportByDate)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(report_date, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
@@ -246,10 +268,12 @@ public class Report extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(60, Short.MAX_VALUE)
+                .addContainerGap(58, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(barcode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(report_date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(reportByDate))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(selling)
@@ -272,6 +296,8 @@ public class Report extends javax.swing.JFrame {
                     .addComponent(topic, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(339, Short.MAX_VALUE)))
         );
+
+        reportByDate.setSelected(true);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -303,7 +329,8 @@ public class Report extends javax.swing.JFrame {
         
         try {
             MySQLAccess data_table = new MySQLAccess();
-            ArrayList<String[]> histories = data_table.list_sell_histories();
+            java.sql.Date report_date_ = new java.sql.Date(report_date.getDate().getTime() );
+            ArrayList<String[]> histories = data_table.list_sell_type7_histories(report_date_);
             
             for(int i = 0; i < histories.size(); i++){
                 Object[] data_list = {
@@ -355,40 +382,45 @@ public class Report extends javax.swing.JFrame {
         
         try {
             MySQLAccess data_table = new MySQLAccess();
-            ArrayList<String[]> histories = data_table.list_sell_histories();
-            //"ลำดับ","ชื่อสินค้า" , "จำนวน", "จำนวนเงิน", "ส่วนลด" ,"รับสุทธิ", "หมายเหตุ"
-        
-            String barcodeTemp = histories.get(0)[1];
-            String name = data_table.get_medicine_name(histories.get(0)[1]);
-            for(int i = 0; i < histories.size(); i++){
-                String[] data_list = new String[7];
-                if (i != 0 && !barcodeTemp.equals(histories.get(i)[1])) {
-                    barcodeTemp = histories.get(i)[1];
-                    name = data_table.get_medicine_name(histories.get(i)[1]);
-                }
+            java.sql.Date report_date_ = new java.sql.Date(report_date.getDate().getTime() );
+              
+            ArrayList<String[]> histories;
+            histories = data_table.list_sell_histories(report_date_);
+                //"ลำดับ","ชื่อสินค้า" , "จำนวน", "จำนวนเงิน", "ส่วนลด" ,"รับสุทธิ", "หมายเหตุ"
                 
-                int amount = Integer.parseInt(histories.get(i)[4]);
-                float total = Float.parseFloat(histories.get(i)[5]);
-                String discount = histories.get(i)[6];
-                
-                data_list[0] = histories.get(i)[0] + "";
-                data_list[1] = name + "";
-                data_list[2] = amount + "";
-                String[] temp = discount.split("-");
-                if (temp [1].equals("บาท") && !temp[0].equals("")) {
-                    data_list[3] = "" + (total + Float.parseFloat(temp[0]));
-                } else if (temp[1].equals("%") && !temp[0].equals("")) {
-                    data_list[3] = "" + ((total/Float.parseFloat(temp[0])) * 100); 
-                } else {
-                    data_list[3] = "" + total;
-                }
-                
-                data_list[4] = discount;
-                data_list[5] = "" + total;
-                data_list[6] = "ส่วนลด " + discount;
-                
-                model.addRow(data_list);
-            } 
+            if (histories.size() > 0) {
+                String barcodeTemp = histories.get(0)[1];
+                String name = data_table.get_medicine_name(histories.get(0)[1]);
+                for(int i = 0; i < histories.size(); i++){
+                    String[] data_list = new String[7];
+                    if (i != 0 && !barcodeTemp.equals(histories.get(i)[1])) {
+                        barcodeTemp = histories.get(i)[1];
+                        name = data_table.get_medicine_name(histories.get(i)[1]);
+                    }
+
+                    int amount = Integer.parseInt(histories.get(i)[4]);
+                    float total = Float.parseFloat(histories.get(i)[5]);
+                    String discount = histories.get(i)[6];
+
+                    data_list[0] = histories.get(i)[0] + "";
+                    data_list[1] = name + "";
+                    data_list[2] = amount + "";
+                    String[] temp = discount.split("-");
+                    if (temp [1].equals("บาท") && !temp[0].equals("")) {
+                        data_list[3] = "" + (total + Float.parseFloat(temp[0]));
+                    } else if (temp[1].equals("%") && !temp[0].equals("")) {
+                        data_list[3] = "" + ((total/Float.parseFloat(temp[0])) * 100); 
+                    } else {
+                        data_list[3] = "" + total;
+                    }
+
+                    data_list[4] = discount;
+                    data_list[5] = "" + total;
+                    data_list[6] = "ส่วนลด " + discount;
+
+                    model.addRow(data_list);
+                } 
+            }  
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -413,21 +445,21 @@ public class Report extends javax.swing.JFrame {
         
         try {
             MySQLAccess data_table = new MySQLAccess();
-            ArrayList<String[]> histories = data_table.list_buy_histories();                
+            java.sql.Date report_date_ = new java.sql.Date(report_date.getDate().getTime() );
+            ArrayList<String[]> histories = data_table.list_buy_histories(report_date_);                
             
             for(int i = 0; i < histories.size(); i++){
                 
-                ArrayList<String[]> datas = data_table.list_medicine_details(histories.get(i)[1], histories.get(i)[2], "");
-                
+                MedicineDetail md = data_table.get_medicine_detail(histories.get(i)[1], histories.get(i)[2]);
                 Object[] data_list = {
                     i + 1, //order
                     histories.get(i)[3], // buying date
-                    datas.get(0)[3], // company name 
+                    md.getCompanyName(), // company name 
                     data_table.get_medicine_name(histories.get(i)[1]), // medicine name
                     histories.get(i)[2], // lot no
-                    histories.get(i)[4] + "/" + datas.get(0)[14], // amount/size
-                    datas.get(0)[11] + "/" + datas.get(0)[13],   // price/unit
-                    (Float.parseFloat(histories.get(i)[4]) * Float.parseFloat(datas.get(0)[11])), // total
+                    histories.get(i)[4] + "/" + md.getMedicineSize(), // amount/size
+                    md.pricePerUnit() + "/" + md.getUnit(),   // price/unit
+                    histories.get(i)[5], // total
                 };
                 
                 
@@ -494,7 +526,7 @@ public class Report extends javax.swing.JFrame {
         
         try {
             MySQLAccess data_table = new MySQLAccess();
-            ArrayList<String[]> histories = data_table.list_sell_histories(barcode_, lot_no_);
+            ArrayList<String[]> histories = data_table.list_sell_histories_per_item(barcode_, lot_no_);
             
             for(int i = 0; i < histories.size(); i++){
                 Object[] data_list = {
@@ -589,40 +621,43 @@ public class Report extends javax.swing.JFrame {
         
         try {
             MySQLAccess data_table = new MySQLAccess();
-            ArrayList<String[]> histories = data_table.list_sell_type10_histories();
+            java.sql.Date report_date_ = new java.sql.Date(report_date.getDate().getTime() );
+            ArrayList<String[]> histories = data_table.list_sell_type10_histories(report_date_);
             //"ลำดับ","ชื่อสินค้า" , "จำนวน", "จำนวนเงิน", "ส่วนลด" ,"รับสุทธิ", "หมายเหตุ"
         
-            String barcodeTemp = histories.get(0)[1];
-            String name = data_table.get_medicine_name(histories.get(0)[1]);
-            for(int i = 0; i < histories.size(); i++){
-                String[] data_list = new String[7];
-                if (i != 0 && !barcodeTemp.equals(histories.get(i)[1])) {
-                    barcodeTemp = histories.get(i)[1];
-                    name = data_table.get_medicine_name(histories.get(i)[1]);
-                }
-                
-                int amount = Integer.parseInt(histories.get(i)[4]);
-                float total = Float.parseFloat(histories.get(i)[5]);
-                String discount = histories.get(i)[6];
-                
-                data_list[0] = histories.get(i)[0] + "";
-                data_list[1] = name + "";
-                data_list[2] = amount + "";
-                String[] temp = discount.split("-");
-                if (temp [1].equals("บาท") && !temp[0].equals("")) {
-                    data_list[3] = "" + (total + Float.parseFloat(temp[0]));
-                } else if (temp[1].equals("%") && !temp[0].equals("")) {
-                    data_list[3] = "" + ((total/Float.parseFloat(temp[0])) * 100); 
-                } else {
-                    data_list[3] = "" + total;
-                }
-                
-                data_list[4] = discount;
-                data_list[5] = "" + total;
-                data_list[6] = "ส่วนลด " + discount;
-                
-                model.addRow(data_list);
-            } 
+            if (histories.size () > 0) {
+                String barcodeTemp = histories.get(0)[1];
+                String name = data_table.get_medicine_name(histories.get(0)[1]);
+                for(int i = 0; i < histories.size(); i++){
+                    String[] data_list = new String[7];
+                    if (i != 0 && !barcodeTemp.equals(histories.get(i)[1])) {
+                        barcodeTemp = histories.get(i)[1];
+                        name = data_table.get_medicine_name(histories.get(i)[1]);
+                    }
+
+                    int amount = Integer.parseInt(histories.get(i)[4]);
+                    float total = Float.parseFloat(histories.get(i)[5]);
+                    String discount = histories.get(i)[6];
+
+                    data_list[0] = histories.get(i)[0] + "";
+                    data_list[1] = name + "";
+                    data_list[2] = amount + "";
+                    String[] temp = discount.split("-");
+                    if (temp [1].equals("บาท") && !temp[0].equals("")) {
+                        data_list[3] = "" + (total + Float.parseFloat(temp[0]));
+                    } else if (temp[1].equals("%") && !temp[0].equals("")) {
+                        data_list[3] = "" + ((total/Float.parseFloat(temp[0])) * 100); 
+                    } else {
+                        data_list[3] = "" + total;
+                    }
+
+                    data_list[4] = discount;
+                    data_list[5] = "" + total;
+                    data_list[6] = "ส่วนลด " + discount;
+
+                    model.addRow(data_list);
+                } 
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -648,35 +683,38 @@ public class Report extends javax.swing.JFrame {
         
         try {
             MySQLAccess data_table = new MySQLAccess();
-            ArrayList<String[]> histories = data_table.list_buy_histories();
+            java.sql.Date report_date_ = new java.sql.Date(report_date.getDate().getTime() );
+            ArrayList<String[]> histories = data_table.list_buy_histories(report_date_);
             //"ลำดับ","ชื่อสินค้า" , "จำนวน", "จำนวนเงิน", "ส่วนลด" ,"รับสุทธิ", "หมายเหตุ"
             
-            String barcodeTemp = histories.get(0)[1];
-            String name = data_table.get_medicine_name(histories.get(0)[1]);
-            
-            for(int i = 0; i < histories.size(); i++){
-                String[] data_list = new String[9];
-                if (i != 0 && !barcodeTemp.equals(histories.get(i)[1])) {
-                    barcodeTemp = histories.get(i)[1];
-                    name = data_table.get_medicine_name(histories.get(i)[1]);
-                }
-                
-                MedicineDetail md = data_table.get_medicine_detail(histories.get(i)[1], histories.get(i)[2]);
-                String company_name = md.getCompanyName();
-                
-                int amount = Integer.parseInt(histories.get(i)[4]);
-                float total = Float.parseFloat(histories.get(i)[5]);
-                
-                data_list[0] = histories.get(i)[0] + ""; //ลำดับ
-                data_list[1] = company_name; //ซื้อมาจาก
-                data_list[2] = name; //ชื่อยา
-                data_list[3] = histories.get(i)[2]; // ครั้งที่
-                data_list[4] = md.getExpiredDateString(); // วันหมดอายุ
-                data_list[5] = amount + ""; // จำนวน
-                data_list[6] = md.pricePerUnit() + ""; // ราคา/หน่วย
-                data_list[7] = total + ""; // จำนวนเงิน
-                model.addRow(data_list); 
-            } 
+            if (histories.size() > 0) {
+                String barcodeTemp = histories.get(0)[1];
+                String name = data_table.get_medicine_name(histories.get(0)[1]);
+
+                for(int i = 0; i < histories.size(); i++){
+                    String[] data_list = new String[9];
+                    if (i != 0 && !barcodeTemp.equals(histories.get(i)[1])) {
+                        barcodeTemp = histories.get(i)[1];
+                        name = data_table.get_medicine_name(histories.get(i)[1]);
+                    }
+
+                    MedicineDetail md = data_table.get_medicine_detail(histories.get(i)[1], histories.get(i)[2]);
+                    String company_name = md.getCompanyName();
+
+                    int amount = Integer.parseInt(histories.get(i)[4]);
+                    float total = Float.parseFloat(histories.get(i)[5]);
+
+                    data_list[0] = histories.get(i)[0] + ""; //ลำดับ
+                    data_list[1] = company_name; //ซื้อมาจาก
+                    data_list[2] = name; //ชื่อยา
+                    data_list[3] = histories.get(i)[2]; // ครั้งที่
+                    data_list[4] = md.getExpiredDateString(); // วันหมดอายุ
+                    data_list[5] = amount + ""; // จำนวน
+                    data_list[6] = md.pricePerUnit() + ""; // ราคา/หน่วย
+                    data_list[7] = total + ""; // จำนวนเงิน
+                    model.addRow(data_list); 
+                } 
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -717,6 +755,36 @@ public class Report extends javax.swing.JFrame {
             
         }
     }//GEN-LAST:event_itemSelectedButtonActionPerformed
+
+    private void report_dateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_report_dateActionPerformed
+        // TODO add your handling code here:
+        switch (report_type) {
+            case "type7":
+                type7ActionPerformed (evt);
+                break;
+            case "type9":
+                type9ActionPerformed (evt);
+                break;
+            case "type10":
+                type10ActionPerformed (evt);
+                break;
+            case "type11":
+                type11ActionPerformed (evt);
+                break;
+            case "selling":
+                sellingActionPerformed (evt);
+                break;
+            case "buying":
+                buyingActionPerformed (evt);
+                break;
+            default:
+                break;
+        }
+    }//GEN-LAST:event_report_dateActionPerformed
+
+    private void reportByDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reportByDateActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_reportByDateActionPerformed
 
     public void exportToExcel(javax.swing.JTable table, String import_file, String export_file) throws IOException, BiffException, WriteException {
         System.out.println("Write Start");
@@ -762,10 +830,15 @@ public class Report extends javax.swing.JFrame {
                     // name
                     addCell(sheet, Border.ALL, BorderLineStyle.THIN, 1, i + 3, (String) table.getValueAt(i, 1));
                     // amount
+                    addCell(sheet, Border.ALL, BorderLineStyle.THIN, 1, i + 3, (String) table.getValueAt(i, 2));
                     // total before discount
+                    addCell(sheet, Border.ALL, BorderLineStyle.THIN, 1, i + 3, (String) table.getValueAt(i, 4));
                     // discount
+                    addCell(sheet, Border.ALL, BorderLineStyle.THIN, 1, i + 3, (String) table.getValueAt(i, 5));
                     // real total
+                    addCell(sheet, Border.ALL, BorderLineStyle.THIN, 1, i + 3, (String) table.getValueAt(i, 6));
                     // ps.
+                    addCell(sheet, Border.ALL, BorderLineStyle.THIN, 1, i + 3, (String) table.getValueAt(i, 7));
                 }
         
                 break; 
@@ -835,6 +908,8 @@ public class Report extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable listTable;
+    private javax.swing.JCheckBox reportByDate;
+    private org.jdesktop.swingx.JXDatePicker report_date;
     private javax.swing.JButton selling;
     private javax.swing.JLabel topic;
     private javax.swing.JButton type10;

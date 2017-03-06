@@ -275,7 +275,6 @@
                       </Group>
                   </Group>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="stock_type" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel15" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -494,6 +493,9 @@
     <Component class="org.jdesktop.swingx.JXDatePicker" name="DP_ini">
     </Component>
     <Component class="org.jdesktop.swingx.JXDatePicker" name="DP_buy">
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="DP_buyActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="barcode_err">
       <Properties>
