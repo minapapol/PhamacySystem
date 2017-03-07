@@ -15,6 +15,7 @@ import javax.swing.table.DefaultTableModel;
 import jxl.Cell;
 import jxl.Sheet;
 import jxl.Workbook;
+import jxl.format.Alignment;
 import jxl.format.Border;
 import jxl.format.BorderLineStyle;
 import jxl.read.biff.BiffException;
@@ -333,14 +334,17 @@ public class Report extends javax.swing.JFrame {
             ArrayList<String[]> histories = data_table.list_sell_type7_histories(report_date_);
             
             for(int i = 0; i < histories.size(); i++){
+                
+                MedicineDetail md = data_table.get_medicine_detail(histories.get(i)[1], histories.get(i)[2]);
+                
                 Object[] data_list = {
                     i + 1, //order
                     "", // medicine name 
                     "", // medicine name 
                     histories.get(i)[2], // lot no
                     histories.get(i)[3], // selling date
-                    histories.get(i)[4], // amount
-                    (Float.parseFloat(histories.get(i)[5])/Integer.parseInt(histories.get(i)[4])), // price
+                    histories.get(i)[4] + "/" + md.getMedicineSize(), // amount/size
+                    md.pricePerUnit() + "/" + md.getUnit(),   // price/unit
                     histories.get(i)[5], // total
                 };
                 
@@ -551,13 +555,13 @@ public class Report extends javax.swing.JFrame {
         try {
             switch(report_type) {
                 case "type7":
-                    exportToExcel(listTable,"D:\\reports\\templates\\7_template.xls", "D:\\reports\\7\\1.xls");
+                    exportToExcel(listTable,"D:\\reports\\templates\\7_template.xls");
                     break;
                 case "type9":
-                    exportToExcel(listTable,"D:\\reports\\templates\\9_template.xls", "D:\\reports\\9\\1.xls");
+                    exportToExcel(listTable,"D:\\reports\\templates\\9_template.xls");
                     break;
                 case "type10":
-                    exportToExcel(listTable,"D:\\reports\\templates\\10_template.xls", "D:\\reports\\10\\1.xls");
+                    exportToExcel(listTable,"D:\\reports\\templates\\10_template.xls");
                     break;
                 case "type11":
                     String medicine_name = "none";
@@ -568,12 +572,15 @@ public class Report extends javax.swing.JFrame {
                         e.printStackTrace();
                     }
                     if(!medicine_name.equals("none")) {
-                        exportToExcel(listTable,"D:\\reports\\templates\\11_template.xls", "D:\\reports\\11\\1.xls");
+                        exportToExcel(listTable,"D:\\reports\\templates\\11_template.xls");
                     } 
                     break;
                 case "selling":                    
-                    exportToExcel(listTable,"D:\\reports\\templates\\10_template.xls", "D:\\reports\\selling\\1.xls");
+                    exportToExcel(listTable,"D:\\reports\\templates\\10_template.xls");
                     break; 
+                case "buying":
+                    exportToExcel(listTable,"D:\\reports\\templates\\buy_template.xls");
+                    break;
             }
             
         } catch (IOException e) {
@@ -736,6 +743,7 @@ public class Report extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (report_type.equals("type11")) {
             String barcode_ = listTable.getValueAt(listTable.getSelectedRow(), 1).toString();
+            String lot_no_ = listTable.getValueAt(listTable.getSelectedRow(), 3).toString();
             
             barcode.setText (barcode_);
             try {
@@ -743,13 +751,11 @@ public class Report extends javax.swing.JFrame {
 
                 jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(data_table.list_lot_report(barcode_)));
                 
-                jComboBox1.setSelectedItem(listTable.getValueAt(listTable.getSelectedRow(), 3).toString());
+                jComboBox1.setSelectedItem(lot_no_);
                 
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            
-            String lot_no_ = listTable.getValueAt(listTable.getSelectedRow(), 3).toString();
             
             listSellHistory(barcode_, lot_no_);
             
@@ -786,27 +792,92 @@ public class Report extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_reportByDateActionPerformed
 
-    public void exportToExcel(javax.swing.JTable table, String import_file, String export_file) throws IOException, BiffException, WriteException {
+    public void exportToExcel(javax.swing.JTable table, String import_file) throws IOException, BiffException, WriteException {
         System.out.println("Write Start");
         
         Workbook existingWorkbook = Workbook.getWorkbook(new File(import_file));
         System.out.println("Importing File . . .");
-        WritableWorkbook workbook = Workbook.createWorkbook(new File(export_file),existingWorkbook);
+        WritableWorkbook workbook = null;
         System.out.println("Create new Sheet");
-        WritableSheet sheet = workbook.getSheet("First Sheet");
+        WritableSheet sheet;
         
-        Label label;
+        String fileExportName = getFileName(report_date.getDate());
+        
+        int lineAdded = 0;
+
         float total = 0f, discount = 0f;
         int i;
         switch(report_type) {
             case "type7":
-                exportToExcel(listTable,"D:\\reports\\templates\\7_template.xls", "D:\\reports\\7\\1.xls");
+                lineAdded = 6;
+//                exportToExcel(listTable,"D:\\reports\\templates\\7_template.xls", "D:\\reports\\7\\1.xls");
+                workbook = Workbook.createWorkbook(new File("D:\\reports\\7\\"+fileExportName+".xls"),existingWorkbook);
+                sheet = workbook.getSheet("First Sheet");
+                
+                for (i = 0; i < table.getRowCount(); i++ ) {
+                    // order
+                    addCell(sheet, Border.ALL, BorderLineStyle.THIN, Alignment.CENTRE, 0, (i + lineAdded), (i + 1) + "");
+
+                    for (int j = 1; j < table.getColumnCount()-2; j ++) {  
+                        addCell(sheet, Border.ALL, BorderLineStyle.THIN, Alignment.CENTRE, j, i + lineAdded, table.getValueAt(i, j) + "" ); 
+                    }
+                }
+                
                 break;
             case "type9":
-                exportToExcel(listTable,"D:\\reports\\templates\\9_template.xls", "D:\\reports\\9\\1.xls");
+                lineAdded = 6;
+//                exportToExcel(listTable,"D:\\reports\\templates\\9_template.xls", "D:\\reports\\9\\1.xls");
+                workbook = Workbook.createWorkbook(new File("D:\\reports\\9\\"+fileExportName+".xls"),existingWorkbook);
+                sheet = workbook.getSheet("First Sheet");
+                
+                for (i = 0; i < table.getRowCount(); i++ ) {
+                    // order
+                    addCell(sheet, Border.ALL, BorderLineStyle.THIN, Alignment.CENTRE, 0, (i + lineAdded), (i + 1) + "");
+
+                    for (int j = 1; j < table.getColumnCount()-2; j ++) {  
+                        addCell(sheet, Border.ALL, BorderLineStyle.THIN, Alignment.CENTRE, j, i + lineAdded, table.getValueAt(i, j) + ""); 
+                    }
+                }
+                
                 break;
             case "type10":
-                exportToExcel(listTable,"D:\\reports\\templates\\10_template.xls", "D:\\reports\\10\\1.xls");
+                lineAdded = 3;
+//                exportToExcel(listTable,"D:\\reports\\templates\\10_template.xls", "D:\\reports\\10\\1.xls");
+                workbook = Workbook.createWorkbook(new File("D:\\reports\\10\\"+fileExportName+".xls"),existingWorkbook);
+                sheet = workbook.getSheet("First Sheet");
+                
+                addCell(sheet, Border.ALL, BorderLineStyle.NONE, Alignment.CENTRE, 0, 1, getDateSentence (report_date.getDate()));
+                    
+                for (i = 0; i < table.getRowCount(); i++ ) {
+                    // order
+                    addCell(sheet, Border.ALL, BorderLineStyle.THIN, Alignment.LEFT, 0, (i + lineAdded), (i + 1) + "");
+
+                    for (int j = 1; j < table.getColumnCount(); j ++) {  
+                        if (j == 4 || j == 6) {
+                            addCell(sheet, Border.ALL, BorderLineStyle.THIN, Alignment.LEFT, j, i + lineAdded, "");
+                                
+                            String discountString = ((String) table.getValueAt(i, 4)).split("-")[0];
+                            if (!discountString.isEmpty()) {
+                                Float discountTemp = Float.parseFloat(discountString);
+                                if (discountTemp > 0.0f) {
+                                    addCell(sheet, Border.ALL, BorderLineStyle.THIN, Alignment.LEFT, j, i + lineAdded, (String) table.getValueAt(i, j));
+                                    if (j == 4)
+                                        discount += Float.parseFloat (discountString);
+                                } 
+                            }
+                        } else {
+                            addCell(sheet, Border.ALL, BorderLineStyle.THIN, Alignment.LEFT, j, i + lineAdded, (String) table.getValueAt(i, j));
+                            if (j == 3) {
+                                total += Float.parseFloat ((String) table.getValueAt(i, j) );
+                            }
+                        }
+                    }
+                }
+                
+                //summary 3, 4, 5
+                addCell(sheet, Border.ALL, BorderLineStyle.THIN, Alignment.LEFT, 3, i + lineAdded, total + "");
+                addCell(sheet, Border.ALL, BorderLineStyle.THIN, Alignment.LEFT, 4, i + lineAdded, discount + "");
+                addCell(sheet, Border.ALL, BorderLineStyle.THIN, Alignment.LEFT, 5, i + lineAdded, (total - discount) + "");
                 break;
             case "type11":
                 String medicine_name = "none";
@@ -817,62 +888,141 @@ public class Report extends javax.swing.JFrame {
                     e.printStackTrace();
                 }
                 if(!medicine_name.equals("none")) {
-                    exportToExcel(listTable,"D:\\reports\\templates\\11_template.xls", "D:\\reports\\11\\1.xls");
+//                    exportToExcel(listTable,"D:\\reports\\templates\\11_template.xls", "D:\\reports\\11\\1.xls");
                 } 
+                workbook = Workbook.createWorkbook(new File("D:\\reports\\11\\"+fileExportName+".xls"),existingWorkbook);
+                sheet = workbook.getSheet("First Sheet");
                 break;
-            case "selling":                    
-                java.util.Date dateTime = new java.util.Date ();
+            case "selling":
+                lineAdded = 3;
+                workbook = Workbook.createWorkbook(new File("D:\\reports\\selling\\"+fileExportName+".xls"),existingWorkbook);
+                sheet = workbook.getSheet("First Sheet");
                 
-                label = new Label(0, 1, dateTime.getDate()+"/"+(dateTime.getMonth()+1)+"/"+(dateTime.getYear() + 1900)); 
-                sheet.addCell(label);
-                
+                addCell(sheet, Border.ALL, BorderLineStyle.NONE, Alignment.CENTRE, 0, 1, getDateSentence (report_date.getDate()));
+                    
                 for (i = 0; i < table.getRowCount(); i++ ) {
                     // order
-                    addCell(sheet, Border.ALL, BorderLineStyle.THIN, 0, (i + 3), (i + 1) + "");
-                    // name
-                    addCell(sheet, Border.ALL, BorderLineStyle.THIN, 1, i + 3, (String) table.getValueAt(i, 1));
-                    // amount
-                    addCell(sheet, Border.ALL, BorderLineStyle.THIN, 2, i + 3, (String) table.getValueAt(i, 2));
-                    // total before discount
-                    addCell(sheet, Border.ALL, BorderLineStyle.THIN, 3, i + 3, (String) table.getValueAt(i, 3));
-                    total = Float.parseFloat ((String) table.getValueAt(i, 3) );
-                    // real total
-                    addCell(sheet, Border.ALL, BorderLineStyle.THIN, 5, i + 3, (String) table.getValueAt(i, 5));
-                    if ( !((String) table.getValueAt(i, 4)).split ("-")[0].equals("0.0") ) { 
-                        // discount
-                        addCell(sheet, Border.ALL, BorderLineStyle.THIN, 4, i + 3, (String) table.getValueAt(i, 4));
-                        discount = Float.parseFloat ((String) table.getValueAt(i, 4) );
-                        // ps. 
-                        addCell(sheet, Border.ALL, BorderLineStyle.THIN, 6, i + 3, (String) table.getValueAt(i, 6));
-                    } else {
-                        addCell(sheet, Border.ALL, BorderLineStyle.THIN, 4, i + 3, "");
-                        addCell(sheet, Border.ALL, BorderLineStyle.THIN, 6, i + 3, "");
+                    addCell(sheet, Border.ALL, BorderLineStyle.THIN, Alignment.LEFT, 0, (i + lineAdded), (i + 1) + "");
+
+                    for (int j = 1; j < table.getColumnCount(); j ++) {  
+                        if (j == 4 || j == 6) {
+                            addCell(sheet, Border.ALL, BorderLineStyle.THIN, Alignment.LEFT, j, i + lineAdded, "");
+                                
+                            String discountString = ((String) table.getValueAt(i, 4)).split("-")[0];
+                            if (!discountString.isEmpty()) {
+                                Float discountTemp = Float.parseFloat(discountString);
+                                if (discountTemp > 0.0f) {
+                                    addCell(sheet, Border.ALL, BorderLineStyle.THIN, Alignment.LEFT, j, i + lineAdded, (String) table.getValueAt(i, j));
+                                    if (j == 4)
+                                        discount += Float.parseFloat (discountString);
+                                } 
+                            }
+                        } else {
+                            addCell(sheet, Border.ALL, BorderLineStyle.THIN, Alignment.LEFT, j, i + lineAdded, (String) table.getValueAt(i, j));
+                            if (j == 3) {
+                                total += Float.parseFloat ((String) table.getValueAt(i, j) );
+                            }
+                        }
                     }
                 }
                 
                 //summary 3, 4, 5
-                addCell(sheet, Border.ALL, BorderLineStyle.THIN, 3, i + 3, total + "");
-                addCell(sheet, Border.ALL, BorderLineStyle.THIN, 4, i + 3, discount + "");
-                addCell(sheet, Border.ALL, BorderLineStyle.THIN, 5, i + 3, (total - discount) + "");
+                addCell(sheet, Border.ALL, BorderLineStyle.THIN, Alignment.LEFT, 3, i + lineAdded, total + "");
+                addCell(sheet, Border.ALL, BorderLineStyle.THIN, Alignment.LEFT, 4, i + lineAdded, discount + "");
+                addCell(sheet, Border.ALL, BorderLineStyle.THIN, Alignment.LEFT, 5, i + lineAdded, (total - discount) + "");
                 break; 
+            case "buying":
+                lineAdded = 3;
+                workbook = Workbook.createWorkbook(new File("D:\\reports\\buying\\"+fileExportName+".xls"),existingWorkbook);
+                sheet = workbook.getSheet("First Sheet");
+                
+                addCell(sheet, Border.ALL, BorderLineStyle.NONE, Alignment.CENTRE, 0, 1, getDateSentence (report_date.getDate()));
+                    
+                for (i = 0; i < table.getRowCount(); i++ ) {
+                    // order
+                    addCell(sheet, Border.ALL, BorderLineStyle.THIN, Alignment.LEFT, 0, (i + lineAdded), (i + 1) + "");
+
+                    for (int j = 1; j < table.getColumnCount(); j ++) {  
+                        addCell(sheet, Border.ALL, BorderLineStyle.THIN, Alignment.LEFT, j, i + lineAdded, (String) table.getValueAt(i, j));
+                        if (j == 7) {
+                            total = Float.parseFloat ((String) table.getValueAt(i, j) );
+                        }
+                    }   
+                }
+                addCell(sheet, Border.ALL, BorderLineStyle.NONE, Alignment.CENTRE, 6, i + lineAdded, "รวมเงิน");
+                addCell(sheet, Border.ALL, BorderLineStyle.THIN, Alignment.LEFT, 7, i + lineAdded, (total - discount) + "");
+                
+                break;
+            default:
+                break;
         }
                 
         //table.getValueAt(0, 0);
-        System.out.println(report_type);
-        workbook.write(); 
-        workbook.close();
-        existingWorkbook.close();
-        System.out.println("Successfully write");
-      
+        if (workbook != null) {
+            System.out.println(report_type);
+            workbook.write(); 
+            workbook.close();
+            existingWorkbook.close();
+            System.out.println("Successfully write");
+        } else 
+            System.out.println("workbook is NULL");
+    }
+    
+    private String getFileName(Date date) { 
+        return date.getDate()+""+(date.getMonth()+1)+""+(date.getYear()+1900);
+    }
+    private String getDateSentence(Date date) { 
+        String month = "";
+        switch (date.getMonth()) {
+            case 0:
+                month = "มกราคม";
+                break;
+            case 1:
+                month = "กุมภาพันธ์";
+                break;
+            case 2:
+                month = "มีนาคม";
+                break;
+            case 3:
+                month = "เมษายน";
+                break;
+            case 4:
+                month = "พฤษภาคม";
+                break;
+            case 5:
+                month = "มิถุนายน";
+                break;    
+            case 6:
+                month = "กรกฎาคม";
+                break;
+            case 7:
+                month = "สิงหาคม";
+                break;
+            case 8:
+                month = "กันยายน";
+                break;
+            case 9:
+                month = "ตุลาคม";
+                break;
+            case 10:
+                month = "พฤศจิกายน";
+                break;
+            case 11:
+                month = "ธันวาคม";
+                break;
+        }
+        return "วันที่ " + date.getDate() + " " + month + " " + (date.getYear() + 1900);
     }
     
     private static void addCell(WritableSheet sheet, 
         Border border, 
-        BorderLineStyle borderLineStyle, 
+        BorderLineStyle borderLineStyle,
+        Alignment align,
         int col, int row, String desc) throws WriteException {
     
         WritableCellFormat cellFormat = new WritableCellFormat();
         cellFormat.setBorder(border, borderLineStyle);
+        cellFormat.setAlignment(align);
         Label label = new Label(col, row, desc, cellFormat);
         sheet.addCell(label);
     }
