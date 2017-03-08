@@ -33,7 +33,11 @@ public class Medicine_list extends javax.swing.JFrame {
                     i+1,
                     datas.get(i)[0],
                     datas.get(i)[1],
-                    "",
+                    datas.get(i)[2],
+                    datas.get(i)[3],
+                    datas.get(i)[4],
+                    datas.get(i)[5],
+                    datas.get(i)[6],
                 };
                 model.addRow(data_list);          
             }
@@ -79,7 +83,7 @@ public class Medicine_list extends javax.swing.JFrame {
             new Object [][] {
             },
             new String [] {
-                "No.", "บาร์โค๊ด", "ชื่อยา", ""
+                "No.", "บาร์โค๊ด", "ชื่อยา", "เลขทะเบียนยา", "ขนาด", "ราคาขาย", "ที่อยู่สต๊อก", "ประเภท"
             }
         ));
         jScrollPane1.setViewportView(listTable);
@@ -172,7 +176,40 @@ public class Medicine_list extends javax.swing.JFrame {
         int selRow = listTable.getSelectedRow();
         String name = listTable.getValueAt(selRow, 2).toString();
         String barcode = listTable.getValueAt(selRow, 1).toString();
-        Medicine m = new Medicine(barcode,name);
+        String size = listTable.getValueAt(selRow, 3).toString();
+        String code = listTable.getValueAt(selRow, 4).toString();
+        float price = Float.parseFloat(listTable.getValueAt(selRow, 5).toString());
+        String stock_type = listTable.getValueAt(selRow, 6).toString();
+        String medicine_type = listTable.getValueAt(selRow, 7).toString();
+        int stock_type_int = 0;
+        int medicine_type_int = 0;
+        
+        switch(stock_type) {
+            case "ข้างบน":
+                stock_type_int = 0;
+                break;
+            case "ข้างล่าง":
+                stock_type_int = 1;
+                break;
+        }
+        
+        switch(medicine_type) {
+            case "ยาอันตราย":
+                medicine_type_int = 0;
+                break;
+            case "ยาควบคุมพิเศษ":
+                medicine_type_int = 1;
+                break;
+            case "ยาทั่วไป":
+                medicine_type_int = 2;
+                break;
+            case "อื่นๆ":
+                medicine_type_int = 3;
+                break;
+        }
+        
+        Medicine m = new Medicine(barcode, name,
+                code, size, price, stock_type_int, medicine_type_int);
         Adding m_page = new Adding(m);
         m_page.setLocationRelativeTo(this);
         m_page.setVisible(true);
