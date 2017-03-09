@@ -317,6 +317,44 @@ public class MySQLAccess {
 
     return medicine_name;
   }
+  
+   public Medicine get_medicine(String barcode){
+    Medicine medicine = null;
+    try {
+        Class.forName("com.mysql.jdbc.Driver");
+          // Setup the connection with the DB
+        connect = DriverManager
+                .getConnection("jdbc:mysql://localhost/phamacy?"
+                        + "user=root&password=root");
+
+        // Statements allow to issue SQL queries to the database
+        statement = connect.createStatement();
+
+        resultSet = statement
+           .executeQuery("select * from phamacy.medicines where barcode = '" + barcode + "'");
+
+        while (resultSet.next()) {
+            String medicine_name = resultSet.getString("medicine_name");
+            String medicine_code = resultSet.getString("medicine_code");
+            String size = resultSet.getString("size");
+            int medicine_type = resultSet.getInt("medicine_type");
+            int stock_type = resultSet.getInt("stock_type");
+            float price = resultSet.getFloat("price");
+            
+            medicine = new Medicine(barcode, medicine_name, medicine_code,
+                    size, price, stock_type, medicine_type);
+            
+        }
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    } finally {
+        close();
+    }
+
+    return medicine;
+  }
+  
 
   public void insert_medicine_details(String barcode, String medicine_code, String company_name, String lot_no,
           int medicine_type, int back_stock, float buying_price, float selling_price, int amount, String unit,
@@ -587,6 +625,7 @@ public class MySQLAccess {
             String unit = resultSet.getString("unit");
             Date initialize_date = resultSet.getDate("initialize_date");
             Date expired_date = resultSet.getDate("expired_date");
+            int stock_type = resultSet.getInt("stock_type");
             int pack_amount = resultSet.getInt("pack_amount");
             float pack_price = resultSet.getFloat("pack_price");
             String type = "";
@@ -609,7 +648,7 @@ public class MySQLAccess {
                     buying_price, selling_price,
                     type, barcode, medicine_code, company_name, 
                     lot_no, size, unit, 
-                    buying_date, initialize_date, expired_date,
+                    buying_date, initialize_date, expired_date, stock_type, 
                     pack_amount, pack_price);
             
         }
@@ -650,6 +689,7 @@ public class MySQLAccess {
             String unit = resultSet.getString("unit");
             Date initialize_date = resultSet.getDate("initialize_date");
             Date expired_date = resultSet.getDate("expired_date");
+            int stock_type = resultSet.getInt("stock_type");
             int pack_amount = resultSet.getInt("pack_amount");
             float pack_price = resultSet.getFloat("pack_price");
             String type = "";
@@ -672,7 +712,7 @@ public class MySQLAccess {
                     buying_price, selling_price,
                     type, barcode, medicine_code, company_name, 
                     lot, size, unit, 
-                    buying_date, initialize_date, expired_date,
+                    buying_date, initialize_date, expired_date, stock_type,
                     pack_amount, pack_price);
             
         }

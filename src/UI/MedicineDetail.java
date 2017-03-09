@@ -29,6 +29,7 @@ public class MedicineDetail {
     Date buying_date;
     Date initialize_date;
     Date expired_date;
+    int stock_type;
     int pack_amount;
     float pack_price;
     
@@ -36,7 +37,7 @@ public class MedicineDetail {
             float buying_price, float selling_price,
             String type, String barcode, String medicine_code, String company_name,
             String lot_no, String size, String unit,
-            Date buying_date, Date initialize_date, Date expired_date,
+            Date buying_date, Date initialize_date, Date expired_date, int stock_type,
             int pack_amount, float pack_price) {
         this.id = id;
         this.back_stock = back_stock;
@@ -54,6 +55,7 @@ public class MedicineDetail {
         this.buying_date = buying_date;
         this.initialize_date = initialize_date;
         this.expired_date = expired_date;
+        this.stock_type = stock_type;
         this.pack_amount = pack_amount;
         this.pack_price = pack_price;
     }

@@ -17,7 +17,7 @@ public class Buy extends javax.swing.JFrame {
      * Creates new form Buy
      */
     public int id;
-    
+
     public Buy() {
         initComponents();
         java.sql.Date temp = new java.sql.Date(new Date().getTime());
@@ -27,7 +27,7 @@ public class Buy extends javax.swing.JFrame {
     public Buy(MedicineDetail md) {
         initComponents();
         id = md.id;
-        
+
         barcode.setText(md.barcode);
         medicine_code.setText(md.medicine_code);
         size.setText(md.size);
@@ -35,11 +35,11 @@ public class Buy extends javax.swing.JFrame {
             MySQLAccess db = new MySQLAccess();
             medicine_name.setText(db.get_medicine_name(md.barcode));
             if( medicine_name.getText().equals("none") ) barcode_err.setText("*รายการนี้ไม่มีอยู่ในฐานข้อมูล");
- 
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
         company_name.setText(md.company_name);
         lot_no.setText(md.lot_no);
         selling_price.setText(md.selling_price+"");
@@ -47,11 +47,11 @@ public class Buy extends javax.swing.JFrame {
         amount.setText(md.amount+"");
         amount_err.setText("หน้าร้าน("+md.front_stock+") หลังร้าน ("+md.get_back_stock()+")");
         unit.setText(md.unit);
-        
+
         DP_buy.setDate(md.buying_date);
         DP_exp.setDate(md.expired_date);
         DP_ini.setDate(md.initialize_date);
-        
+
         switch(md.type){
             case "ยาอันตราย":
                 medicine_type.setSelectedIndex(0);
@@ -61,9 +61,17 @@ public class Buy extends javax.swing.JFrame {
                 break;
             case "ยาทั่วไป":
                 medicine_type.setSelectedIndex(2);
-                break;        
+                break;
+            case "อื่นๆ":
+                medicine_type.setSelectedIndex(3);
+                break;
         }
+
+        stock_type.setSelectedIndex(md.stock_type);
         
+        pack_amount.setText(md.pack_amount+"");
+        pack_price.setText(md.pack_price+"");
+
         addButton.setText("Update");
     }
 
@@ -578,7 +586,7 @@ public class Buy extends javax.swing.JFrame {
             newUi.setVisible(true);
             dispose();
         }
-        
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void medicine_nameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_medicine_nameActionPerformed
@@ -616,8 +624,8 @@ public class Buy extends javax.swing.JFrame {
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
         // TODO add your handling code here:
         boolean checked = true;
-        
-        barcode_err.setText(""); 
+
+        barcode_err.setText("");
         code_err.setText("");
         company_err.setText("");
         lot_err.setText("");
@@ -630,14 +638,14 @@ public class Buy extends javax.swing.JFrame {
         size_err.setText("");
         pack_amount_err.setText("");
         pack_price_err.setText("");
-        
+
         float buying_price_ = 0;
         float selling_price_ = 0;
         int back_stock = 0;
         int amount_;
         int pack_amount_ = 0;
         float pack_price_ = 0.0f;
-        
+
         String size_ = size.getText();
 
         String barcode_ = barcode.getText();
@@ -645,11 +653,11 @@ public class Buy extends javax.swing.JFrame {
         String company_name_ = company_name.getText();
         String lot_no_ = lot_no.getText();
         String unit_ = unit.getText();
-        
+
         java.sql.Date buying_date = new java.sql.Date(DP_buy.getDate().getTime());
         java.sql.Date initailize_date = null;
         java.sql.Date expired_date = null;
-        
+
         if(barcode_.length() == 0) { barcode_err.setText("*โปรดใส่รหัส"); checked = false; }
         if(medicine_code_.length() == 0 ) { code_err.setText("*โปรดใส่รหัส"); checked = false; }
         if(company_name_.length() == 0 ) { company_err.setText("*โปรดใส่ชื่อบริษัท"); checked = false; }
@@ -657,50 +665,50 @@ public class Buy extends javax.swing.JFrame {
         if(unit_.length() == 0 ) { unit_err.setText("*โปรดใส่หน่วยของสินค้า"); checked = false; }
         if(DP_ini.getDate() == null) { ini_err.setText("*โปรดใส่วันที่ผลิต"); checked = false; } else { initailize_date = new java.sql.Date(DP_ini.getDate().getTime()); }
         if(DP_exp.getDate() == null) { pack_price_err.setText("*โปรดใส่วันที่หมดอายุ"); checked = false; } else { expired_date = new java.sql.Date(DP_exp.getDate().getTime()); }
-        
+
         try {
             buying_price_ = Float.parseFloat(buying_price.getText());
-            if(buying_price_ == 0.0) buy_err.setText("*โปรดใส่ราคาซื้อ"); 
+            if(buying_price_ == 0.0) buy_err.setText("*โปรดใส่ราคาซื้อ");
         } catch (NumberFormatException e) {
             buy_err.setText("*ราคาซื้อ ผิดรูปแบบ");
-            checked = false; 
+            checked = false;
         }
 
         try {
             selling_price_ = Float.parseFloat(selling_price.getText());
-            if(selling_price_ == 0.0) sell_err.setText("*โปรดใส่ราคาขาย"); 
+            if(selling_price_ == 0.0) sell_err.setText("*โปรดใส่ราคาขาย");
         } catch (NumberFormatException e) {
             sell_err.setText("*ราคาขาย ผิดรูปแบบ");
-            checked = false; 
+            checked = false;
         }
-                
+
         try {
             back_stock = Integer.parseInt(amount.getText());
             amount_ = Integer.parseInt(amount.getText());
-            if(amount_ == 0) { 
+            if(amount_ == 0) {
                 amount_err.setText("*ใส่จำนวนสินค้า");
                 back_stock =  amount_;
             }
         } catch (NumberFormatException e) {
             amount_err.setText("*จำนวน ผิดรูปแบบ");
-            checked = false; 
+            checked = false;
         }
-        
+
         try {
             pack_amount_ = Integer.parseInt(pack_amount.getText());
             pack_price_ = Float.parseFloat(pack_price.getText());
 
         } catch (NumberFormatException e) {
             amount_err.setText("*จำนวน ผิดรูปแบบ");
-            checked = false; 
+            checked = false;
         }
-        
+
         System.out.print(medicine_type.getSelectedIndex());
-        
+
         if (checked) {
             try {
                 MySQLAccess db = new MySQLAccess();
-                
+
                 if (addButton.getText().equals("Add")) {
                     db.insert_medicine_details(barcode_, medicine_code_, company_name_, lot_no_, medicine_type.getSelectedIndex(), back_stock, buying_price_, selling_price_, back_stock, unit_, buying_date, initailize_date, expired_date, size_, stock_type.getSelectedIndex(), pack_amount_, pack_price_ );
                     db.insert_buy_histories(barcode_, lot_no_, buying_date, back_stock, (back_stock*buying_price_));
@@ -718,7 +726,7 @@ public class Buy extends javax.swing.JFrame {
                     newUi.setVisible(true);
                     dispose();
                 }
-                
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -729,17 +737,27 @@ public class Buy extends javax.swing.JFrame {
         // TODO add your handling code here:
         System.out.print(evt.getActionCommand());
         barcode_err.setText("");
-        
+
         try {
             MySQLAccess db = new MySQLAccess();
-            medicine_name.setText(db.get_medicine_name(evt.getActionCommand()));
-            if( medicine_name.getText().equals("none") ) barcode_err.setText("*รายการนี้ไม่มีอยู่ในฐานข้อมูล");
-            else medicine_code.requestFocus();
- 
+            Medicine md = db.get_medicine(evt.getActionCommand());
+
+            if(md == null) barcode_err.setText("*รายการนี้ไม่มีอยู่ในฐานข้อมูล");
+            else {
+                medicine_name.setText(md.getName());
+                medicine_code.setText(md.getName());
+                medicine_type.setSelectedIndex(md.getMedicineType());
+                size.setText(md.getSize());
+                stock_type.setSelectedIndex(md.getStockType());
+                selling_price.setText(md.getPrice()+"");
+
+                company_name.requestFocus();
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
     }//GEN-LAST:event_barcodeActionPerformed
 
     private void sizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sizeActionPerformed
@@ -773,7 +791,7 @@ public class Buy extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -796,7 +814,7 @@ public class Buy extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                
+
                 Buy newUi = new Buy();
                 newUi.setVisible(true);
 
