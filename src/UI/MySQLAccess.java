@@ -176,6 +176,87 @@ public class MySQLAccess {
     }
   }
   
+  
+  public ArrayList<String[]> list_medicines(String barcode_) {
+    ArrayList<String[]> medicines = new ArrayList<>();
+    try {
+        Class.forName("com.mysql.jdbc.Driver");
+          // Setup the connection with the DB
+        connect = DriverManager
+                .getConnection("jdbc:mysql://localhost/phamacy?"
+                        + "user=root&password=root");
+
+        // Statements allow to issue SQL queries to the database
+        statement = connect.createStatement();
+
+        resultSet = statement
+           .executeQuery("select * from phamacy.medicines WHERE barcode LIKE '" + barcode_ + "%'");
+        System.out.println("|   Medicines");
+        System.out.println("|   No.---Barcode---Medicines name");
+        int i = 1;
+        while (resultSet.next()) {
+            String[] temp = new String[7];
+            // It is possible to get the columns via name
+            // also possible to get the columns via the column number
+            // which starts at 1
+            // e.g. resultSet.getSTring(2);
+            String barcode = resultSet.getString("barcode");
+            String name = resultSet.getString("medicine_name");
+            String code = resultSet.getString("medicine_code");
+            String size = resultSet.getString("size");
+            float price = resultSet.getFloat("price");
+            int medicine_type = resultSet.getInt("medicine_type");
+            int stock_type = resultSet.getInt("stock_type");
+            System.out.print("|   " + i);
+            temp[0] = barcode;
+            System.out.print("---" + temp[0]);
+            temp[1] = name;
+            System.out.println("---" + temp[1]);
+            temp[2] = code + "";
+            System.out.println("---" + temp[2]);
+            temp[3] = size + "";
+            System.out.println("---" + temp[3]);
+            temp[4] = price + "";
+            System.out.println("---" + temp[4]);
+            switch (stock_type) {
+                case 0:
+                    temp[5] = "ข้างบน";
+                    break;
+                case 1:
+                    temp[5] = "ข้างล่าง";
+                    break;
+            }
+            System.out.println("---" + temp[5]);
+            
+            switch (medicine_type) {
+                case 0:
+                    temp[6] = "ยาอันตราย";
+                    break;
+                case 1:
+                    temp[6] = "ยาควบคุมพิเศษ";
+                    break;
+                case 2:
+                    temp[6] = "ยาทั่วไป";
+                    break;
+                case 3:
+                    temp[6] = "อื่นๆ";
+                    break;
+            }
+            System.out.println("---" + temp[6]);
+
+            medicines.add(temp);
+            i++;
+        }
+
+    } catch (Exception e){
+        e.printStackTrace();
+    } finally {
+      close();
+    }
+
+    return medicines;
+  }
+  
   public ArrayList<String[]> list_medicines(){
     ArrayList<String[]> medicines = new ArrayList<>();
     try {
@@ -1299,5 +1380,6 @@ public class MySQLAccess {
 
     }
   }
+
 
 }
