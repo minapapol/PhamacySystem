@@ -204,7 +204,7 @@ public class Medicine_list extends javax.swing.JFrame {
         String size = listTable.getValueAt(selRow, 3).toString();
         String code = listTable.getValueAt(selRow, 4).toString();
         float price = Float.parseFloat(listTable.getValueAt(selRow, 5).toString());
-        String stock_type = listTable.getValueAt(selRow, 6).toString();
+        String stock_type = listTable.getValueAt(selRow, 6) + "";
         String medicine_type = listTable.getValueAt(selRow, 7).toString();
         int stock_type_int = 0;
         int medicine_type_int = 0;
