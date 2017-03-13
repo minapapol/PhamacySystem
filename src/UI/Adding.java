@@ -272,6 +272,15 @@ public class Adding extends javax.swing.JFrame {
 
     private void barcodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barcodeActionPerformed
         // TODO add your handling code here:
+        MySQLAccess db = new MySQLAccess();
+        
+        try {
+            String name = db.get_medicine_name(barcode.getText());
+            if (!name.equals("none")) { barcode_err.setText("*ยานี้มีในระบบแล้ว"); add_button.disable(); }
+            else { barcode_err.setText(""); add_button.enable(); }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_barcodeActionPerformed
 
     private void medicine_nameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_medicine_nameActionPerformed
