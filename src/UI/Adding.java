@@ -348,7 +348,7 @@ public class Adding extends javax.swing.JFrame {
                     m.setStockType(stock_type.getSelectedIndex());
                     db.update_medicine(temp_barcode, m);
                 } else {
-                    m = new Medicine(barcode_, medicine_name_, medicine_code_, size_, selling_price_, medicine_type.getSelectedIndex(), stock_type.getSelectedIndex());
+                    m = new Medicine(barcode_, medicine_name_, medicine_code_, size_, selling_price_, stock_type.getSelectedIndex(), medicine_type.getSelectedIndex());
                     db.insert_medicines(m);
                     db.list_medicines();
                 }
