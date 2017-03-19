@@ -907,6 +907,7 @@ public class Report extends javax.swing.JFrame {
                 addCell(sheet, Border.ALL, BorderLineStyle.THIN, Alignment.LEFT, 5, i + lineAdded, (total - discount) + "");
                 break;
             case "type11":
+                lineAdded = 10;
                 java.io.File medicineFolder = new File ("D:\\reports\\11\\" + barcode.getText());
                 if (!medicineFolder.exists())
                 {
@@ -919,18 +920,30 @@ public class Report extends javax.swing.JFrame {
                 }
                 
                 MedicineDetail md = null;
+                String medicineName = "none";
+                int buy_amount = 0;
                 try {
                         MySQLAccess medicine_db = new MySQLAccess();
                         md = medicine_db.get_medicine_detail(barcode.getText(), lotList.getSelectedItem().toString());
-                    } catch (Exception e) {
+                        medicineName = medicine_db.get_medicine_name(barcode.getText());
+                        buy_amount = medicine_db.get_buying_amount(barcode.getText(), lotList.getSelectedItem().toString());
+                } catch (Exception e) {
                         e.printStackTrace();
                     }
                 if (md != null) {
                     workbook = Workbook.createWorkbook(new File("D:\\reports\\11\\" + barcode.getText() + "\\" + lotList.getSelectedItem().toString()+  "\\" + fileExportName+".xls"),existingWorkbook);
                     sheet = workbook.getSheet("First Sheet");
                     
-                    addCell(sheet, Border.ALL, BorderLineStyle.NONE, Alignment.CENTRE, 0, 1, "WTF!!");
+                    addCell(sheet, Border.ALL, BorderLineStyle.NONE, Alignment.LEFT, 0, 4, "ชื่อยา " + medicineName);
+                    addCell(sheet, Border.ALL, BorderLineStyle.NONE, Alignment.LEFT, 0, 5, "ชื่อผู้ผลิต / ผู้นำเข้า  "+md.getCompanyName()+"   เลขที่หรืออักษรของครั้งที่ผลิต "+md.lot_no+"  ขนาดบรรจุ " + md.getMedicineSize());
+                    addCell(sheet, Border.ALL, BorderLineStyle.NONE, Alignment.LEFT, 0, 6, "ได้มาจาก ..................................................................................  จำนวนรับ "+buy_amount+"  วันที่รับมา  " + md.getBuyingDateString());
                     
+                    for (i = 0; i < table.getRowCount(); i++ ) {
+                        // order
+                        addCell(sheet, Border.ALL, BorderLineStyle.THIN, Alignment.LEFT, 0, (i + lineAdded), (i + 1) + "");
+                        addCell(sheet, Border.ALL, BorderLineStyle.THIN, Alignment.LEFT, 1, (i + lineAdded), (String) table.getValueAt(i, 1));
+                        addCell(sheet, Border.ALL, BorderLineStyle.THIN, Alignment.LEFT, 2, (i + lineAdded), (String) table.getValueAt(i, 2));
+                    }
                     
                 } else {
                     System.out.println ("This medicine no have data");

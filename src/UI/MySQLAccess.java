@@ -1282,6 +1282,41 @@ public class MySQLAccess {
       close();
     }
   }
+  
+  public int get_buying_amount(String barcode_, String lot_no_) {
+    try {
+        Class.forName("com.mysql.jdbc.Driver");
+        // Setup the connection with the DB
+        connect = DriverManager
+                .getConnection("jdbc:mysql://localhost/phamacy?"
+                        + "user=root&password=root");
+
+        // Statements allow to issue SQL queries to the database
+        statement = connect.createStatement();
+        resultSet = statement
+            .executeQuery("select amount from phamacy.buy_histories where barcode = " + barcode_ +  " AND lot_no = " + lot_no_);
+
+        System.out.println("|   Buying Histories");
+        System.out.println("|   No.---detail_id---buying_date---amount---total");
+
+        while (resultSet.next()) {
+            String[] temp = new String[6];
+            // It is possible to get the columns via name
+            // also possible to get the columns via the column number
+            // which starts at 1
+            // e.g. resultSet.getSTring(2);
+            return resultSet.getInt("amount");
+
+        }
+
+    } catch (Exception e){
+        e.printStackTrace();
+    } finally {
+        close();
+    }
+    
+    return 0;
+  }
 
   public ArrayList<String[]> list_buy_histories(java.sql.Date selectedDate){
     ArrayList<String[]> histories = new ArrayList<String[]>();
