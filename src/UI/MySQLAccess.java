@@ -1086,7 +1086,6 @@ public class MySQLAccess {
             System.out.print("---" + temp[6]);
 
             histories.add(temp);
-
         }
 
     } catch (Exception e){
@@ -1295,8 +1294,15 @@ public class MySQLAccess {
 
         // Statements allow to issue SQL queries to the database
         statement = connect.createStatement();
-        resultSet = statement
-           .executeQuery("select * from phamacy.buy_histories WHERE buying_date = '" + selectedDate + "' ORDER BY id ASC");
+        if (selectedDate != null) {
+            resultSet = statement
+                .executeQuery("select * from phamacy.buy_histories WHERE buying_date = '" + selectedDate + "' ORDER BY id ASC");
+        } else {
+            resultSet = statement
+                .executeQuery("select * from phamacy.buy_histories ORDER BY id ASC");
+        
+        }
+        
         System.out.println("|   Buying Histories");
         System.out.println("|   No.---detail_id---buying_date---amount---total");
         int i = 1;
