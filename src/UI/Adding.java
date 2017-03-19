@@ -290,7 +290,7 @@ public class Adding extends javax.swing.JFrame {
     private void back_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_back_buttonActionPerformed
         // TODO add your handling code here:
         if(add_button.getText().equals("Update")) {
-            Medicine_list newUi = new Medicine_list();
+            Medicine_list newUi = new Medicine_list(barcode.getText());
             newUi.setLocationRelativeTo(this);
             newUi.setVisible(true);
             dispose();
@@ -334,7 +334,7 @@ public class Adding extends javax.swing.JFrame {
             sell_err.setText("*ราคาขาย ผิดรูปแบบ");
             checked = false; 
         }
-        
+        Medicine_list newUi = null;
         try {
             MySQLAccess db = new MySQLAccess();
             if (checked) {
@@ -347,13 +347,14 @@ public class Adding extends javax.swing.JFrame {
                     m.setMedicineType(medicine_type.getSelectedIndex());
                     m.setStockType(stock_type.getSelectedIndex());
                     db.update_medicine(temp_barcode, m);
+                    newUi = new Medicine_list(barcode.getText());
                 } else {
                     m = new Medicine(barcode_, medicine_name_, medicine_code_, size_, selling_price_, stock_type.getSelectedIndex(), medicine_type.getSelectedIndex());
                     db.insert_medicines(m);
                     db.list_medicines();
+                    newUi = new Medicine_list();
                 }
 
-                Medicine_list newUi = new Medicine_list();
                 newUi.setLocationRelativeTo(this);
                 newUi.setVisible(true);
                 dispose(); 

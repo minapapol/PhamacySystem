@@ -46,6 +46,12 @@ public class Medicine_list extends javax.swing.JFrame {
         }
         
     }
+    
+     public Medicine_list(String barcode_) {
+        initComponents();
+        searchMedicine(barcode_);
+        barcode.setText(barcode_);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -201,8 +207,8 @@ public class Medicine_list extends javax.swing.JFrame {
         int selRow = listTable.getSelectedRow();
         String name = listTable.getValueAt(selRow, 2).toString();
         String barcode = listTable.getValueAt(selRow, 1).toString();
-        String size = listTable.getValueAt(selRow, 3).toString();
-        String code = listTable.getValueAt(selRow, 4).toString();
+        String size = listTable.getValueAt(selRow, 4).toString();
+        String code = listTable.getValueAt(selRow, 3).toString();
         float price = Float.parseFloat(listTable.getValueAt(selRow, 5).toString());
         String stock_type = listTable.getValueAt(selRow, 6) + "";
         String medicine_type = listTable.getValueAt(selRow, 7).toString();
@@ -241,14 +247,14 @@ public class Medicine_list extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_update_buttonActionPerformed
     
-    private void searchMedicine () {
+    private void searchMedicine (String barcode_) {
         
         DefaultTableModel model = (DefaultTableModel) listTable.getModel();
         model.setRowCount(0);
         
         try {
             MySQLAccess medicines_table = new MySQLAccess();
-            ArrayList<String[]> datas = medicines_table.list_medicines(barcode.getText());
+            ArrayList<String[]> datas = medicines_table.list_medicines(barcode_);
             
             for(int i = 0; i < datas.size(); i++){
                 Object[] data_list = {
@@ -271,12 +277,12 @@ public class Medicine_list extends javax.swing.JFrame {
     
     private void barcodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barcodeActionPerformed
         // TODO add your handling code here:
-        searchMedicine();
+        searchMedicine(barcode.getText());
     }//GEN-LAST:event_barcodeActionPerformed
 
     private void searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchActionPerformed
         // TODO add your handling code here:
-        searchMedicine();
+        searchMedicine(barcode.getText());
     }//GEN-LAST:event_searchActionPerformed
 
     /**
