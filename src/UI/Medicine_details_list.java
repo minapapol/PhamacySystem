@@ -253,7 +253,7 @@ public class Medicine_details_list extends javax.swing.JFrame {
     private boolean list_medicine_details(int page) {
         model = (DefaultTableModel) listTable.getModel();
         model.setRowCount(0);
-        int period = 2;
+        int period = 50;
         try {
             MySQLAccess medicine_details_table = new MySQLAccess();
             ArrayList<String[]> datas = medicine_details_table.list_medicine_details("", "" ,"", (page-1)*period, period);

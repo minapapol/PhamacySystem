@@ -285,7 +285,7 @@ public class Medicine_list extends javax.swing.JFrame {
     private boolean list_medicine(int page) {
         model = (DefaultTableModel) listTable.getModel();
         model.setRowCount(0);
-        int period = 2;
+        int period = 50;
         
         try {
             MySQLAccess medicines_table = new MySQLAccess();

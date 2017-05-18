@@ -29,8 +29,8 @@ public class MySQLAccess {
       Class.forName("com.mysql.jdbc.Driver");
       // Setup the connection with the DB
       connect = DriverManager
-          .getConnection("jdbc:mysql://localhost/phamacy?"
-              + "user=root&password=root");
+          .getConnection("jdbc:mysql://192.168.1.26/phamacy?"
+              + "user=seller&password=Phamacy123");
 
       // Statements allow to issue SQL queries to the database
       statement = connect.createStatement();
@@ -109,8 +109,8 @@ public class MySQLAccess {
       Class.forName("com.mysql.jdbc.Driver");
       // Setup the connection with the DB
       connect = DriverManager
-          .getConnection("jdbc:mysql://localhost/phamacy?"
-              + "user=root&password=root");
+          .getConnection("jdbc:mysql://192.168.1.26/phamacy?"
+              + "user=seller&password=Phamacy123");
 
       // Statements allow to issue SQL queries to the database
       statement = connect.createStatement();
@@ -144,8 +144,8 @@ public class MySQLAccess {
         Class.forName("com.mysql.jdbc.Driver");
           // Setup the connection with the DB
         connect = DriverManager
-                .getConnection("jdbc:mysql://localhost/phamacy?"
-                        + "user=root&password=root");
+                .getConnection("jdbc:mysql://192.168.1.26/phamacy?"
+                        + "user=seller&password=Phamacy123");
 
         // Update
         preparedStatement = connect
@@ -183,8 +183,8 @@ public class MySQLAccess {
         Class.forName("com.mysql.jdbc.Driver");
           // Setup the connection with the DB
         connect = DriverManager
-                .getConnection("jdbc:mysql://localhost/phamacy?"
-                        + "user=root&password=root");
+                .getConnection("jdbc:mysql://192.168.1.26/phamacy?"
+                        + "user=seller&password=Phamacy123");
 
         // Statements allow to issue SQL queries to the database
         statement = connect.createStatement();
@@ -263,8 +263,8 @@ public class MySQLAccess {
         Class.forName("com.mysql.jdbc.Driver");
           // Setup the connection with the DB
         connect = DriverManager
-                .getConnection("jdbc:mysql://localhost/phamacy?"
-                        + "user=root&password=root");
+                .getConnection("jdbc:mysql://192.168.1.26/phamacy?"
+                        + "user=seller&password=Phamacy123");
 
         // Statements allow to issue SQL queries to the database
         statement = connect.createStatement();
@@ -343,8 +343,8 @@ public class MySQLAccess {
         Class.forName("com.mysql.jdbc.Driver");
           // Setup the connection with the DB
         connect = DriverManager
-                .getConnection("jdbc:mysql://localhost/phamacy?"
-                        + "user=root&password=root");
+                .getConnection("jdbc:mysql://192.168.1.26/phamacy?"
+                        + "user=seller&password=Phamacy123");
 
         // Statements allow to issue SQL queries to the database
         statement = connect.createStatement();
@@ -422,8 +422,8 @@ public class MySQLAccess {
         Class.forName("com.mysql.jdbc.Driver");
           // Setup the connection with the DB
         connect = DriverManager
-                .getConnection("jdbc:mysql://localhost/phamacy?"
-                        + "user=root&password=root");
+                .getConnection("jdbc:mysql://192.168.1.26/phamacy?"
+                        + "user=seller&password=Phamacy123");
 
         // Statements allow to issue SQL queries to the database
         statement = connect.createStatement();
@@ -457,8 +457,8 @@ public class MySQLAccess {
         Class.forName("com.mysql.jdbc.Driver");
           // Setup the connection with the DB
         connect = DriverManager
-                .getConnection("jdbc:mysql://localhost/phamacy?"
-                        + "user=root&password=root");
+                .getConnection("jdbc:mysql://192.168.1.26/phamacy?"
+                        + "user=seller&password=Phamacy123");
 
         // Statements allow to issue SQL queries to the database
         statement = connect.createStatement();
@@ -485,8 +485,8 @@ public class MySQLAccess {
         Class.forName("com.mysql.jdbc.Driver");
           // Setup the connection with the DB
         connect = DriverManager
-                .getConnection("jdbc:mysql://localhost/phamacy?"
-                        + "user=root&password=root");
+                .getConnection("jdbc:mysql://192.168.1.26/phamacy?"
+                        + "user=seller&password=Phamacy123");
 
         // Statements allow to issue SQL queries to the database
         statement = connect.createStatement();
@@ -527,8 +527,8 @@ public class MySQLAccess {
       Class.forName("com.mysql.jdbc.Driver");
       // Setup the connection with the DB
       connect = DriverManager
-          .getConnection("jdbc:mysql://localhost/phamacy?"
-              + "user=root&password=root");
+          .getConnection("jdbc:mysql://192.168.1.26/phamacy?"
+              + "user=seller&password=Phamacy123");
 
       // Statements allow to issue SQL queries to the database
       statement = connect.createStatement();
@@ -575,8 +575,8 @@ public class MySQLAccess {
             Class.forName("com.mysql.jdbc.Driver");
             // Setup the connection with the DB
             connect = DriverManager
-                    .getConnection("jdbc:mysql://localhost/phamacy?"
-                            + "user=root&password=root");
+                    .getConnection("jdbc:mysql://192.168.1.26/phamacy?"
+                            + "user=seller&password=Phamacy123");
 
             // Statements allow to issue SQL queries to the database
             statement = connect.createStatement();
@@ -603,8 +603,8 @@ public class MySQLAccess {
             Class.forName("com.mysql.jdbc.Driver");
             // Setup the connection with the DB
             connect = DriverManager
-                    .getConnection("jdbc:mysql://localhost/phamacy?"
-                            + "user=root&password=root");
+                    .getConnection("jdbc:mysql://192.168.1.26/phamacy?"
+                            + "user=seller&password=Phamacy123");
 
             // Statements allow to issue SQL queries to the database
             statement = connect.createStatement();
@@ -631,8 +631,8 @@ public class MySQLAccess {
         Class.forName("com.mysql.jdbc.Driver");
           // Setup the connection with the DB
         connect = DriverManager
-                .getConnection("jdbc:mysql://localhost/phamacy?"
-                        + "user=root&password=root");
+                .getConnection("jdbc:mysql://192.168.1.26/phamacy?"
+                        + "user=seller&password=Phamacy123");
 
           // Statements allow to issue SQL queries to the database
           statement = connect.createStatement();
@@ -763,8 +763,8 @@ public class MySQLAccess {
         Class.forName("com.mysql.jdbc.Driver");
           // Setup the connection with the DB
         connect = DriverManager
-                .getConnection("jdbc:mysql://localhost/phamacy?"
-                        + "user=root&password=root");
+                .getConnection("jdbc:mysql://192.168.1.26/phamacy?"
+                        + "user=seller&password=Phamacy123");
 
           // Statements allow to issue SQL queries to the database
           statement = connect.createStatement();
@@ -895,8 +895,8 @@ public class MySQLAccess {
         Class.forName("com.mysql.jdbc.Driver");
           // Setup the connection with the DB
         connect = DriverManager
-                .getConnection("jdbc:mysql://localhost/phamacy?"
-                        + "user=root&password=root");
+                .getConnection("jdbc:mysql://192.168.1.26/phamacy?"
+                        + "user=seller&password=Phamacy123");
 
         // Statements allow to issue SQL queries to the database
         statement = connect.createStatement();
@@ -960,8 +960,8 @@ public class MySQLAccess {
         Class.forName("com.mysql.jdbc.Driver");
           // Setup the connection with the DB
         connect = DriverManager
-                .getConnection("jdbc:mysql://localhost/phamacy?"
-                        + "user=root&password=root");
+                .getConnection("jdbc:mysql://192.168.1.26/phamacy?"
+                        + "user=seller&password=Phamacy123");
 
         // Statements allow to issue SQL queries to the database
         statement = connect.createStatement();
@@ -1023,8 +1023,8 @@ public class MySQLAccess {
             Class.forName("com.mysql.jdbc.Driver");
               // Setup the connection with the DB
             connect = DriverManager
-                    .getConnection("jdbc:mysql://localhost/phamacy?"
-                            + "user=root&password=root");
+                    .getConnection("jdbc:mysql://192.168.1.26/phamacy?"
+                            + "user=seller&password=Phamacy123");
 
             // Update
             preparedStatement = connect
@@ -1056,8 +1056,8 @@ public class MySQLAccess {
             Class.forName("com.mysql.jdbc.Driver");
               // Setup the connection with the DB
             connect = DriverManager
-                    .getConnection("jdbc:mysql://localhost/phamacy?"
-                            + "user=root&password=root");
+                    .getConnection("jdbc:mysql://192.168.1.26/phamacy?"
+                            + "user=seller&password=Phamacy123");
 
             // Update
             preparedStatement = connect
@@ -1110,8 +1110,8 @@ public class MySQLAccess {
             Class.forName("com.mysql.jdbc.Driver");
               // Setup the connection with the DB
             connect = DriverManager
-                    .getConnection("jdbc:mysql://localhost/phamacy?"
-                            + "user=root&password=root");
+                    .getConnection("jdbc:mysql://192.168.1.26/phamacy?"
+                            + "user=seller&password=Phamacy123");
 
             // Update
             preparedStatement = connect
@@ -1141,8 +1141,8 @@ public class MySQLAccess {
         Class.forName("com.mysql.jdbc.Driver");
           // Setup the connection with the DB
         connect = DriverManager
-                .getConnection("jdbc:mysql://localhost/phamacy?"
-                        + "user=root&password=root");
+                .getConnection("jdbc:mysql://192.168.1.26/phamacy?"
+                        + "user=seller&password=Phamacy123");
 
         // Statements allow to issue SQL queries to the database
         statement = connect.createStatement();
@@ -1165,8 +1165,8 @@ public class MySQLAccess {
       Class.forName("com.mysql.jdbc.Driver");
       // Setup the connection with the DB
       connect = DriverManager
-          .getConnection("jdbc:mysql://localhost/phamacy?"
-              + "user=root&password=root");
+          .getConnection("jdbc:mysql://192.168.1.26/phamacy?"
+              + "user=seller&password=Phamacy123");
 
       // Statements allow to issue SQL queries to the database
       statement = connect.createStatement();
@@ -1200,8 +1200,8 @@ public class MySQLAccess {
         Class.forName("com.mysql.jdbc.Driver");
         // Setup the connection with the DB
         connect = DriverManager
-                .getConnection("jdbc:mysql://localhost/phamacy?"
-                        + "user=root&password=root");
+                .getConnection("jdbc:mysql://192.168.1.26/phamacy?"
+                        + "user=seller&password=Phamacy123");
 
         // Statements allow to issue SQL queries to the database
         statement = connect.createStatement();
@@ -1259,8 +1259,8 @@ public class MySQLAccess {
         Class.forName("com.mysql.jdbc.Driver");
         // Setup the connection with the DB
         connect = DriverManager
-                .getConnection("jdbc:mysql://localhost/phamacy?"
-                        + "user=root&password=root");
+                .getConnection("jdbc:mysql://192.168.1.26/phamacy?"
+                        + "user=seller&password=Phamacy123");
 
         // Statements allow to issue SQL queries to the database
         statement = connect.createStatement();
@@ -1316,8 +1316,8 @@ public class MySQLAccess {
         Class.forName("com.mysql.jdbc.Driver");
         // Setup the connection with the DB
         connect = DriverManager
-                .getConnection("jdbc:mysql://localhost/phamacy?"
-                        + "user=root&password=root");
+                .getConnection("jdbc:mysql://192.168.1.26/phamacy?"
+                        + "user=seller&password=Phamacy123");
 
         // Statements allow to issue SQL queries to the database
         statement = connect.createStatement();
@@ -1379,8 +1379,8 @@ public class MySQLAccess {
         Class.forName("com.mysql.jdbc.Driver");
         // Setup the connection with the DB
         connect = DriverManager
-                .getConnection("jdbc:mysql://localhost/phamacy?"
-                        + "user=root&password=root");
+                .getConnection("jdbc:mysql://192.168.1.26/phamacy?"
+                        + "user=seller&password=Phamacy123");
 
         // Statements allow to issue SQL queries to the database
         statement = connect.createStatement();
@@ -1443,8 +1443,8 @@ public class MySQLAccess {
         Class.forName("com.mysql.jdbc.Driver");
           // Setup the connection with the DB
         connect = DriverManager
-                .getConnection("jdbc:mysql://localhost/phamacy?"
-                        + "user=root&password=root");
+                .getConnection("jdbc:mysql://192.168.1.26/phamacy?"
+                        + "user=seller&password=Phamacy123");
 
         // Statements allow to issue SQL queries to the database
         statement = connect.createStatement();
@@ -1467,8 +1467,8 @@ public class MySQLAccess {
       Class.forName("com.mysql.jdbc.Driver");
       // Setup the connection with the DB
       connect = DriverManager
-          .getConnection("jdbc:mysql://localhost/phamacy?"
-              + "user=root&password=root");
+          .getConnection("jdbc:mysql://192.168.1.26/phamacy?"
+              + "user=seller&password=Phamacy123");
 
       // Statements allow to issue SQL queries to the database
       statement = connect.createStatement();
@@ -1500,8 +1500,8 @@ public class MySQLAccess {
         Class.forName("com.mysql.jdbc.Driver");
         // Setup the connection with the DB
         connect = DriverManager
-                .getConnection("jdbc:mysql://localhost/phamacy?"
-                        + "user=root&password=root");
+                .getConnection("jdbc:mysql://192.168.1.26/phamacy?"
+                        + "user=seller&password=Phamacy123");
 
         // Statements allow to issue SQL queries to the database
         statement = connect.createStatement();
@@ -1536,8 +1536,8 @@ public class MySQLAccess {
         Class.forName("com.mysql.jdbc.Driver");
         // Setup the connection with the DB
         connect = DriverManager
-                .getConnection("jdbc:mysql://localhost/phamacy?"
-                        + "user=root&password=root");
+                .getConnection("jdbc:mysql://192.168.1.26/phamacy?"
+                        + "user=seller&password=Phamacy123");
 
         // Statements allow to issue SQL queries to the database
         statement = connect.createStatement();
@@ -1597,8 +1597,8 @@ public class MySQLAccess {
         Class.forName("com.mysql.jdbc.Driver");
           // Setup the connection with the DB
         connect = DriverManager
-                .getConnection("jdbc:mysql://localhost/phamacy?"
-                        + "user=root&password=root");
+                .getConnection("jdbc:mysql://192.168.1.26/phamacy?"
+                        + "user=seller&password=Phamacy123");
 
         // Statements allow to issue SQL queries to the database
         statement = connect.createStatement();
