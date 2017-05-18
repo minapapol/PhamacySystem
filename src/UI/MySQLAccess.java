@@ -257,6 +257,86 @@ public class MySQLAccess {
     return medicines;
   }
   
+  public ArrayList<String[]> list_medicines(int offset, int limit){
+    ArrayList<String[]> medicines = new ArrayList<>();
+    try {
+        Class.forName("com.mysql.jdbc.Driver");
+          // Setup the connection with the DB
+        connect = DriverManager
+                .getConnection("jdbc:mysql://localhost/phamacy?"
+                        + "user=root&password=root");
+
+        // Statements allow to issue SQL queries to the database
+        statement = connect.createStatement();
+
+        resultSet = statement
+           .executeQuery("select * from phamacy.medicines LIMIT " + limit + " OFFSET " + offset);
+        System.out.println("|   Medicines");
+        System.out.println("|   No.---Barcode---Medicines name");
+        int i = 1;
+        while (resultSet.next()) {
+            String[] temp = new String[7];
+            // It is possible to get the columns via name
+            // also possible to get the columns via the column number
+            // which starts at 1
+            // e.g. resultSet.getSTring(2);
+            String barcode = resultSet.getString("barcode");
+            String name = resultSet.getString("medicine_name");
+            String code = resultSet.getString("medicine_code");
+            String size = resultSet.getString("size");
+            float price = resultSet.getFloat("price");
+            int medicine_type = resultSet.getInt("medicine_type");
+            int stock_type = resultSet.getInt("stock_type");
+            System.out.print("|   " + i);
+            temp[0] = barcode;
+            System.out.print("---" + temp[0]);
+            temp[1] = name;
+            System.out.println("---" + temp[1]);
+            temp[2] = code + "";
+            System.out.println("---" + temp[2]);
+            temp[3] = size + "";
+            System.out.println("---" + temp[3]);
+            temp[4] = price + "";
+            System.out.println("---" + temp[4]);
+            switch (stock_type) {
+                case 0:
+                    temp[5] = "ข้างบน";
+                    break;
+                case 1:
+                    temp[5] = "ข้างล่าง";
+                    break;
+            }
+            System.out.println("---" + temp[5]);
+            
+            switch (medicine_type) {
+                case 0:
+                    temp[6] = "ยาอันตราย";
+                    break;
+                case 1:
+                    temp[6] = "ยาควบคุมพิเศษ";
+                    break;
+                case 2:
+                    temp[6] = "ยาทั่วไป";
+                    break;
+                case 3:
+                    temp[6] = "อื่นๆ";
+                    break;
+            }
+            System.out.println("---" + temp[6]);
+
+            medicines.add(temp);
+            i++;
+        }
+
+    } catch (Exception e){
+        e.printStackTrace();
+    } finally {
+      close();
+    }
+
+    return medicines;
+  } 
+  
   public ArrayList<String[]> list_medicines(){
     ArrayList<String[]> medicines = new ArrayList<>();
     try {
@@ -545,6 +625,138 @@ public class MySQLAccess {
       return lot_string.split(",");
   }
 
+  public ArrayList<String[]> list_medicine_details(String barcode_, String lot_no_, String sort, int offset, int limit){
+    ArrayList<String[]> medicine_details = new ArrayList<String[]>();
+    try {
+        Class.forName("com.mysql.jdbc.Driver");
+          // Setup the connection with the DB
+        connect = DriverManager
+                .getConnection("jdbc:mysql://localhost/phamacy?"
+                        + "user=root&password=root");
+
+          // Statements allow to issue SQL queries to the database
+          statement = connect.createStatement();
+        if(barcode_.length() > 0){
+            if (lot_no_.length() > 0) {
+                resultSet = statement
+                   .executeQuery("select * from phamacy.medicine_details where barcode LIKE '%" + barcode_ + "%' AND lot_no = " + lot_no_ + " LIMIT " + limit + " OFFSET " + offset);
+            } else {
+                resultSet = statement
+                   .executeQuery("select * from phamacy.medicine_details where barcode LIKE '%" + barcode_ + "%' LIMIT " + limit + " OFFSET " + offset);
+            }
+        } else {
+            switch (sort) {
+                case "exp_date":
+                    resultSet = statement
+                            .executeQuery("select * from phamacy.medicine_details ORDER BY expired_date LIMIT " + limit + " OFFSET " + offset);
+                    break;
+                case "stock":
+                    resultSet = statement
+                            .executeQuery("select * from phamacy.medicine_details ORDER BY amount LIMIT " + limit + " OFFSET " + offset);
+                    break;
+                default:
+                    resultSet = statement
+                            .executeQuery("select * from phamacy.medicine_details LIMIT " + limit + " OFFSET " + offset);
+                    break;
+            }
+        }
+        System.out.println("|   Medicines Details");
+        System.out.println("|   No.---barcode---medicine_code---company_name---lot_no---back_stock---front_stock---buying_date---buying_price---selling_price---amount---unit---initialize_date---expired_date---size---type");
+        int i = 1;
+        while (resultSet.next()) {
+            String[] temp = new String[19];
+            // It is possible to get the columns via name
+            // also possible to get the columns via the column number
+            // which starts at 1
+            // e.g. resultSet.getSTring(2);
+            int id = resultSet.getInt("id");
+            String barcode = resultSet.getString("barcode");
+            String medicine_code = resultSet.getString("medicine_code");
+            String company_name = resultSet.getString("company_name");
+            String lot_no = resultSet.getString("lot_no");
+            String size = resultSet.getString("size");
+            int back_stock = resultSet.getInt("back_stock");
+            int front_stock = resultSet.getInt("front_stock");
+            Date buying_date = resultSet.getDate("buying_date");
+            float buying_price = resultSet.getFloat("buying_price");
+            float selling_price = resultSet.getFloat("selling_price");
+            int amount = resultSet.getInt("amount");
+            String unit = resultSet.getString("unit");
+            Date initialize_date = resultSet.getDate("initialize_date");
+            Date expired_date = resultSet.getDate("expired_date");
+            temp[0] = id+"";
+            System.out.print("|   " + temp[0]);
+            temp[1] = barcode;
+            System.out.print("---" + temp[1]);
+            temp[2] = medicine_code;
+            System.out.print("---" + temp[2]);
+            temp[3] = company_name;
+            System.out.print("---" + temp[3]);
+            temp[4] = lot_no;
+            System.out.print("---" + temp[4]);
+            temp[5] = back_stock+"";
+            System.out.print("---" + temp[5]);
+            temp[6] = front_stock+"";
+            System.out.print("---" + temp[6]);
+            temp[7] = buying_date+"";
+            System.out.print("---" + temp[7]);
+            temp[8] = buying_price+"";
+            System.out.print("---" + temp[8]);
+            temp[9] = selling_price+"";
+            System.out.print("---" + temp[9]);
+            temp[10] = amount+"";
+            System.out.print("---" + temp[10]);
+            temp[11] = unit;
+            System.out.print("---" + temp[11]);
+            temp[12] = initialize_date+"";
+            System.out.print("---" + temp[12]);
+            temp[13] = expired_date+"";
+            System.out.print("---" + temp[13]);
+            temp[14] = size;
+            System.out.print("---" + temp[14]);
+            switch(resultSet.getInt("medicine_type")){
+                case 0:
+                    temp[15] = "ยาอันตราย";
+                    break;
+                case 1:
+                    temp[15] = "ยาควบคุมพิเศษ";
+                    break;
+                case 2:
+                    temp[15] = "ยาทั่วไป";
+                    break;
+                case 3:
+                    temp[15] = "อื่นๆ";
+                    break;
+            }
+            System.out.println("---" + temp[15]);
+            
+            switch(resultSet.getInt("stock_type")){
+                case 0:
+                    temp[16] = "ข้างบน";
+                    break;
+                case 1:
+                    temp[16] = "ข้างล่าง";
+                    break;
+            }
+            System.out.println("---" + temp[16]);
+            
+            temp[17] = resultSet.getInt("pack_amount") + "";
+            temp[18] = resultSet.getFloat("pack_price") + "";
+            
+
+            medicine_details.add(temp);
+            i++;
+        }
+
+    } catch (Exception e){
+        e.printStackTrace();
+    } finally {
+      close();
+    }
+
+    return medicine_details;
+  }
+  
   public ArrayList<String[]> list_medicine_details(String barcode_, String lot_no_, String sort){
     ArrayList<String[]> medicine_details = new ArrayList<String[]>();
     try {

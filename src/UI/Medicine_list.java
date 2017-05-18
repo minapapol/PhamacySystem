@@ -16,35 +16,13 @@ import javax.swing.table.DefaultTableModel;
 public class Medicine_list extends javax.swing.JFrame {
 
     DefaultTableModel model;
+    int page = 1;
     /**
      * Creates new form Medicine_list
      */
     public Medicine_list() {
         initComponents();
-        
-        DefaultTableModel model = (DefaultTableModel) listTable.getModel();
-        
-        try {
-            MySQLAccess medicines_table = new MySQLAccess();
-            ArrayList<String[]> datas = medicines_table.list_medicines();
-            
-            for(int i = 0; i < datas.size(); i++){
-                Object[] data_list = {
-                    i+1,
-                    datas.get(i)[0],
-                    datas.get(i)[1],
-                    datas.get(i)[2],
-                    datas.get(i)[3],
-                    datas.get(i)[4],
-                    datas.get(i)[5],
-                    datas.get(i)[6],
-                };
-                model.addRow(data_list);          
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        
+        list_medicine(page);
     }
     
      public Medicine_list(String barcode_) {
@@ -70,6 +48,9 @@ public class Medicine_list extends javax.swing.JFrame {
         delete_button = new javax.swing.JButton();
         barcode = new javax.swing.JTextField();
         search = new javax.swing.JButton();
+        next = new javax.swing.JButton();
+        previous = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -120,24 +101,46 @@ public class Medicine_list extends javax.swing.JFrame {
             }
         });
 
+        next.setText("next");
+        next.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nextActionPerformed(evt);
+            }
+        });
+
+        previous.setText("previous");
+        previous.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                previousActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("page 1");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(delete_button)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(update_button)
-                        .addGap(10, 10, 10)
-                        .addComponent(jButton2))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 731, Short.MAX_VALUE)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(104, 104, 104)
+                        .addComponent(previous)
+                        .addGap(107, 107, 107)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(next)
+                        .addGap(49, 49, 49)
+                        .addComponent(delete_button)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(update_button)
+                        .addGap(10, 10, 10)
+                        .addComponent(jButton2)))
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
@@ -158,10 +161,14 @@ public class Medicine_list extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 408, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(delete_button)
-                    .addComponent(update_button))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButton2)
+                        .addComponent(delete_button)
+                        .addComponent(update_button)
+                        .addComponent(next)
+                        .addComponent(previous))
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -275,6 +282,35 @@ public class Medicine_list extends javax.swing.JFrame {
         
     }
     
+    private boolean list_medicine(int page) {
+        model = (DefaultTableModel) listTable.getModel();
+        model.setRowCount(0);
+        int period = 2;
+        
+        try {
+            MySQLAccess medicines_table = new MySQLAccess();
+            ArrayList<String[]> datas = medicines_table.list_medicines(((page - 1) * period), period);
+            if (datas.isEmpty())
+                return false;
+            for(int i = 0; i < datas.size(); i++){
+                Object[] data_list = {
+                    ((page - 1) * period) + i+1,
+                    datas.get(i)[0],
+                    datas.get(i)[1],
+                    datas.get(i)[2],
+                    datas.get(i)[3],
+                    datas.get(i)[4],
+                    datas.get(i)[5],
+                    datas.get(i)[6],
+                };
+                model.addRow(data_list);          
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+    
     private void barcodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barcodeActionPerformed
         // TODO add your handling code here:
         searchMedicine(barcode.getText());
@@ -284,6 +320,25 @@ public class Medicine_list extends javax.swing.JFrame {
         // TODO add your handling code here:
         searchMedicine(barcode.getText());
     }//GEN-LAST:event_searchActionPerformed
+
+    private void nextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextActionPerformed
+        // TODO add your handling code here:
+        page += 1;
+        if (!list_medicine(page)) {
+            page -= 1;
+            list_medicine(page);
+        }
+        jLabel2.setText("page " + page);
+    }//GEN-LAST:event_nextActionPerformed
+
+    private void previousActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_previousActionPerformed
+        // TODO add your handling code here:
+        page -= 1;
+        if (page != 0)
+            list_medicine(page);
+        else page = 1;
+        jLabel2.setText("page " + page);
+    }//GEN-LAST:event_previousActionPerformed
 
     /**
      * @param args the command line arguments
@@ -325,8 +380,11 @@ public class Medicine_list extends javax.swing.JFrame {
     private javax.swing.JButton delete_button;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable listTable;
+    private javax.swing.JButton next;
+    private javax.swing.JButton previous;
     private javax.swing.JButton search;
     private javax.swing.JButton update_button;
     // End of variables declaration//GEN-END:variables
