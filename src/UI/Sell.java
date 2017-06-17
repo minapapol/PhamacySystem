@@ -42,7 +42,6 @@ public class Sell extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         price = new javax.swing.JTextField();
@@ -79,13 +78,6 @@ public class Sell extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("CordiaUPC", 1, 24)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("รายการสินค้า (ขาย)");
-
-        jButton1.setText("กลับ");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
 
         jLabel6.setFont(new java.awt.Font("CordiaUPC", 0, 20)); // NOI18N
         jLabel6.setText("Lot ที่");
@@ -317,8 +309,7 @@ public class Sell extends javax.swing.JFrame {
                                 .addComponent(removeSellList)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(finishedButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton1)))
+                                .addGap(0, 0, Short.MAX_VALUE)))
                         .addContainerGap())))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
@@ -379,7 +370,6 @@ public class Sell extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(addMore)
                     .addComponent(jButton3)
-                    .addComponent(jButton1)
                     .addComponent(finishedButton)
                     .addComponent(removeSellList))
                 .addContainerGap())
@@ -392,14 +382,6 @@ public class Sell extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        UI newUi = new UI();
-        newUi.setLocationRelativeTo(this);
-        newUi.setVisible(true);
-        dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void priceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_priceActionPerformed
         // TODO add your handling code here:
@@ -751,7 +733,6 @@ public class Sell extends javax.swing.JFrame {
     private javax.swing.JTextField discount;
     private javax.swing.JComboBox<String> discount_type;
     private javax.swing.JButton finishedButton;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
